@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import ShowUpdateWindow from './ShowUpdateWindow';
 import './style.css'
 // import { ReactComponent as MinimizeIcon }  from '../../assets/minimize-8.svg';
