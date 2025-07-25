@@ -6,12 +6,12 @@ enum Levels {
     Besties = "Besties"
 }
 
-type loginData = {
+export type loginData = {
     username: string,
     password: string
 }
 
-type loginResponse = {
+export type loginResponse = {
     name: string,
     id: string,
     accessLevel: Levels

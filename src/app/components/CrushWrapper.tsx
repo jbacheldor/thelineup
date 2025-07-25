@@ -1,8 +1,8 @@
 import React from 'react';
 import CrushSideProfile from './CrushSideProfile';
 import CrushWindows from './CrushWindow';
-import Headstone from './Headstone';
 import './style.css'
+import Headstone from './Headstone';
 // import { ReactComponent as MinimizeIcon }  from '../../assets/minimize-8.svg';
 
 type Props = {
@@ -10,12 +10,17 @@ type Props = {
     crushName?: string;
 }
 
+type updateFormat = {
+    event: string,
+    text: string,
+}
+
 export type crushType = {
     name: string,
     // enum
     status?: string, 
     description?: string,
-    updates?: [{}],
+    updates?: updateFormat[],
     pros?: string[],
     cons?: string[],
     fan_ranking?: number,
@@ -25,9 +30,10 @@ export type crushType = {
 
 
 function CrushWrapper(props: Props) {
-    const {theme, crushName} = props
+    const {crushName} = props
+    console.log('crushName', crushName)
     const [showWindow, setShowWindow] = React.useState(false)
-    const [showSideProfile, setShowSideProfile] = React.useState()
+    const [showSideProfile, setShowSideProfile] = React.useState(false)
 
 
     const showCrushUpdate = () => {
@@ -46,7 +52,7 @@ function CrushWrapper(props: Props) {
     const active_crushes: crushType[] = [{name: "crush A",
         status: "hot", 
         description: "lorem ipsum or whatever",
-        updates: [{"may 4": "he talked to me", "may 17th": "he spit on me"}],
+        updates: [{event: "may 4", text: "he talked to me"}, {event: "may 17th", text: "he spit on me"}],
         pros: ["smells nice", "lives far away", "can play the banjo"],
         cons: ["doesn't believe in hot dogs", "says the pledge of allegiance unironically", "likes eggs, unfertilized"],
         personal_ranking: 1,
@@ -54,7 +60,7 @@ function CrushWrapper(props: Props) {
         {name: "crush B",
         status: "hot", 
         description: "lorem ipsum or whatever",
-        updates: [{"may 4": "he talked to me", "may 17th": "he spit on me"}],
+        updates: [{event: "may 4", text: "he talked to me"}, {event: "may 17th", text: "he spit on me"}],
         pros: ["smells nice", "lives far away", "can play the banjo"],
         cons: ["doesn't believe in hot dogs", "says the pledge of allegiance unironically", "likes eggs, unfertilized"],
         personal_ranking: 1,
@@ -63,7 +69,7 @@ function CrushWrapper(props: Props) {
         {name: "crush C",
         status: "hot", 
         description: "lorem ipsum or whatever",
-        updates: [{"may 4": "he talked to me", "may 17th": "he spit on me"}],
+        updates: [{event: "may 4", text: "he talked to me"}, {event: "may 17th", text: "he spit on me"}],
         pros: ["smells nice", "lives far away", "can play the banjo"],
         cons: ["doesn't believe in hot dogs", "says the pledge of allegiance unironically", "likes eggs, unfertilized"],
         personal_ranking: 1,
@@ -71,7 +77,7 @@ function CrushWrapper(props: Props) {
         {name: "crush D",
         status: "hot", 
         description: "lorem ipsum or whatever",
-        updates: [{"may 4": "he talked to me", "may 17th": "he spit on me"}],
+        updates: [{event: "may 4", text: "he talked to me"}, {event: "may 17th", text: "he spit on me"}],
         pros: ["smells nice", "lives far away", "can play the banjo"],
         cons: ["doesn't believe in hot dogs", "says the pledge of allegiance unironically", "likes eggs, unfertilized"], 
         personal_ranking: 1,

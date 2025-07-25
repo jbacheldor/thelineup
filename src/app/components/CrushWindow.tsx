@@ -1,12 +1,12 @@
-import React, { MouseEventHandler } from 'react';
-import ShowUpdateWindow from './ShowUpdateWindow';
+import React from 'react';
 import './style.css'
+import ShowUpdateWindow from './ShowUpdateWindow';
 // import { ReactComponent as MinimizeIcon }  from '../../assets/minimize-8.svg';
 
 type Props = {
     // theme?: string;
     crushName?: string;
-    onSelect?: () => void;
+    onSelect: () => void;
     showProfile: () => void;
     closeWindows?: boolean;
 }
@@ -16,7 +16,7 @@ function CrushWindows(props: Props) {
     const {crushName, onSelect, showProfile, closeWindows} = props;
     const [showWindow, setShowWindow] = React.useState(false)
 
-    const showUpdate = (e: MouseEventHandler<HTMLButtonElement>) => {
+    const showUpdate = () => {
         onSelect()
         setShowWindow(true)
     }

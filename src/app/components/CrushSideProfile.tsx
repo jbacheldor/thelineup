@@ -3,14 +3,20 @@ import './style.css'
 
 type Props = {
     onShowWindow: () => void;
-    crush?: crushType;
+    crush: crushType;
 }
+
+type updateFormat = {
+    event: string,
+    text: string,
+}
+
 export type crushType = {
     name: string,
     // enum
     status?: string, 
     description?: string,
-    updates?: [{}],
+    updates?: updateFormat[],
     pros?: string[],
     cons?: string[],
     fan_ranking?: number,
