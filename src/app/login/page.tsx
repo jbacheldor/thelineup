@@ -15,17 +15,16 @@ const Login:React.FC = () => {
 
     return (
         <div id="login-body">
-            <h3>Login</h3>
+            <h2>Login</h2>
             {/* need to check local storage low key */}
-            <div id="lottery">
-                Apply for Lottery?
-                {!showLottery && <button onClick={changeLottery}>yes</button>}
-                {showLottery && 
-                <div id="lottery-popup" style={{visibility: `${visibility}`}}>
-                    <Lottery changeLottery={changeLottery}/>
-                </div>
-                }
+            Apply for Lottery?
+            <button style={{visibility: `${showLottery ? "hidden" : "visible"}`}} onClick={changeLottery}>yes</button>
+            {showLottery && 
+            <div id="lottery-popup" style={{visibility: `${showLottery ? "visible" : "hidden"}`}}>
+                <Lottery changeLottery={changeLottery}/>
             </div>
+            }
+            <hr/>
             <div id='login-box'>
                 <form id='login-form'>
                     <span>Number:</span>
@@ -45,8 +44,8 @@ const Login:React.FC = () => {
                 }
                 #lottery-popup {
                     position: absolute;
-                    z-index: 1;
                     hidden: true;
+                    top: 20%;
                 }
                 #login-form {
                     display: flex;
@@ -54,9 +53,14 @@ const Login:React.FC = () => {
                     height: 100%;
                     justify-content: center;
                 }
+                hr {
+                    width: 30%;
+                    margin: 10px;
+                }
                 #login-box {
                     display: flex;
-                    flex: 1 1 auto;
+                    margin-top: 20px;
+                    // flex: 1 1 auto;
                 }
                 #lottery-form {
                     display: flex;
@@ -65,17 +69,14 @@ const Login:React.FC = () => {
                     border-radius: 5px;
                     padding: 10px;
                 }
-                h3 {
-                    margin: 10px;    
+                h2 {
+                    margin: 20px;   
                 }
                 span {
                     margin: 5px;
                 }
                 button {
                     margin: 5px;
-                }
-                #lottery {
-                    margin: 10px;
                 }
             
             `}

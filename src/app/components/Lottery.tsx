@@ -11,18 +11,16 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
 
     return (
         <div>
-            <div>
-                <form id='lottery-form' onSubmit={(e)=>submitLottery(e)}>
-                    <button onClick={changeLottery}>x</button>
-                    <span>name*</span>
-                    <input required></input>
-                    <span>number*</span>
-                    <input required></input>
-                    <span>email*</span>
-                    <input required></input>
-                    <button>submit</button>
-                </form>
-            </div>
+            <form id='lottery-form' onSubmit={(e)=>submitLottery(e)}>
+                <button onClick={changeLottery}>x</button>
+                <span>name*</span>
+                <input required></input>
+                <span>number*</span>
+                <input required></input>
+                <span>email*</span>
+                <input required></input>
+                <button>submit</button>
+            </form>
 
             <style jsx>
             {`
@@ -31,7 +29,8 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     flex-direction: column;
                     border: 1px black solid;
                     border-radius: 5px;
-                    padding: 10px;
+                    padding: 20px;
+                    background-color: white;
                 }
             `}
             </style>
