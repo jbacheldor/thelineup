@@ -26,6 +26,7 @@ const Login:React.FC = () => {
         }
     )
     const [codeSent, setCode] = React.useState(false)
+    const [resendCode, setResend] = useState(false)
     const [errorMessage, setMsg] = React.useState(null)
     const [loginStyle, setStyle] = React.useState<loginStyleType>({
         code: false,
@@ -75,6 +76,8 @@ const Login:React.FC = () => {
             case "code":
                 setStyle({
                     ...loginStyle,
+                    "email": false,
+                    "sms": false,
                     "password": false,
                     [e.target.value]: !loginStyle[e.target.value as String]
                 })
@@ -82,6 +85,8 @@ const Login:React.FC = () => {
             case "password":
                 setStyle({
                     ...loginStyle,
+                    "email": false,
+                    "sms": false,
                     "code": false,
                     [e.target.value]: !loginStyle[e.target.value as String]
                 })
@@ -94,6 +99,7 @@ const Login:React.FC = () => {
         if(timer <= 0) {
             if(id.current) clearInterval(id.current);
             setTimer(15)
+            setResend(false)
         }
     }, [timer])
 
@@ -104,6 +110,7 @@ const Login:React.FC = () => {
 
     const onCodeSent = () => {
         setCode(true)
+        setResend(true)
         id.current = setInterval(countDownTimer, 1000)
     }
 
@@ -170,9 +177,17 @@ const Login:React.FC = () => {
                             <input id="email"/>
                         </div>
                     }
-                    {/* countdowntimer here */}
-                    <span>Timer: {timer} seconds</span>
-                    <button onClick={onCodeSent}>{codeSent ? "Resend Code" : "Send Me a Code!"}</button>
+                    {loginStyle.code == true && (loginStyle.email == true || loginStyle.sms == true) &&
+                        <div>               
+                            {codeSent && <span>Timer: {timer} seconds</span>}
+                            <button disabled={resendCode} onClick={onCodeSent}>{codeSent ? "Resend Code" : "Send Me a Code!"}</button>
+                        </div>}
+                    {loginStyle.password == true && 
+                        <div id="login-buttons">
+                            <button>Login</button>
+                            <a href="">Forgot Password</a>
+                        </div>
+                    }
                 </form>
             </div>
             <style jsx>
@@ -191,6 +206,10 @@ const Login:React.FC = () => {
                     align-items: center;
                     flex-direction: column; 
                     height: 100%;
+                }
+                #login-buttons {
+                    display: flex;
+                    flex-direction: column;
                 }
                 #lottery-popup {
                     position: absolute;
