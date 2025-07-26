@@ -3,19 +3,100 @@
 import React from "react"
 import Lottery from "../components/Lottery"
 
+type loginFormType = {
+    email?: string,
+    number?: string,
+    code: string
+}
+
+type loginStyleType = {
+    code: boolean,
+    password: boolean,
+    email: boolean,
+    sms: boolean,
+}
+
 const Login:React.FC = () => {
     const [showLottery, setLottery] = React.useState(false)
-    const [visibility, setVisibility] = React.useState<DocumentVisibilityState>("hidden")
+    const [loginForm, setLoginForm] = React.useState<loginFormType>(
+        {
+            email: '',
+            number: '',
+            code: ''
+        }
+    )
+    const [codeSent, setCode] = React.useState(false)
+    const [errorMessage, setMsg] = React.useState(null)
+    const [loginStyle, setStyle] = React.useState<loginStyleType>({
+        code: false,
+        password: false,
+        email: false,
+        sms: false
+    })
 
     const changeLottery = () => {
         setLottery(!showLottery)
-        if(!showLottery) setVisibility("visible")
-        else setVisibility("hidden")
+    }
+
+    const submitLogin = (e: any) => {
+        e.preventDefault()
+        console.log(loginForm)
+        // if error
+        //  setMsg(error)
+    }
+
+    const updateLoginForm = (e: any) => {
+        setLoginForm({
+            ...loginForm,
+            [e.targe.label]: e.target.value
+        })
+    }
+
+    const changeStyle = (e: any) => {
+        console.log('weeee little test', e.target.value)
+        switch(e.target.value){
+            case "sms":
+                setStyle({
+                    ...loginStyle,
+                    "email": false,
+                    [e.target.value]: !loginStyle[e.target.value as String]
+                })
+                break; 
+            case "email":
+                setStyle({
+                    ...loginStyle,
+                    "sms": false,
+                    [e.target.value]: !loginStyle[e.target.value as String]
+                })
+                break;
+            case "code":
+                setStyle({
+                    ...loginStyle,
+                    "password": false,
+                    [e.target.value]: !loginStyle[e.target.value as String]
+                })
+                break;
+            case "password":
+                setStyle({
+                    ...loginStyle,
+                    "code": false,
+                    [e.target.value]: !loginStyle[e.target.value as String]
+                })
+                break;
+
+        }
+    }
+
+    const onCodeSent = () => {
+        setCode(true)
     }
 
     return (
         <div id="login-body">
             <h2>Login</h2>
+            {errorMessage && 
+                <div>{errorMessage}</div>
+            }
             {/* need to check local storage low key */}
             Apply for Lottery?
             <button style={{visibility: `${showLottery ? "hidden" : "visible"}`}} onClick={changeLottery}>yes</button>
@@ -26,16 +107,67 @@ const Login:React.FC = () => {
             }
             <hr/>
             <div id='login-box'>
-                <form id='login-form'>
-                    <span>Number:</span>
-                    <input id="number"></input>
-                    <span></span>
-                    <input></input>
-                    <button>let's gooooo</button>
+                <form onSubmit={e=>submitLogin(e)} id='login-form'>
+                    <span>login style:</span>
+                    <div id="radio-buttons">
+                        <input type="radio" value="code" name="style" onChange={e=>changeStyle(e)}/>
+                        <label>code</label>
+                    </div>
+                    <div id="radio-buttons">
+                        <input type="radio" value="password" name="style" onChange={e=>changeStyle(e)}/>
+                        <label>password</label>
+                    </div>
+                    <hr/>
+                    
+                    
+                    {loginStyle.password == true &&
+                        <div id="password-style">
+                            <span>code style:</span>
+                            <label>username: </label>
+                            <input/>
+                            <label>password: </label>
+                            <input/>
+                        </div>
+                    }
+                    {loginStyle.code == true &&
+                        <div>
+                            <span>code style:</span>
+                            <div id="radio-buttons">
+                                <span>Email</span>
+                                <input type="radio" name="sms-or-email" value="email" onChange={e=>changeStyle(e)}/>
+                            </div>
+                            <div id="radio-buttons">
+                                <span>Number:</span>
+                                <input  type="radio" value="sms" name="sms-or-email" onChange={e=>changeStyle(e)}/>
+                            </div>
+                        </div>
+                    }
+                    {loginStyle.sms == true && 
+                        <div>
+                            <label>Please enter your number:</label>
+                            <input id="number"/>
+                        </div>
+                    }
+                    {loginStyle.email == true && 
+                        <div>
+                            <label>Please enter your email:</label>
+                            <input id="email"/>
+                        </div>
+                    }
+                    <button onClick={onCodeSent}>{codeSent ? "Resend Code" : "Send Me a Code!"}</button>
                 </form>
             </div>
             <style jsx>
             {`
+                #password-style {
+                    display: flex;
+                    flex-direction: column;
+                }
+                #radio-buttons {
+                    display: flex;
+                    flex-direction: row;
+                    text-align: center;
+                }
                 #login-body {
                     display: flex;
                     align-items: center;
@@ -53,13 +185,15 @@ const Login:React.FC = () => {
                     height: 100%;
                     justify-content: center;
                 }
+                label {
+                    margin-left: 10px;
+                }
                 hr {
                     width: 30%;
                     margin: 10px;
                 }
                 #login-box {
                     display: flex;
-                    margin-top: 20px;
                     // flex: 1 1 auto;
                 }
                 #lottery-form {
