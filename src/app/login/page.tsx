@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Lottery from "../components/Lottery"
 
 type loginFormType = {
@@ -33,6 +33,9 @@ const Login:React.FC = () => {
         email: false,
         sms: false
     })
+    const [timer, setTimer] = useState(15);
+    const id = useRef<NodeJS.Timeout>(null)
+    const [intervalId, setIntervalId] = React.useState(null)
 
     const changeLottery = () => {
         setLottery(!showLottery)
@@ -87,8 +90,21 @@ const Login:React.FC = () => {
         }
     }
 
+    useEffect(()=> {
+        if(timer <= 0) {
+            if(id.current) clearInterval(id.current);
+            setTimer(15)
+        }
+    }, [timer])
+
+    // 30 second countdown timer 
+    const countDownTimer = () => {
+        setTimer(timer => timer - 1)
+    }
+
     const onCodeSent = () => {
         setCode(true)
+        id.current = setInterval(countDownTimer, 1000)
     }
 
     return (
@@ -154,6 +170,8 @@ const Login:React.FC = () => {
                             <input id="email"/>
                         </div>
                     }
+                    {/* countdowntimer here */}
+                    <span>Timer: {timer} seconds</span>
                     <button onClick={onCodeSent}>{codeSent ? "Resend Code" : "Send Me a Code!"}</button>
                 </form>
             </div>
