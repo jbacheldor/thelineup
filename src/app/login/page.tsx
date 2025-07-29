@@ -2,11 +2,13 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import Lottery from "../components/Lottery"
+import path from "path"
 
 type loginFormType = {
     email?: string,
     number?: string,
-    code: string
+    code: string,
+    password: string,
 }
 
 type loginStyleType = {
@@ -17,17 +19,19 @@ type loginStyleType = {
 }
 
 const Login:React.FC = () => {
+    const pathName = process.env.BASE_URL
     const [showLottery, setLottery] = React.useState(false)
     const [loginForm, setLoginForm] = React.useState<loginFormType>(
         {
             email: '',
             number: '',
-            code: ''
+            code: '',
+            password: '',
         }
     )
     const [codeSent, setCode] = React.useState(false)
     const [resendCode, setResend] = useState(false)
-    const [errorMessage, setMsg] = React.useState(null)
+    const [errorMessage, setMsg] = React.useState("")
     const [loginStyle, setStyle] = React.useState<loginStyleType>({
         code: false,
         password: false,
@@ -36,23 +40,45 @@ const Login:React.FC = () => {
     })
     const [timer, setTimer] = useState(15);
     const id = useRef<NodeJS.Timeout>(null)
-    const [intervalId, setIntervalId] = React.useState(null)
 
     const changeLottery = () => {
         setLottery(!showLottery)
     }
 
-    const submitLogin = (e: any) => {
+    const submitLogin = async (e: any) => {
         e.preventDefault()
         console.log(loginForm)
-        // if error
-        //  setMsg(error)
+
+        // props need to do switch case login here ya knowww
+        if(loginStyle.password == true){
+            await fetch(`${pathName}/server/loginpass`, {
+                method: "POST",
+                body: JSON.stringify(
+                    {
+                        "email": loginForm.email,
+                        "password": loginForm.password,
+                    }
+                )
+            }).then((response)=> {
+                if(!response.ok){
+                    setMsg("Password Incorrect :-( ")
+                }
+                else{
+                    console.log("response", response)
+                    alert('login successful!!')
+                    setMsg("")
+                }
+            }).catch((e)=> {
+                setMsg("Error logging in")
+                throw new Error('eeee on the client side', e)
+            })
+        }
     }
 
     const updateLoginForm = (e: any) => {
         setLoginForm({
             ...loginForm,
-            [e.targe.label]: e.target.value
+            [e.target.ariaLabel]: e.target.value
         })
     }
 
@@ -117,9 +143,6 @@ const Login:React.FC = () => {
     return (
         <div id="login-body">
             <h2>Login</h2>
-            {errorMessage && 
-                <div>{errorMessage}</div>
-            }
             {/* need to check local storage low key */}
             Apply for Lottery?
             <button style={{visibility: `${showLottery ? "hidden" : "visible"}`}} onClick={changeLottery}>yes</button>
@@ -146,10 +169,9 @@ const Login:React.FC = () => {
                     {loginStyle.password == true &&
                         <div id="password-style">
                             <span>code style:</span>
-                            <label>username: </label>
-                            <input/>
-                            <label>password: </label>
-                            <input/>
+                            <label>email:  <input aria-label="email" onChange={(e)=> updateLoginForm(e)}/></label>
+                            <label>password: <input aria-label="password" onChange={(e)=> updateLoginForm(e)}/></label>
+                            
                         </div>
                     }
                     {loginStyle.code == true &&
@@ -184,6 +206,9 @@ const Login:React.FC = () => {
                         </div>}
                     {loginStyle.password == true && 
                         <div id="login-buttons">
+                            {errorMessage && 
+                                    <span id="error-message">{errorMessage}</span>
+                            }
                             <button>Login</button>
                             <a href="">Forgot Password</a>
                         </div>
@@ -192,6 +217,11 @@ const Login:React.FC = () => {
             </div>
             <style jsx>
             {`
+                #error-message {
+                    color: red;
+                    text-align: center;
+                    font-weight: 400;
+                }
                 #password-style {
                     display: flex;
                     flex-direction: column;

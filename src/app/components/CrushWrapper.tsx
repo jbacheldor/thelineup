@@ -102,6 +102,10 @@ function CrushWrapper(props: Props) {
         </div>
         <hr/>
         <div className="crush-header">
+            <h2>In Recruitment</h2>
+        </div>
+        <hr/>
+        <div className="crush-header">
             <h2>Benched</h2>
         </div>
         <hr/>
