@@ -1,14 +1,22 @@
 'use client'
-import { redirect } from "next/navigation";
 import styles from "./page.module.css";
 import { useState } from "react";
 import Login from "./components/Login";
 
+function getToken(name: string) {
+    return localStorage.getItem(name);
+}
+
+function setToken(name: string, token: string) {
+    localStorage.setItem(name, token);
+}
+
 export default function Home() {
   // if there is no login detected then yes, redirect girly
-  const [token, setToken] = useState<string>("");
+  // const [token, setToken] = useState<string>("");
+  const tokenLocal = getToken('access-level');
 
-  if(!token) {
+  if(!tokenLocal) {
     return (
       <Login setToken={setToken}/>
     )
