@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import Lottery from "../components/Lottery"
-import path from "path"
 
 type loginFormType = {
     email?: string,
@@ -18,7 +17,11 @@ type loginStyleType = {
     sms: boolean,
 }
 
-const Login:React.FC = () => {
+type Props = {
+    setToken: (token: string) => void
+}
+
+const Login:React.FC<Props> = ({setToken}) => {
     const pathName = process.env.BASE_URL
     const [showLottery, setLottery] = React.useState(false)
     const [loginForm, setLoginForm] = React.useState<loginFormType>(
@@ -47,7 +50,19 @@ const Login:React.FC = () => {
 
     const submitLogin = async (e: any) => {
         e.preventDefault()
-        console.log(loginForm)
+
+        // error handling
+        // should probably put in cross-site scripting protection as well 
+        if(loginForm.email == "" || !loginForm.email?.includes("@")) {
+            console.log("email invalid")
+            setMsg("Invalid Email")
+            return;
+        }
+        if(loginForm.password == "") {
+            console.log("password invalid")
+            setMsg("Please enter proper password")
+            return;
+        }
 
         // props need to do switch case login here ya knowww
         if(loginStyle.password == true){
@@ -61,7 +76,7 @@ const Login:React.FC = () => {
                 )
             }).then((response)=> {
                 if(!response.ok){
-                    setMsg("Password Incorrect :-( ")
+                    setMsg("Invalid Credentials, try again")
                 }
                 else{
                     console.log("response", response)
@@ -76,6 +91,7 @@ const Login:React.FC = () => {
                     localStorage.setItem('token-maybe', "wow");
                     alert('login successful!!')
                     setMsg("")
+                    setToken("woah!")
                 }
             }).catch((e)=> {
                 setMsg("Error logging in")
