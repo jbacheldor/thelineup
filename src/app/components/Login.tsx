@@ -74,24 +74,25 @@ const Login:React.FC<Props> = ({setToken}) => {
                         "password": loginForm.password,
                     }
                 )
-            }).then((response)=> {
+            }).then(async (response)=> {
                 if(!response.ok){
                     setMsg("Invalid Credentials, try again")
                 }
                 else{
-                    console.log("response", response)
+                    const data = await response.json()
+                    const {accessToken, refreshToken} = data.body.user
+
                     // encrypted string
                     // also change the name to something random
-                    localStorage.setItem('access-level', "wow");
-                    // or you can do a token id number
-                    // then decrypt that for each
-                    localStorage.setItem('session-id', "wow");
-                    // expiration date 
-                    localStorage.setItem('time-to-live', "wow");
-                    localStorage.setItem('token-maybe', "wow");
+                    localStorage.setItem('access-token', accessToken)
+                    localStorage.setItem('refresh-token', refreshToken)
+                    localStorage.setItem('time-to-live', "7")
+
+                    // localStorage.setItem('session-id', "wow");
+
                     alert('login successful!!')
                     setMsg("")
-                    setToken("woah!")
+                    // setToken("woah!")
                 }
             }).catch((e)=> {
                 setMsg("Error logging in")
