@@ -18,7 +18,7 @@ type loginStyleType = {
 }
 
 type Props = {
-    setToken: (token: string) => void
+    setToken: (name:string, token: string) => void
 }
 
 const Login:React.FC<Props> = ({setToken}) => {
