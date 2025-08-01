@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import Lottery from "../components/Lottery"
-import path from "path"
 
 type loginFormType = {
     email?: string,
@@ -18,7 +17,11 @@ type loginStyleType = {
     sms: boolean,
 }
 
-const Login:React.FC = () => {
+type Props = {
+    setToken: (name:string, token: string) => void
+}
+
+const Login:React.FC<Props> = ({setToken}) => {
     const pathName = process.env.BASE_URL
     const [showLottery, setLottery] = React.useState(false)
     const [loginForm, setLoginForm] = React.useState<loginFormType>(
@@ -47,7 +50,19 @@ const Login:React.FC = () => {
 
     const submitLogin = async (e: any) => {
         e.preventDefault()
-        console.log(loginForm)
+
+        // error handling
+        // should probably put in cross-site scripting protection as well 
+        if(loginForm.email == "" || !loginForm.email?.includes("@")) {
+            console.log("email invalid")
+            setMsg("Invalid Email")
+            return;
+        }
+        if(loginForm.password == "") {
+            console.log("password invalid")
+            setMsg("Please enter proper password")
+            return;
+        }
 
         // props need to do switch case login here ya knowww
         if(loginStyle.password == true){
@@ -59,23 +74,25 @@ const Login:React.FC = () => {
                         "password": loginForm.password,
                     }
                 )
-            }).then((response)=> {
+            }).then(async (response)=> {
                 if(!response.ok){
-                    setMsg("Password Incorrect :-( ")
+                    setMsg("Invalid Credentials, try again")
                 }
                 else{
-                    console.log("response", response)
+                    const data = await response.json()
+                    const {accessToken, refreshToken} = data.body.user
+
                     // encrypted string
                     // also change the name to something random
-                    localStorage.setItem('access-level', "wow");
-                    // or you can do a token id number
-                    // then decrypt that for each
-                    localStorage.setItem('session-id', "wow");
-                    // expiration date 
-                    localStorage.setItem('time-to-live', "wow");
-                    localStorage.setItem('token-maybe', "wow");
+                    localStorage.setItem('access-token', accessToken)
+                    localStorage.setItem('refresh-token', refreshToken)
+                    localStorage.setItem('time-to-live', "7")
+
+                    // localStorage.setItem('session-id', "wow");
+
                     alert('login successful!!')
                     setMsg("")
+                    // setToken("woah!")
                 }
             }).catch((e)=> {
                 setMsg("Error logging in")
