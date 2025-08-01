@@ -45,6 +45,11 @@ const Login:React.FC = () => {
         setLottery(!showLottery)
     }
 
+    const forgotPassword = (e: any) => {
+        e.preventDefault();
+        console.log('ooooh noooo, what ever shall we do')
+    }
+
     const submitLogin = async (e: any) => {
         e.preventDefault()
         console.log(loginForm)
@@ -165,12 +170,16 @@ const Login:React.FC = () => {
                 <form onSubmit={e=>submitLogin(e)} id='login-form'>
                     <span>login style:</span>
                     <div id="radio-buttons">
-                        <input type="radio" value="code" name="style" onChange={e=>changeStyle(e)}/>
-                        <label>code</label>
+                        <label>
+                            <input type="radio" value="code" name="style" onChange={e=>changeStyle(e)}/>
+                            <p>code</p>
+                            </label>
                     </div>
                     <div id="radio-buttons">
-                        <input type="radio" value="password" name="style" onChange={e=>changeStyle(e)}/>
-                        <label>password</label>
+                        <label>
+                            <input type="radio" value="password" name="style" onChange={e=>changeStyle(e)}/>
+                            <p>password</p>
+                        </label>
                     </div>
                     <hr/>
                     
@@ -187,25 +196,35 @@ const Login:React.FC = () => {
                         <div>
                             <span>code style:</span>
                             <div id="radio-buttons">
-                                <span>Email</span>
-                                <input type="radio" name="sms-or-email" value="email" onChange={e=>changeStyle(e)}/>
+                                <label>
+                                    <input type="radio" name="sms-or-email" value="email" onChange={e=>changeStyle(e)}/>
+                                    <p>email</p>
+                                </label>
                             </div>
                             <div id="radio-buttons">
-                                <span>Number:</span>
-                                <input  type="radio" value="sms" name="sms-or-email" onChange={e=>changeStyle(e)}/>
+                                <label>
+                                    <input  type="radio" value="sms" name="sms-or-email" onChange={e=>changeStyle(e)}/>
+                                    <p>number</p>
+                                </label>
+                                
                             </div>
                         </div>
                     }
                     {loginStyle.sms == true && 
                         <div>
-                            <label>Please enter your number:</label>
-                            <input id="number"/>
+                            <label>
+                                <p>Please enter your number:</p>
+                                <input id="number"/>
+                            </label>
+                            
                         </div>
                     }
                     {loginStyle.email == true && 
                         <div>
-                            <label>Please enter your email:</label>
-                            <input id="email"/>
+                            <label>
+                                <p>Please enter your email:</p>
+                                 <input id="email"/>
+                            </label>
                         </div>
                     }
                     {loginStyle.code == true && (loginStyle.email == true || loginStyle.sms == true) &&
@@ -219,7 +238,7 @@ const Login:React.FC = () => {
                                     <span id="error-message">{errorMessage}</span>
                             }
                             <button>Login</button>
-                            <a href="">Forgot Password</a>
+                            <button onClick={(e)=> forgotPassword(e)}>Forgot Password</button>
                         </div>
                     }
                 </form>
@@ -234,6 +253,7 @@ const Login:React.FC = () => {
                 #password-style {
                     display: flex;
                     flex-direction: column;
+                    width: 100%;
                 }
                 #radio-buttons {
                     display: flex;
@@ -270,7 +290,27 @@ const Login:React.FC = () => {
                 }
                 #login-box {
                     display: flex;
+                    border: 1px black solid;
+                    padding: 10px;
                     // flex: 1 1 auto;
+                    min-width: 300px;
+                    justify-content: center;
+                }
+                #login-box input {
+                    background-color: ;
+                }
+                #login-box label {
+                    display; flex;
+                    justify-content: flex-end;
+                }
+                #radio-buttons input {
+                    margin-right: 5px;
+                }
+                #radio-buttons label {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: left;
                 }
                 #lottery-form {
                     display: flex;
