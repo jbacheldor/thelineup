@@ -1,25 +1,82 @@
+import { useEffect, useState } from "react";
 
 type props = {
     changeLottery: () => void;
 }
 
 const Lottery:React.FC<props> = ({changeLottery}) => {
+    const [terms, setTerms] = useState(false);
+    const [form, setForm] = useState({
+        name: '',
+        email: '',
+        number: '',
+        consent: false
+    });
+    const [submitOption, setSubmit] = useState(false);
 
     const submitLottery = (e: any) => {
         e.preventDefault()
     }  
 
+    const openTC = () => {
+        setTerms(!terms)
+    }
+
+    const onChange = (e: any) => {
+        if(e.target.ariaLabel == 'consent'){
+            setForm({
+                ...form,
+                [e.target.ariaLabel]: e.target.checked
+            })
+        }
+        else {
+            setForm({
+                ...form,
+                [e.target.ariaLabel]: e.target.value
+            })
+        }
+    }
+
+    useEffect(()=> {
+        isValid()
+    }, [form])
+
+    // checks to see is form submission should be disabled or not 
+    const isValid = () => {
+        if(form.name == ""){
+            setSubmit(false)
+        }
+        else if(form.email == "" || !form.email?.includes("@")){
+            setSubmit(false)
+        }
+        else if(form.number == "" || form.number.length < 10) {
+            setSubmit(false)
+        }
+        else {
+            setSubmit(true)
+        }
+    }
+
     return (
         <div>
             <form id='lottery-form' onSubmit={(e)=>submitLottery(e)}>
-                <button onClick={changeLottery}>x</button>
+                <div id="top-banner"><button onClick={changeLottery}>x</button></div>
                 <span>name*</span>
-                <input required></input>
+                <input aria-label="name" value={form.name} onChange={(e)=> onChange(e)} required placeholder="your name"/>
                 <span>number*</span>
-                <input required></input>
+                <input aria-label="number" value={form.number} maxLength={10} onChange={(e)=> onChange(e)}  required placeholder="your number"/>
                 <span>email*</span>
-                <input required></input>
-                <button>submit</button>
+                <input aria-label="email" value={form.email} onChange={(e)=> onChange(e)}  required placeholder="your email"/>
+                <label>
+                    <input type="checkbox" aria-label="consent" onChange={(e)=> onChange(e)} />
+                    <p>I read & agree to the <a onClick={openTC}>terms and conditions</a></p>
+                </label>
+                {terms && 
+                    <div id="tc">
+                        Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Which I already know. Thanks for taking an interest in my passions!!
+                    </div>
+                    }
+                <button disabled={!submitOption} id="submit">submit</button>
             </form>
 
             <style jsx>
@@ -30,7 +87,64 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     border: 1px black solid;
                     border-radius: 5px;
                     padding: 20px;
-                    background-color: white;
+                    background-color: #E9FFFD;
+                    max-width: 45ch;
+                }
+                #lottery-form input {
+                    background-color: #FAFAFA;
+                    border-top: 2px solid  #7DF9FF;
+                    border-left: 2px solid #7DF9FF;
+                    border-bottom: 2px solid  #A899E6;
+                    border-right: 2px solid  #A899E6;
+                    padding: 2px 5px;
+                }
+                #lottery-form span {
+                    margin: 2px;
+                    color: grey;
+                }
+                #top-banner {
+                    background-image: linear-gradient(to right, #A899E6, #7DF9FF);
+                    width: 100%;
+                    padding: 5px;
+                    border: 1px white solid;
+                    display: flex;
+                    justify-content: flex-end;
+                }
+                #top-banner button {
+                    width: 15px;
+                    height: 15px;
+                    font-size: xx-small;
+                }
+                button:hover, a:hover {
+                    cursor: pointer;
+                }
+                #lottery-form  #submit {
+                    margin: 10px 0;
+                    width: 30%;
+                    align-self: center;
+                    border-top: 2px solid  #7DF9FF;
+                    border-left:2px solid #7DF9FF;
+                    border-bottom:2px solid  #A899E6;
+                    border-right:2px solid  #A899E6;
+                    padding: 2px;
+                }
+                #lottery-form label {
+                    display: flex;
+                    flex-direction: row;
+                    color: grey;
+                    margin: 10px;
+                }
+                p {
+                    padding-left: 10px;
+                    color: grey;
+                }
+                #lottery-form  a {
+                    text-decoration: underline;
+                }
+                #tc {
+                    color: grey;
+                    text-align: center;
+                    margin: 10px;
                 }
             `}
             </style>
