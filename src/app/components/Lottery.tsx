@@ -52,6 +52,9 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
         else if(form.number == "" || form.number.length < 10) {
             setSubmit(false)
         }
+        else if(!form.consent){
+            setSubmit(false)
+        }
         else {
             setSubmit(true)
         }
@@ -59,16 +62,16 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
 
     return (
         <div>
-            <form id='lottery-form' onSubmit={(e)=>submitLottery(e)}>
+            <form id='lottery-form' onSubmit={(e)=>submitLottery(e)} onChange={(e)=> onChange(e)}>
                 <div id="top-banner"><button onClick={changeLottery}>x</button></div>
                 <span>name*</span>
-                <input aria-label="name" value={form.name} onChange={(e)=> onChange(e)} required placeholder="your name"/>
+                <input aria-label="name" required placeholder="your name"/>
                 <span>number*</span>
-                <input aria-label="number" value={form.number} maxLength={10} onChange={(e)=> onChange(e)}  required placeholder="your number"/>
+                <input aria-label="number"  maxLength={10} required placeholder="your number"/>
                 <span>email*</span>
-                <input aria-label="email" value={form.email} onChange={(e)=> onChange(e)}  required placeholder="your email"/>
+                <input aria-label="email"  required placeholder="your email"/>
                 <label>
-                    <input type="checkbox" aria-label="consent" onChange={(e)=> onChange(e)} />
+                    <input type="checkbox" aria-label="consent"/>
                     <p>I read & agree to the <a onClick={openTC}>terms and conditions</a></p>
                 </label>
                 {terms && 
