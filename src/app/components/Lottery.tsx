@@ -70,7 +70,7 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                 <input aria-label="number"  maxLength={10} required placeholder="your number"/>
                 <span>email*</span>
                 <input aria-label="email"  required placeholder="your email"/>
-                <label>
+                <label id="consent">
                     <input type="checkbox" aria-label="consent"/>
                     <p>I read & agree to the <a onClick={openTC}>terms and conditions</a></p>
                 </label>
@@ -79,7 +79,11 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                         Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Which I already know. Thanks for taking an interest in my passions!!
                     </div>
                     }
-                <button disabled={!submitOption} id="submit">submit</button>
+                <button disabled={!submitOption} id="submit">
+                    <div id="button-inside">
+                        submit
+                    </div>
+                    </button>
             </form>
 
             <style jsx>
@@ -87,11 +91,13 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                 #lottery-form {
                     display: flex;
                     flex-direction: column;
-                    border: 1px black solid;
-                    border-radius: 5px;
                     padding: 20px;
                     background-color: #E9FFFD;
                     max-width: 45ch;
+                    border-left: 1px solid  #7DF9FF;
+                    border-top: 1px solid #7DF9FF;
+                    border-bottom: 1px solid  #A899E6;
+                    border-right: 1px solid  #A899E6;
                 }
                 #lottery-form input {
                     background-color: #FAFAFA;
@@ -102,8 +108,9 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     padding: 2px 5px;
                 }
                 #lottery-form span {
-                    margin: 2px;
+                    margin: 1px;
                     color: grey;
+                    padding: 1px;
                 }
                 #top-banner {
                     background-image: linear-gradient(to right, #A899E6, #7DF9FF);
@@ -113,10 +120,18 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     display: flex;
                     justify-content: flex-end;
                 }
+                #button-inside {
+                    margin: 2px;
+                    border: 1px dotted grey;
+                }
                 #top-banner button {
                     width: 15px;
                     height: 15px;
                     font-size: xx-small;
+                    border-top: 2px solid  #7DF9FF;
+                    border-left:2px solid #7DF9FF;
+                    border-bottom:2px solid  #A899E6;
+                    border-right:2px solid  #A899E6;
                 }
                 button:hover, a:hover {
                     cursor: pointer;
@@ -148,6 +163,13 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     color: grey;
                     text-align: center;
                     margin: 10px;
+                }
+                input:focus {
+                    outline: none;
+                    box-shadow: 1px 1px 30px  #7DF9FF;
+                }
+                #consent input:focus {
+                    box-shadow: none;
                 }
             `}
             </style>

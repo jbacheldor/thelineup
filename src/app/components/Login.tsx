@@ -195,33 +195,35 @@ const Login:React.FC<Props> = ({setToken}) => {
             <hr/>
             <div id='login-box'>
                 <form onSubmit={e=>submitLogin(e)} id='login-form'>
-                    <span>login style:</span>
-                    <div id="radio-buttons">
-                        <label>
-                            <input type="radio" value="code" name="style" onChange={e=>changeStyle(e)}/>
-                            <p>code</p>
+                    <div id="login-style">
+                        <h3>login style:</h3>
+                        <div id="radio-buttons">
+                            <label>
+                                <input type="radio" value="code" name="style" onChange={e=>changeStyle(e)}/>
+                                <p>code</p>
+                                </label>
+                        </div>
+                        <div id="radio-buttons">
+                            <label>
+                                <input type="radio" value="password" name="style" onChange={e=>changeStyle(e)}/>
+                                <p>password</p>
                             </label>
-                    </div>
-                    <div id="radio-buttons">
-                        <label>
-                            <input type="radio" value="password" name="style" onChange={e=>changeStyle(e)}/>
-                            <p>password</p>
-                        </label>
+                        </div>
                     </div>
                     <hr/>
                     
                     
                     {loginStyle.password == true &&
                         <div id="password-style">
-                            <span>code style:</span>
-                            <label>email:  <input aria-label="email" onChange={(e)=> updateLoginForm(e)}/></label>
-                            <label>password: <input aria-label="password" onChange={(e)=> updateLoginForm(e)}/></label>
+                            <h3>code style:</h3>
+                            <label>email:  <input className="input-block" aria-label="email" onChange={(e)=> updateLoginForm(e)}/></label>
+                            <label>password: <input className="input-block" aria-label="password" onChange={(e)=> updateLoginForm(e)}/></label>
                             
                         </div>
                     }
                     {loginStyle.code == true &&
                         <div>
-                            <span>code style:</span>
+                            <h3>code style:</h3>
                             <div id="radio-buttons">
                                 <label>
                                     <input type="radio" name="sms-or-email" value="email" onChange={e=>changeStyle(e)}/>
@@ -237,19 +239,20 @@ const Login:React.FC<Props> = ({setToken}) => {
                             </div>
                         </div>
                     }
+                    <hr/>
                     {loginStyle.sms == true && 
-                        <div>
+                        <div className="entry">
                             <label>
                                 <p>Please enter your number:</p>
-                                <input id="number"/>
+                                <input className="input-block" id="number"/>
                             </label>
                         </div>
                     }
                     {loginStyle.email == true && 
-                        <div>
+                        <div className="entry">
                             <label>
                                 <p>Please enter your email:</p>
-                                 <input id="email"/>
+                                 <input className="input-block" id="email"/>
                             </label>
                         </div>
                     }
@@ -275,6 +278,9 @@ const Login:React.FC<Props> = ({setToken}) => {
                     color: red;
                     text-align: center;
                     font-weight: 400;
+                }
+                .input-block {
+                    width: 100%;
                 }
                 #password-style {
                     display: flex;
@@ -305,10 +311,23 @@ const Login:React.FC<Props> = ({setToken}) => {
                     display: flex;
                     flex-direction: column;
                     height: 100%;
-                    justify-content: center;
+                    width: 100%;
+                    align-items: center;
+                }
+                .entry {
+                    width: 70%;
+                }
+                .entry p {
+                    margin: 5px 0;
+                    text-align: center;
+                }
+                .entry input {
+                    margin: 5px 0;
                 }
                 label {
-                    margin-left: 10px;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
                 }
                 hr {
                     width: 30%;
@@ -318,12 +337,8 @@ const Login:React.FC<Props> = ({setToken}) => {
                     display: flex;
                     border: 1px black solid;
                     padding: 10px;
-                    // flex: 1 1 auto;
                     min-width: 300px;
                     justify-content: center;
-                }
-                #login-box input {
-                    background-color: ;
                 }
                 #login-box label {
                     display; flex;
@@ -347,6 +362,9 @@ const Login:React.FC<Props> = ({setToken}) => {
                 }
                 h2 {
                     margin: 20px;   
+                }
+                h3 {
+                    text-align: center;
                 }
                 span {
                     margin: 5px;
