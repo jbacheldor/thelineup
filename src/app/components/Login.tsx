@@ -124,7 +124,6 @@ const Login:React.FC<Props> = ({setToken}) => {
     }
 
     const changeStyle = (e: any) => {
-        console.log('weeee little test', e.target.value)
         switch(e.target.value){
             case "sms":
                 setStyle({
@@ -257,9 +256,11 @@ const Login:React.FC<Props> = ({setToken}) => {
                         </div>
                     }
                     {loginStyle.code == true && (loginStyle.email == true || loginStyle.sms == true) &&
-                        <div>               
-                            {codeSent && <span>Timer: {timer} seconds</span>}
+                        <div id="code-buttons">               
+                            <span>{codeSent && <span>Timer: {timer} seconds</span>}
                             <button disabled={resendCode} onClick={onCodeSent}>{codeSent ? "Resend Code" : "Send Me a Code!"}</button>
+                            </span>
+                            <button onClick={(e)=> e.preventDefault()}>Login</button>
                         </div>}
                     {loginStyle.password == true && 
                         <div id="login-buttons">
@@ -313,6 +314,10 @@ const Login:React.FC<Props> = ({setToken}) => {
                     height: 100%;
                     width: 100%;
                     align-items: center;
+                }
+                #code-buttons {
+                    display: flex;
+                    flex-direction: column;
                 }
                 .entry {
                     width: 70%;
