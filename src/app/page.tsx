@@ -4,7 +4,9 @@ import { useState } from "react";
 import Login from "./components/Login";
 
 function getToken(name: string) {
-    return localStorage.getItem(name);
+  if(typeof window !== 'undefined'){
+      return localStorage.getItem(name);
+  }
 }
 
 function setToken(name: string, token: string) {
@@ -24,11 +26,8 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-      </main>
-      <footer className={styles.footer}>
+      <div>logged in as: </div>
 
-      </footer>
     </div>
   );
 }

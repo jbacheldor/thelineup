@@ -76,7 +76,7 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                 </label>
                 {terms && 
                     <div id="tc">
-                        Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Which I already know. Thanks for taking an interest in my passions!!
+                        Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Thanks for taking an interest in my passions!!
                     </div>
                     }
                 <button disabled={!submitOption} id="submit">

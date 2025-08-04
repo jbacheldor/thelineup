@@ -41,12 +41,17 @@ const Login:React.FC<Props> = ({setToken}) => {
         email: false,
         sms: false
     })
+    const [showLogin, setShowLogin] = useState(false);
     const [timer, setTimer] = useState(15);
     const id = useRef<NodeJS.Timeout>(null)
     const [validReq, setValidReq] = useState(true)
 
     const changeLottery = () => {
         setLottery(!showLottery)
+    }
+
+    const changeShowWindow = () => {
+        setShowLogin(!showLogin)
     }
 
     const forgotPassword = (e: any) => {
@@ -182,6 +187,50 @@ const Login:React.FC<Props> = ({setToken}) => {
 
     return (
         <div id="login-body">
+            <div id="folders">
+                <div id="folder">
+                    <img src={"/closed-folder.svg"} onClick={changeLottery}/>
+                    <p>lottery</p>
+                </div>
+                <div id="folder">
+                    <img src={"/closed-folder.svg"} onClick={changeShowWindow}/>
+                    <p>login</p>
+                </div>
+            </div>
+            <div id='login-window-folder'>
+                <div id="top-bar">
+                    <p>Login</p>
+                    <span>
+                        <button>_</button>
+                        <button>[]</button>
+                        <button>x</button>
+                    </span>
+                </div>
+                <div id="search-bar-section">
+                    <div id='left-side'>
+                        <button>=</button>
+                        <button>p</button>
+                        <button>n</button>
+                        <span id="file-bar">
+                            <img src={"/closed-folder.svg"} width="10px" height="10px"/>
+                            
+                        </span>
+                    </div>
+                    <span id='search-bar'>
+
+                    </span>
+                </div>
+                <div id="main-login-window">
+                    <div id="folder">
+                        <img src={"/closed-folder.svg"}/>
+                        <p>code.exe</p>
+                    </div>
+                    <div id="folder">
+                        <img src={"/closed-folder.svg"}/>
+                        <p>password.exe</p>
+                    </div>
+                </div>
+            </div>
             <h2>Login</h2>
             {/* need to check local storage low key */}
             Apply for Lottery?
@@ -192,7 +241,8 @@ const Login:React.FC<Props> = ({setToken}) => {
             </div>
             }
             <hr/>
-            <div id='login-box'>
+            {showLogin && 
+                <div id='login-box'>
                 <form onSubmit={e=>submitLogin(e)} id='login-form'>
                     <div id="login-style">
                         <h3>login style:</h3>
@@ -273,8 +323,53 @@ const Login:React.FC<Props> = ({setToken}) => {
                     }
                 </form>
             </div>
+            }
+        
             <style jsx>
             {`
+                #folders {
+                    position: absolute;
+                    left: 10px;
+                    top: 40%;
+                    text-align: center;
+                }
+                #folder {
+                    margin: 5px;
+                    padding: 10px;
+                }
+                #folder:hover {
+                    cursor: pointer;
+                }
+                #login-window-folder {
+                    position: absolute;
+                    top: 30%;
+                    left: 40%;
+                }
+                #main-login-window {
+                    display: flex;
+                    flex-direction: row;
+                    padding: 10px;
+                    background-color: white;
+                    justify-content: space-around;
+                }
+                #top-bar {
+                    display: flex; 
+                    flex-direction: row;
+                    justify-content: space-between;
+                    background-color: white;
+                    align-items: center;
+                    height: 30px;
+                    padding-left: 10px;
+
+                }
+                #top-bar button {
+                    height: 20px;
+                    width: 20px;
+                }
+                #search-bar-section {
+                    display: flex;
+                    justify-content: space-between;
+                }
                #error-message {
                     color: red;
                     text-align: center;
