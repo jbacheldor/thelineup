@@ -63,7 +63,9 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
     return (
         <div>
             <form id='lottery-form' onSubmit={(e)=>submitLottery(e)} onChange={(e)=> onChange(e)}>
-                <div id="top-banner"><button onClick={changeLottery}>x</button></div>
+                <div id="top-banner">
+                    <p>Lottery</p>
+                    <button onClick={changeLottery}>x</button></div>
                 <span>name*</span>
                 <input aria-label="name" required placeholder="your name"/>
                 <span>number*</span>
@@ -118,7 +120,10 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     padding: 5px;
                     border: 1px white solid;
                     display: flex;
-                    justify-content: flex-end;
+                    justify-content: space-between;
+                }
+                #top-banner p {
+                    color: black;
                 }
                 #button-inside {
                     margin: 2px;

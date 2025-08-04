@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import Lottery from "../components/Lottery"
+import WindowFolder from "./Login/WindowFolder"
 
 type loginFormType = {
     email?: string,
@@ -197,40 +198,10 @@ const Login:React.FC<Props> = ({setToken}) => {
                     <p>login</p>
                 </div>
             </div>
-            <div id='login-window-folder'>
-                <div id="top-bar">
-                    <p>Login</p>
-                    <span>
-                        <button>_</button>
-                        <button>[]</button>
-                        <button>x</button>
-                    </span>
-                </div>
-                <div id="search-bar-section">
-                    <div id='left-side'>
-                        <button>=</button>
-                        <button>p</button>
-                        <button>n</button>
-                        <span id="file-bar">
-                            <img src={"/closed-folder.svg"} width="10px" height="10px"/>
-                            
-                        </span>
-                    </div>
-                    <span id='search-bar'>
-
-                    </span>
-                </div>
-                <div id="main-login-window">
-                    <div id="folder">
-                        <img src={"/closed-folder.svg"}/>
-                        <p>code.exe</p>
-                    </div>
-                    <div id="folder">
-                        <img src={"/closed-folder.svg"}/>
-                        <p>password.exe</p>
-                    </div>
-                </div>
-            </div>
+           {
+            showLogin &&
+                <WindowFolder/>
+           }
             <h2>Login</h2>
             {/* need to check local storage low key */}
             Apply for Lottery?
@@ -241,7 +212,7 @@ const Login:React.FC<Props> = ({setToken}) => {
             </div>
             }
             <hr/>
-            {showLogin && 
+            {/* {showLogin &&  */}
                 <div id='login-box'>
                 <form onSubmit={e=>submitLogin(e)} id='login-form'>
                     <div id="login-style">
@@ -323,7 +294,7 @@ const Login:React.FC<Props> = ({setToken}) => {
                     }
                 </form>
             </div>
-            }
+            {/* } */}
         
             <style jsx>
             {`
@@ -339,36 +310,6 @@ const Login:React.FC<Props> = ({setToken}) => {
                 }
                 #folder:hover {
                     cursor: pointer;
-                }
-                #login-window-folder {
-                    position: absolute;
-                    top: 30%;
-                    left: 40%;
-                }
-                #main-login-window {
-                    display: flex;
-                    flex-direction: row;
-                    padding: 10px;
-                    background-color: white;
-                    justify-content: space-around;
-                }
-                #top-bar {
-                    display: flex; 
-                    flex-direction: row;
-                    justify-content: space-between;
-                    background-color: white;
-                    align-items: center;
-                    height: 30px;
-                    padding-left: 10px;
-
-                }
-                #top-bar button {
-                    height: 20px;
-                    width: 20px;
-                }
-                #search-bar-section {
-                    display: flex;
-                    justify-content: space-between;
                 }
                #error-message {
                     color: red;
