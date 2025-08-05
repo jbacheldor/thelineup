@@ -61,6 +61,9 @@ const WindowFolder:React.FC = () => {
                     margin: 5px;
                     text-align: center;
                 }
+                #folder:hover {
+                    cursor: pointer;
+                }
                 #top-bar {
                     display: flex; 
                     flex-direction: row;

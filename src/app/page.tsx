@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import { useState } from "react";
 import Login from "./components/Login";
 
-function getToken(name: string) {
+export function getToken(name: string) {
   if(typeof window !== 'undefined'){
       return localStorage.getItem(name);
   }
