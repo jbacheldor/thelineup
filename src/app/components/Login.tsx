@@ -18,6 +18,13 @@ type loginStyleType = {
     sms: boolean,
 }
 
+const initialLoginForm =  {
+            email: '',
+            number: '',
+            code: '',
+            password: '',
+        }
+
 type Props = {
     setToken: (name:string, token: string) => void
 }
@@ -25,14 +32,7 @@ type Props = {
 const Login:React.FC<Props> = ({setToken}) => {
     const pathName = process.env.BASE_URL
     const [showLottery, setLottery] = React.useState(false)
-    const [loginForm, setLoginForm] = React.useState<loginFormType>(
-        {
-            email: '',
-            number: '',
-            code: '',
-            password: '',
-        }
-    )
+    const [loginForm, setLoginForm] = React.useState<loginFormType>(initialLoginForm)
     const [codeSent, setCode] = React.useState(false)
     const [resendCode, setResend] = useState(false)
     const [errorMessage, setMsg] = React.useState("")
@@ -42,6 +42,7 @@ const Login:React.FC<Props> = ({setToken}) => {
         email: false,
         sms: false
     })
+    const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [timer, setTimer] = useState(15);
     const id = useRef<NodeJS.Timeout>(null)
@@ -78,15 +79,12 @@ const Login:React.FC<Props> = ({setToken}) => {
             return;
         }
         else {
-            console.log("????")
             setValidReq(true)
         }
 
-        console.log("what is this", validReq)
 
         // props need to do switch case login here ya knowww
         if(loginStyle.password == true && validReq){
-            console.log('why are we in here')
             await fetch(`${pathName}/server/loginpass`, {
                 method: "POST",
                 body: JSON.stringify(
@@ -108,6 +106,7 @@ const Login:React.FC<Props> = ({setToken}) => {
                     localStorage.setItem('access-token', accessToken)
                     localStorage.setItem('refresh-token', refreshToken)
                     localStorage.setItem('time-to-live', "7")
+                    setLoginForm(initialLoginForm)
 
                     // localStorage.setItem('session-id', "wow");
 
@@ -120,6 +119,11 @@ const Login:React.FC<Props> = ({setToken}) => {
                 throw new Error('eeee on the client side', e)
             })
         }
+    }
+
+    const togglePassword = (e: any) => {
+        e.preventDefault();
+        setShowPassword(!showPassword)
     }
 
     const updateLoginForm = (e: any) => {
@@ -236,9 +240,10 @@ const Login:React.FC<Props> = ({setToken}) => {
                     {loginStyle.password == true &&
                         <div id="password-style">
                             <h3>code style:</h3>
-                            <label>email:  <input className="input-block" aria-label="email" onChange={(e)=> updateLoginForm(e)}/></label>
-                            <label>password: <input className="input-block" aria-label="password" onChange={(e)=> updateLoginForm(e)}/></label>
-                            
+                            <label>email:  <input className="input-block" value={loginForm.email}  aria-label="email" onChange={(e)=> updateLoginForm(e)}/></label>
+                            <label>password:
+                                <input className="input-block" value={loginForm.password} type={showPassword ? "password" : "text"} aria-label="password" onChange={(e)=> updateLoginForm(e)}/></label>
+                                <button id="eye-button" onClick={(e) => togglePassword(e)}>{showPassword ? "show password?" : "hide password!!!"}</button>
                         </div>
                     }
                     {loginStyle.code == true &&
