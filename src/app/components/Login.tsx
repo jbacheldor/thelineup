@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import Lottery from "../components/Lottery"
 import WindowFolder from "./Login/WindowFolder"
+import PasswordWindow from "./Login/PasswordWindow"
 
 type loginFormType = {
     email?: string,
@@ -47,6 +48,7 @@ const Login:React.FC<Props> = ({setToken}) => {
     const [timer, setTimer] = useState(15);
     const id = useRef<NodeJS.Timeout>(null)
     const [validReq, setValidReq] = useState(true)
+    const [showLoginWindow, setLoginWindow] = useState("")
 
     const changeLottery = () => {
         setLottery(!showLottery)
@@ -171,6 +173,11 @@ const Login:React.FC<Props> = ({setToken}) => {
         }
     }
 
+    const setOpenLoginWindow = (value: string) => {
+        if(showLoginWindow == value) setLoginWindow("")
+        else setLoginWindow(value)
+    }
+
     useEffect(()=> {
         if(timer <= 0) {
             if(id.current) clearInterval(id.current);
@@ -204,12 +211,14 @@ const Login:React.FC<Props> = ({setToken}) => {
             </div>
            {
             showLogin &&
-                <WindowFolder/>
+                <WindowFolder closeARoo={changeShowWindow} openLoginWindow={setOpenLoginWindow}/>
+           }
+           {showLoginWindow == "password" &&
+                <div id="lottery-popup" style={{visibility: `${showLoginWindow == "password" ? "visible" : "hidden"}`}}>
+                    <PasswordWindow closeWindow={setOpenLoginWindow}/>
+                </div>
            }
             <h2>Login</h2>
-            {/* need to check local storage low key */}
-            Apply for Lottery?
-            <button style={{visibility: `${showLottery ? "hidden" : "visible"}`}} onClick={changeLottery}>yes</button>
             {showLottery && 
             <div id="lottery-popup" style={{visibility: `${showLottery ? "visible" : "hidden"}`}}>
                 <Lottery changeLottery={changeLottery}/>

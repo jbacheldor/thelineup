@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import WindowWrapper from "./Login/WindowWrapper";
 
 type props = {
     changeLottery: () => void;
@@ -62,31 +63,30 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
 
     return (
         <div>
-            <form id='lottery-form' onSubmit={(e)=>submitLottery(e)} onChange={(e)=> onChange(e)}>
-                <div id="top-banner">
-                    <p>Lottery</p>
-                    <button onClick={changeLottery}>x</button></div>
-                <span>name*</span>
-                <input aria-label="name" required placeholder="your name"/>
-                <span>number*</span>
-                <input aria-label="number"  maxLength={10} required placeholder="your number"/>
-                <span>email*</span>
-                <input aria-label="email"  required placeholder="your email"/>
-                <label id="consent">
-                    <input type="checkbox" aria-label="consent"/>
-                    <p>I read & agree to the <a onClick={openTC}>terms and conditions</a></p>
-                </label>
-                {terms && 
-                    <div id="tc">
-                        Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Thanks for taking an interest in my passions!!
-                    </div>
-                    }
-                <button disabled={!submitOption} id="submit">
-                    <div id="button-inside">
-                        submit
-                    </div>
-                    </button>
-            </form>
+            <WindowWrapper onClose={changeLottery} name="Lottery">
+                    <form id='lottery-form' onSubmit={(e)=>submitLottery(e)} onChange={(e)=> onChange(e)}>
+                        <span>name*</span>
+                        <input aria-label="name" required placeholder="your name"/>
+                        <span>number*</span>
+                        <input aria-label="number"  maxLength={10} required placeholder="your number"/>
+                        <span>email*</span>
+                        <input aria-label="email"  required placeholder="your email"/>
+                        <label id="consent">
+                            <input type="checkbox" aria-label="consent"/>
+                            <p>I read & agree to the <a onClick={openTC}>terms and conditions</a></p>
+                        </label>
+                        {terms && 
+                            <div id="tc">
+                                Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Thanks for taking an interest in my passions!!
+                            </div>
+                            }
+                        <button disabled={!submitOption} id="submit">
+                            <div id="button-inside">
+                                submit
+                            </div>
+                            </button>
+                    </form>
+            </WindowWrapper>
 
             <style jsx>
             {`
@@ -114,29 +114,9 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     color: grey;
                     padding: 1px;
                 }
-                #top-banner {
-                    background-image: linear-gradient(to right, #A899E6, #7DF9FF);
-                    width: 100%;
-                    padding: 5px;
-                    border: 1px white solid;
-                    display: flex;
-                    justify-content: space-between;
-                }
-                #top-banner p {
-                    color: black;
-                }
                 #button-inside {
                     margin: 2px;
                     border: 1px dotted grey;
-                }
-                #top-banner button {
-                    width: 15px;
-                    height: 15px;
-                    font-size: xx-small;
-                    border-top: 2px solid  #7DF9FF;
-                    border-left:2px solid #7DF9FF;
-                    border-bottom:2px solid  #A899E6;
-                    border-right:2px solid  #A899E6;
                 }
                 button:hover, a:hover {
                     cursor: pointer;
