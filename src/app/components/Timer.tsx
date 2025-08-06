@@ -4,10 +4,11 @@ type Props = {
     time: number,
     initialString: string,
     secondString: string,
-    onClick: () => Promise<void>;
+    onClick: () => Promise<void>,
+    disabled: boolean,
 }
 
-const Timer:React.FC<Props> = ({time, initialString, secondString, onClick}) => {
+const Timer:React.FC<Props> = ({time, initialString, secondString, onClick, disabled}) => {
     const [timer, setTimer] = useState(time);
     const id = useRef<NodeJS.Timeout>(null)
     const [codeSent, setCode] = useState(false)
@@ -36,7 +37,7 @@ const Timer:React.FC<Props> = ({time, initialString, secondString, onClick}) => 
     return (
         <>        
             <span>
-            <button disabled={resendCode} onClick={onCodeSent}>{codeSent ? secondString : initialString}</button>
+            <button disabled={resendCode || disabled} onClick={onCodeSent}>{codeSent ? secondString : initialString}</button>
             {codeSent && <p>Resend in: {timer} seconds</p>}
             </span>
             <style jsx>

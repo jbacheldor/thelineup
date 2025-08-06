@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
 
@@ -30,26 +30,31 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
     }
 
     const forgotPassword = async () => {
-        // e.preventDefault();
-        console.log('ooooh noooo, what ever shall we do')
 
-        // await fetch(`${pathName}/server/forgotpassword`, {
-        //     method: "POST", 
-        //     body: JSON.stringify({
-        //         'email': loginForm.email
-        //     })
-        // }).then(async (res)=> {
-        //     console.log('wheee are we in here???? did it work')
+        await fetch(`${pathName}/server/forgotpassword`, {
+            method: "POST", 
+            body: JSON.stringify({
+                'email': loginForm.email
+            })
+        }).then(async (res)=> {
 
-        //     if(res.status == 200){
-        //         console.log('yipeee password reset link sent!!')
-        //         setReset(!resetBtn)
-        //     }
+            if(res.status == 200){
+                console.log('yipeee password reset link sent!!')
+                setReset(!resetBtn)
+            }
 
-        //     // maybe introduce functionality here to resend after certain period
-        // })
+        })
 
     }
+
+    useEffect(()=> {
+        if(loginForm.email == "" || !loginForm.email?.includes("@")) {
+            setReset(true)
+        }
+        else {
+            setReset(false)
+        }
+    }, [loginForm.email])
 
     const togglePassword = (e: any) => {
         e.preventDefault();
@@ -149,7 +154,7 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                             Login
                         </div>    
                         </button>
-                    <Timer time={30} initialString="Forgot Password" secondString="Resend Link" onClick={()=> forgotPassword()}/>
+                    <Timer time={30} initialString="Forgot Password" secondString="Resend Link" disabled={resetBtn} onClick={()=> forgotPassword()}/>
                 </div>
             </form>
 

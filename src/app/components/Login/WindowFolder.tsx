@@ -6,8 +6,6 @@ type props = {
 const WindowFolder:React.FC<props> = ({closeARoo, openLoginWindow}) => {
 
     const openWindow = (e: any) => {
-        console.log('in open window ', e)
-        console.log(e.target.ariaLabel)
        openLoginWindow(e.target.ariaLabel)
     }
 
