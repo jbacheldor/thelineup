@@ -43,7 +43,6 @@ const Login:React.FC<Props> = ({setToken}) => {
         email: false,
         sms: false
     })
-    const [showPassword, setShowPassword] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [timer, setTimer] = useState(15);
     const id = useRef<NodeJS.Timeout>(null)
@@ -56,11 +55,6 @@ const Login:React.FC<Props> = ({setToken}) => {
 
     const changeShowWindow = () => {
         setShowLogin(!showLogin)
-    }
-
-    const forgotPassword = (e: any) => {
-        e.preventDefault();
-        console.log('ooooh noooo, what ever shall we do')
     }
 
     const submitLogin = async (e: any) => {
@@ -84,55 +78,6 @@ const Login:React.FC<Props> = ({setToken}) => {
             setValidReq(true)
         }
 
-
-        // props need to do switch case login here ya knowww
-        if(loginStyle.password == true && validReq){
-            await fetch(`${pathName}/server/loginpass`, {
-                method: "POST",
-                body: JSON.stringify(
-                    {
-                        "email": loginForm.email,
-                        "password": loginForm.password,
-                    }
-                )
-            }).then(async (response)=> {
-                if(!response.ok){
-                    setMsg("Invalid Credentials, try again")
-                }
-                else{
-                    const data = await response.json()
-                    const {accessToken, refreshToken} = data.body.user
-
-                    // encrypted string
-                    // also change the name to something random
-                    localStorage.setItem('access-token', accessToken)
-                    localStorage.setItem('refresh-token', refreshToken)
-                    localStorage.setItem('time-to-live', "7")
-                    setLoginForm(initialLoginForm)
-
-                    // localStorage.setItem('session-id', "wow");
-
-                    alert('login successful!!')
-                    setMsg("")
-                    // setToken("woah!")
-                }
-            }).catch((e)=> {
-                setMsg("Error logging in")
-                throw new Error('eeee on the client side', e)
-            })
-        }
-    }
-
-    const togglePassword = (e: any) => {
-        e.preventDefault();
-        setShowPassword(!showPassword)
-    }
-
-    const updateLoginForm = (e: any) => {
-        setLoginForm({
-            ...loginForm,
-            [e.target.ariaLabel]: e.target.value
-        })
     }
 
     const changeStyle = (e: any) => {
@@ -245,16 +190,6 @@ const Login:React.FC<Props> = ({setToken}) => {
                     </div>
                     <hr/>
                     
-                    
-                    {loginStyle.password == true &&
-                        <div id="password-style">
-                            <h3>code style:</h3>
-                            <label>email:  <input className="input-block" value={loginForm.email}  aria-label="email" onChange={(e)=> updateLoginForm(e)}/></label>
-                            <label>password:
-                                <input className="input-block" value={loginForm.password} type={showPassword ? "password" : "text"} aria-label="password" onChange={(e)=> updateLoginForm(e)}/></label>
-                                <button id="eye-button" onClick={(e) => togglePassword(e)}>{showPassword ? "show password?" : "hide password!!!"}</button>
-                        </div>
-                    }
                     {loginStyle.code == true &&
                         <div>
                             <h3>code style:</h3>
@@ -297,15 +232,6 @@ const Login:React.FC<Props> = ({setToken}) => {
                             </span>
                             <button onClick={(e)=> e.preventDefault()}>Login</button>
                         </div>}
-                    {loginStyle.password == true && 
-                        <div id="login-buttons">
-                            {errorMessage && 
-                                    <span id="error-message">{errorMessage}</span>
-                            }
-                            <button>Login</button>
-                            <button onClick={(e)=> forgotPassword(e)}>Forgot Password</button>
-                        </div>
-                    }
                 </form>
             </div>
             {/* } */}
@@ -356,7 +282,7 @@ const Login:React.FC<Props> = ({setToken}) => {
                 #lottery-popup {
                     position: absolute;
                     hidden: true;
-                    top: 20%;
+                    top: 25%;
                 }
                 #login-form {
                     display: flex;

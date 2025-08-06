@@ -35,7 +35,6 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <div>logged in as: </div>
 
     </div>
   );

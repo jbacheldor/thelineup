@@ -1,5 +1,6 @@
 import { useState } from "react";
 import WindowWrapper from "./WindowWrapper";
+import Timer from "../Timer";
 
 
 type loginFormType = {
@@ -22,14 +23,32 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
     const [loginForm, setLoginForm] = useState<loginFormType>(initialLoginForm)
     const [errorMessage, setMsg] = useState("")
     const [validReq, setValidReq] = useState(true)
+    const [resetBtn, setReset] = useState(false);
 
     const setClose = () => {
         closeWindow("password")
     }
 
-    const forgotPassword = (e: any) => {
-        e.preventDefault();
+    const forgotPassword = async () => {
+        // e.preventDefault();
         console.log('ooooh noooo, what ever shall we do')
+
+        // await fetch(`${pathName}/server/forgotpassword`, {
+        //     method: "POST", 
+        //     body: JSON.stringify({
+        //         'email': loginForm.email
+        //     })
+        // }).then(async (res)=> {
+        //     console.log('wheee are we in here???? did it work')
+
+        //     if(res.status == 200){
+        //         console.log('yipeee password reset link sent!!')
+        //         setReset(!resetBtn)
+        //     }
+
+        //     // maybe introduce functionality here to resend after certain period
+        // })
+
     }
 
     const togglePassword = (e: any) => {
@@ -124,12 +143,13 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                             <span id="error-message">{errorMessage}</span>
                     }
                 <div id="login-buttons">
+                    
                     <button>
                         <div id="button-inside">
                             Login
                         </div>    
                         </button>
-                    <button onClick={(e)=> forgotPassword(e)}>Forgot Password</button>
+                    <Timer time={30} initialString="Forgot Password" secondString="Resend Link" onClick={()=> forgotPassword()}/>
                 </div>
             </form>
 
@@ -162,7 +182,7 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                 }
                 form {
                     background-color: #E9FFFD;
-                    padding: 10px;
+                    padding: 15px;
                     width: 300px;
                 }
                 button:hover {

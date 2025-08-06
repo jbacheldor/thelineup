@@ -10,7 +10,7 @@ const Leaderboard:React.FC = () => {
     useLayoutEffect(() => {
         const isAuth = getToken('access-token');
         if(!isAuth){
-            redirect("/")
+            redirect("/404")
         }
     }, [])
 
