@@ -1,10 +1,21 @@
 'use client'
 import styles from "./page.module.css";
-import { useState } from "react";
 import Login from "./components/Login";
+import { parseJwt, validateJWT } from "./utils";
 
-function getToken(name: string) {
-    return localStorage.getItem(name);
+export function getToken(name: string) {
+  if(typeof window !== 'undefined'){
+      let parsed = localStorage.getItem(name)
+      if(parsed){
+        const check = parseJwt(parsed)
+        if(validateJWT(check)){
+          return localStorage.getItem(name);
+        }
+        else {
+          localStorage.removeItem(name)
+        }
+      }
+  }
 }
 
 function setToken(name: string, token: string) {
@@ -24,11 +35,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-      </main>
-      <footer className={styles.footer}>
 
-      </footer>
     </div>
   );
 }

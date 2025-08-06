@@ -1,0 +1,34 @@
+<svg width="84" height="65" viewBox="0 0 84 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.9475 1.01589L8.68667 5.01589C7.9331 6.34914 8.89632 8 10.4278 8H29.1381C30.7602 8 31.7075 6.17068 30.7716 4.84594L27.9455 0.845937C27.5707 0.315439 26.9616 0 26.3121 0H12.6887C11.9676 0 11.3024 0.388148 10.9475 1.01589Z" fill="#FFC800" fill-opacity="0.39"/>
+<path d="M10.9475 1.01589L8.68667 5.01589C7.9331 6.34914 8.89632 8 10.4278 8H29.1381C30.7602 8 31.7075 6.17068 30.7716 4.84594L27.9455 0.845937C27.5707 0.315439 26.9616 0 26.3121 0H12.6887C11.9676 0 11.3024 0.388148 10.9475 1.01589Z" fill="url(#paint0_linear_1_7)" fill-opacity="0.39"/>
+<g filter="url(#filter0_dd_1_7)">
+<path d="M4 8C4 6.89543 4.89543 6 6 6H78C79.1046 6 80 6.89543 80 8V55C80 56.1046 79.1046 57 78 57H6C4.89543 57 4 56.1046 4 55V8Z" fill="#FAEBB4"/>
+<path d="M4 8C4 6.89543 4.89543 6 6 6H78C79.1046 6 80 6.89543 80 8V55C80 56.1046 79.1046 57 78 57H6C4.89543 57 4 56.1046 4 55V8Z" fill="url(#paint1_radial_1_7)" fill-opacity="0.4"/>
+</g>
+<defs>
+<filter id="filter0_dd_1_7" x="0" y="4" width="84" height="61" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_7"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="1"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow_1_7" result="effect2_dropShadow_1_7"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_1_7" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_1_7" x1="20" y1="0" x2="20" y2="8" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFC800" stop-opacity="0"/>
+<stop offset="1" stop-color="#FFC800"/>
+</linearGradient>
+<radialGradient id="paint1_radial_1_7" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10.5 13) rotate(35.3748) scale(61.3209 91.3801)">
+<stop offset="0.185" stop-color="white"/>
+<stop offset="1" stop-color="#E9B702"/>
+</radialGradient>
+</defs>
+</svg>

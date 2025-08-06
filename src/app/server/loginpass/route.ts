@@ -1,7 +1,6 @@
 import { getAuth, signInWithEmailAndPassword, User } from "firebase/auth";
 import { NextRequest, NextResponse } from "next/server";
 import app from "../createClient";
-import { json } from "stream/consumers";
 
 export async function POST(request: NextRequest){
     var user = null
