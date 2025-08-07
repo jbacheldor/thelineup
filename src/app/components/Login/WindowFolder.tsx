@@ -37,7 +37,7 @@ const WindowFolder:React.FC<props> = ({closeARoo, openLoginWindow}) => {
                 </div>
                 <div id="main-login-window">
                     <div id="folder">
-                        <img src={"/closed-folder.svg"}/>
+                        <img src={"/closed-folder.svg"} aria-label="code" onClick={(e)=> {openWindow(e)}}/>
                         <p>code.exe</p>
                     </div>
                     <div id="folder">

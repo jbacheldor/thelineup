@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
+import CloseButton from "../CloseButton";
 
 
 type loginFormType = {
@@ -149,11 +150,12 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                     }
                 <div id="login-buttons">
                     
-                    <button>
+                    <CloseButton type="other" text="Login"/>
+                    {/* <button>
                         <div id="button-inside">
                             Login
                         </div>    
-                        </button>
+                        </button> */}
                     <Timer time={30} initialString="Forgot Password" secondString="Resend Link" disabled={resetBtn} onClick={()=> forgotPassword()}/>
                 </div>
             </form>

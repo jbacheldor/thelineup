@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import CloseButton from "./CloseButton";
 
 type Props = {
     time: number,
@@ -37,7 +38,7 @@ const Timer:React.FC<Props> = ({time, initialString, secondString, onClick, disa
     return (
         <>        
             <span>
-            <button disabled={resendCode || disabled} onClick={onCodeSent}>{codeSent ? secondString : initialString}</button>
+            <CloseButton type="other" disabled={resendCode || disabled} onClickEvent={onCodeSent} text={codeSent ? secondString : initialString}/> 
             {codeSent && <p>Resend in: {timer} seconds</p>}
             </span>
             <style jsx>
@@ -50,15 +51,6 @@ const Timer:React.FC<Props> = ({time, initialString, secondString, onClick, disa
                     font-size: small;
                     display: flex;
                     justify-self: center;
-                }
-                button {
-                    margin: 10px 0;
-                    align-self: center;
-                    border-top: 2px solid  #7DF9FF;
-                    border-left:2px solid #7DF9FF;
-                    border-bottom:2px solid  #A899E6;
-                    border-right:2px solid  #A899E6;
-                    padding: 5px;
                 }
                 `}
             </style>

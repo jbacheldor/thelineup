@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react"
 import Lottery from "../components/Lottery"
 import WindowFolder from "./Login/WindowFolder"
 import PasswordWindow from "./Login/PasswordWindow"
+import CodeWindow from "./Login/CodeWindow"
 
 type loginFormType = {
     email?: string,
@@ -159,8 +160,15 @@ const Login:React.FC<Props> = ({setToken}) => {
                 <WindowFolder closeARoo={changeShowWindow} openLoginWindow={setOpenLoginWindow}/>
            }
            {showLoginWindow == "password" &&
+                // i do think it's redundant to have it conditionally render and also have this hidden bit
                 <div id="lottery-popup" style={{visibility: `${showLoginWindow == "password" ? "visible" : "hidden"}`}}>
                     <PasswordWindow closeWindow={setOpenLoginWindow}/>
+                </div>
+           }
+            {showLoginWindow == "code" &&
+                // i do think it's redundant to have it conditionally render and also have this hidden bit
+                <div id="lottery-popup" style={{visibility: `${showLoginWindow == "code" ? "visible" : "hidden"}`}}>
+                    <CodeWindow closeWindow={setOpenLoginWindow}/>
                 </div>
            }
             <h2>Login</h2>
@@ -173,22 +181,6 @@ const Login:React.FC<Props> = ({setToken}) => {
             {/* {showLogin &&  */}
                 <div id='login-box'>
                 <form onSubmit={e=>submitLogin(e)} id='login-form'>
-                    <div id="login-style">
-                        <h3>login style:</h3>
-                        <div id="radio-buttons">
-                            <label>
-                                <input type="radio" value="code" name="style" onChange={e=>changeStyle(e)}/>
-                                <p>code</p>
-                                </label>
-                        </div>
-                        <div id="radio-buttons">
-                            <label>
-                                <input type="radio" value="password" name="style" onChange={e=>changeStyle(e)}/>
-                                <p>password</p>
-                            </label>
-                        </div>
-                    </div>
-                    <hr/>
                     
                     {loginStyle.code == true &&
                         <div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { JSX } from "react";
+import CloseButton from "../CloseButton";
 
 type Props = {
     children: JSX.Element
@@ -15,7 +16,7 @@ const WindowWrapper:React.FC<Props> = ({children, name, onClose}) => {
         <div className="window-wrapper">
             <div id="top-banner">
                 <p>{name}</p>
-                <button onClick={onClose}>x</button>
+                <CloseButton type="close" text="x" onClickEvent={onClose}/>
             </div>
         {children}
 
@@ -36,29 +37,6 @@ const WindowWrapper:React.FC<Props> = ({children, name, onClose}) => {
                     border: 1px white solid;
                     display: flex;
                     justify-content: space-between;
-                }
-                #top-banner p {
-                    color: black;
-                }
-                #top-banner button {
-                    width: 15px;
-                    height: 15px;
-                    font-size: xx-small;
-                    border-top: 2px solid  #7DF9FF;
-                    border-left:2px solid #7DF9FF;
-                    border-bottom:2px solid  #A899E6;
-                    border-right:2px solid  #A899E6;
-                }
-                button:hover, a:hover {
-                    cursor: pointer;
-                }
-                p {
-                    padding-left: 10px;
-                    color: grey;
-                }
-                input:focus {
-                    outline: none;
-                    box-shadow: 1px 1px 30px  #7DF9FF;
                 }
             `}
             </style>

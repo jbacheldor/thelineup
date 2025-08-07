@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import WindowWrapper from "./Login/WindowWrapper";
+import RetroButton from "./CloseButton";
+import CloseButton from "./CloseButton";
 
 type props = {
     changeLottery: () => void;
@@ -80,11 +82,7 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                                 Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Thanks for taking an interest in my passions!!
                             </div>
                             }
-                        <button disabled={!submitOption} id="submit">
-                            <div id="button-inside">
-                                submit
-                            </div>
-                            </button>
+                        <CloseButton type="other" text="submit" disabled={!submitOption}/>
                     </form>
             </WindowWrapper>
 
@@ -120,16 +118,6 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                 }
                 button:hover, a:hover {
                     cursor: pointer;
-                }
-                #lottery-form  #submit {
-                    margin: 10px 0;
-                    width: 30%;
-                    align-self: center;
-                    border-top: 2px solid  #7DF9FF;
-                    border-left:2px solid #7DF9FF;
-                    border-bottom:2px solid  #A899E6;
-                    border-right:2px solid  #A899E6;
-                    padding: 2px;
                 }
                 #lottery-form label {
                     display: flex;
