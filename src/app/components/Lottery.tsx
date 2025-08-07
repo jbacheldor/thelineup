@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import WindowWrapper from "./Login/WindowWrapper";
-import RetroButton from "./CloseButton";
 import CloseButton from "./CloseButton";
 
 type props = {
@@ -64,8 +63,8 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
     }
 
     return (
-        <div>
             <WindowWrapper onClose={changeLottery} name="Lottery">
+                <div>
                     <form id='lottery-form' onSubmit={(e)=>submitLottery(e)} onChange={(e)=> onChange(e)}>
                         <span>name*</span>
                         <input aria-label="name" required placeholder="your name"/>
@@ -84,8 +83,6 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                             }
                         <CloseButton type="other" text="submit" disabled={!submitOption}/>
                     </form>
-            </WindowWrapper>
-
             <style jsx>
             {`
                 #lottery-form {
@@ -94,6 +91,7 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     padding: 20px;
                     background-color: #E9FFFD;
                     max-width: 45ch;
+                    width: 350px;
                     border-left: 1px solid  #7DF9FF;
                     border-top: 1px solid #7DF9FF;
                     border-bottom: 1px solid  #A899E6;
@@ -146,7 +144,8 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                 }
             `}
             </style>
-        </div>
+            </div>
+            </WindowWrapper>
     )
 }
 

@@ -12,23 +12,21 @@ type Props = {
 const WindowWrapper:React.FC<Props> = ({children, name, onClose}) => {
 
     return (
-        <>
-        <div className="window-wrapper">
+        <div id="window-wrapper">
             <div id="top-banner">
                 <p>{name}</p>
                 <CloseButton type="close" text="x" onClickEvent={onClose}/>
             </div>
         {children}
 
-        </div>
          <style jsx>
             {`
-            .window-wrapper {
+                #window-wrapper {
                     position: absolute;
-                    top: 30%;
-                    width: 350px;
+                    top: 25%;
+                    max-width: 350px;
                     z-index: 10;
-                    background-white;
+                    background-color: white;
                 }
                 #top-banner {
                     background-image: linear-gradient(to right, #A899E6, #7DF9FF);
@@ -40,7 +38,7 @@ const WindowWrapper:React.FC<Props> = ({children, name, onClose}) => {
                 }
             `}
             </style>
-        </>
+        </div>
     )
 }
 

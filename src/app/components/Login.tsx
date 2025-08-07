@@ -161,45 +161,20 @@ const Login:React.FC<Props> = ({setToken}) => {
            }
            {showLoginWindow == "password" &&
                 // i do think it's redundant to have it conditionally render and also have this hidden bit
-                <div id="lottery-popup" style={{visibility: `${showLoginWindow == "password" ? "visible" : "hidden"}`}}>
                     <PasswordWindow closeWindow={setOpenLoginWindow}/>
-                </div>
            }
             {showLoginWindow == "code" &&
-                // i do think it's redundant to have it conditionally render and also have this hidden bit
-                <div id="lottery-popup" style={{visibility: `${showLoginWindow == "code" ? "visible" : "hidden"}`}}>
-                    <CodeWindow closeWindow={setOpenLoginWindow}/>
-                </div>
+                <CodeWindow type="" closeWindow={setOpenLoginWindow}/>
            }
             <h2>Login</h2>
             {showLottery && 
-            <div id="lottery-popup" style={{visibility: `${showLottery ? "visible" : "hidden"}`}}>
                 <Lottery changeLottery={changeLottery}/>
-            </div>
             }
             <hr/>
             {/* {showLogin &&  */}
                 <div id='login-box'>
                 <form onSubmit={e=>submitLogin(e)} id='login-form'>
                     
-                    {loginStyle.code == true &&
-                        <div>
-                            <h3>code style:</h3>
-                            <div id="radio-buttons">
-                                <label>
-                                    <input type="radio" name="sms-or-email" value="email" onChange={e=>changeStyle(e)}/>
-                                    <p>email</p>
-                                </label>
-                            </div>
-                            <div id="radio-buttons">
-                                <label>
-                                    <input  type="radio" value="sms" name="sms-or-email" onChange={e=>changeStyle(e)}/>
-                                    <p>number</p>
-                                </label>
-                                
-                            </div>
-                        </div>
-                    }
                     <hr/>
                     {loginStyle.sms == true && 
                         <div className="entry">
@@ -270,11 +245,6 @@ const Login:React.FC<Props> = ({setToken}) => {
                 #login-buttons {
                     display: flex;
                     flex-direction: column;
-                }
-                #lottery-popup {
-                    position: absolute;
-                    hidden: true;
-                    top: 25%;
                 }
                 #login-form {
                     display: flex;

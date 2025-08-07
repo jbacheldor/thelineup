@@ -74,8 +74,8 @@ const CodeWindow:React.FC<Props> = ({type, closeWindow}) => {
     }
 
     return (
-        <>
-            <WindowWrapper onClose={setWindow} name="Code Login">
+        <WindowWrapper onClose={setWindow} name="Code Login">
+            <div>
                  <form onSubmit={e=>submitLogin(e)}>
                     <label>
                         <p>{type}:</p>
@@ -94,7 +94,7 @@ const CodeWindow:React.FC<Props> = ({type, closeWindow}) => {
                         <Timer time={30} initialString="Send Code" secondString="Resend Code" onClick={sendCode} disabled={true}/>
                     </div>
                  </form>
-            </WindowWrapper>
+            
             <style jsx>
                 {`
                     form {
@@ -107,7 +107,8 @@ const CodeWindow:React.FC<Props> = ({type, closeWindow}) => {
                     }
                 `}
             </style>
-        </>
+            </div>
+            </WindowWrapper>
     )
 }
 
