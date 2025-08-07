@@ -1,16 +1,41 @@
+import { useState } from "react";
+import PasswordWindow from "./PasswordWindow";
+import CodeWindow from "./CodeWindow";
+
 type props = {
     closeARoo: () => void;
-    openLoginWindow: (value: string) => void;
 }
 
-const WindowFolder:React.FC<props> = ({closeARoo, openLoginWindow}) => {
+const WindowFolder:React.FC<props> = ({closeARoo}) => {
+    const [openLogin, setOpenLogin] = useState("");
+    const [current, setCurrent] = useState(true)
 
     const openWindow = (e: any) => {
-       openLoginWindow(e.target.ariaLabel)
+        if(e.target.ariaLabel == "password") setOpenLogin(e.target.ariaLabel)
+        else {
+            setOpenLogin(e.target.ariaLabel)
+        }
+    }
+    
+    const closeWindow = (e: any) => {
+        setOpenLogin("")
+    }
+
+    const updateCurrentFolders = () => {
+        setCurrent(!current)
     }
 
     return (
         <>
+            {openLogin == "password" &&
+                <PasswordWindow closeWindow={closeWindow}/>
+           }
+            {openLogin == "email" &&
+                <CodeWindow type="email" closeWindow={closeWindow}/>
+           }
+           {openLogin == "sms" &&
+                <CodeWindow type="sms" closeWindow={closeWindow}/>
+           }
          <div id='login-window-folder'>
                 <div id="top-bar">
                     <p>Login</p>
@@ -35,16 +60,31 @@ const WindowFolder:React.FC<props> = ({closeARoo, openLoginWindow}) => {
                         <input placeholder="Search"></input>
                     </div>
                 </div>
-                <div id="main-login-window">
-                    <div id="folder">
-                        <img src={"/closed-folder.svg"} aria-label="code" onClick={(e)=> {openWindow(e)}}/>
-                        <p>code.exe</p>
-                    </div>
-                    <div id="folder">
-                        <img src={"/closed-folder.svg"}  aria-label="password" onClick={(e)=> {openWindow(e)}}/>
-                        <p>password.exe</p>
-                    </div>
-                </div>
+                    {current && 
+                        <div id="main-login-window">
+                            <div id="folder">
+                                <img src={"/closed-folder.svg"} aria-label="code" onClick={updateCurrentFolders}/>
+                                <p>code.exe</p>
+                            </div>
+                            <div id="folder">
+                                <img src={"/closed-folder.svg"}  aria-label="password" onClick={(e)=> {openWindow(e)}}/>
+                                <p>password.exe</p>
+                            </div>
+                        </div>
+                    }
+                    {!current &&
+                        <div id="main-login-window">
+                            <div id="folder">
+                                <img src={"/closed-folder.svg"} aria-label="sms" onClick={(e)=> {openWindow(e)}}/>
+                                <p>sms.exe</p>
+                            </div>
+                            <div id="folder">
+                                <img src={"/closed-folder.svg"}  aria-label="email" onClick={(e)=> {openWindow(e)}}/>
+                                <p>email.exe</p>
+                            </div>
+                        </div>
+                    }
+
             </div>
             <style jsx>
                 {`

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import CloseButton from "./CloseButton";
+import CloseButton from "./General/CloseButton";
 
 type Props = {
     time: number,

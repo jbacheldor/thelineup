@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
-import CloseButton from "../CloseButton";
+import CloseButton from "../General/CloseButton";
 
 
 type loginFormType = {

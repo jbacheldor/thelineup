@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import WindowWrapper from "./Login/WindowWrapper";
-import CloseButton from "./CloseButton";
+import CloseButton from "./General/CloseButton";
 
 type props = {
     changeLottery: () => void;

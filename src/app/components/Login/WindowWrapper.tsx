@@ -1,7 +1,7 @@
 'use client'
 
 import { JSX } from "react";
-import CloseButton from "../CloseButton";
+import CloseButton from "../General/CloseButton";
 
 type Props = {
     children: JSX.Element
