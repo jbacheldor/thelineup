@@ -33,8 +33,9 @@ type token = {
 }
 
 export function validateJWT(token: token){
-    if (Date.now() >= token.exp * 1000) {
-  return false;
-}
+    if (Date.now() >= token.exp) {
+      return true;
+    }
+    else return false
 }
 
