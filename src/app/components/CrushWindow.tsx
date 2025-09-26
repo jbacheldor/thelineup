@@ -25,6 +25,11 @@ function CrushWindows(props: Props) {
         setShowWindow(false)
     }
 
+    const showProfileIntemediate = () => {
+        setShowWindow(false)
+        showProfile()
+    }
+
     return (
         <div className="crush-group">
         <div className="main-crush-window">
@@ -53,7 +58,7 @@ function CrushWindows(props: Props) {
             </button>
         </div>
         </div>
-        {showWindow && closeWindows && <ShowUpdateWindow crushName={crushName} closeWindow={onCloseWindow} showProfile={showProfile}/>}
+        {showWindow && closeWindows && <ShowUpdateWindow crushName={crushName} closeWindow={onCloseWindow} showProfile={showProfileIntemediate}/>}
         </div>
     );
 }
