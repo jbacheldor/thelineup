@@ -49,6 +49,7 @@ const Login:React.FC<Props> = ({setToken}) => {
                     display: flex;
                     align-items: center;
                     flex-direction: column;
+                    height: 100%;
                 }
                 h2 {
                     margin: 20px;   

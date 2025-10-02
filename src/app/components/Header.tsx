@@ -1,11 +1,15 @@
 'use client'
 import { redirect } from "next/navigation";
+import { useState } from "react";
+import DropDown from "./Notifications/DropDown";
 
 type Props = {
     user: string
 }
 
 const Header:React.FC<Props> = ({user}) => {
+    const [alerts, setAlerts] = useState(false)
+    const [showNotifications, setNotifs] = useState(false)
 
     const onClick = (e: any) => {
         console.log(e)
@@ -15,6 +19,11 @@ const Header:React.FC<Props> = ({user}) => {
         else redirect(`/${e.target.innerHTML}`)
     }
 
+    const changeAlert = () => {
+        setAlerts(!alerts)
+        setNotifs(!showNotifications)
+    }
+
     return (
         <div id="header">
             <div id="links">
@@ -22,8 +31,10 @@ const Header:React.FC<Props> = ({user}) => {
                 <button className="nav-button" onClick={(e)=> onClick(e)}>leaderboard</button>
             </div>
             <div id='auth-info'>
-                Logged in as: {user}
-                <img id="notifications" src={"/bell.png"}/>
+                <p>Logged in as: {user}</p>
+                <button id='notif-button' onClick={changeAlert}><img id="notifications" src={alerts ? "/alert-bell.svg" : "/bell.svg"}/></button>
+                <button id='notif-button' ><img id="notifications" src={"settings.png"}/></button>
+                {showNotifications && <DropDown/>}
             </div>
             
 
@@ -35,6 +46,13 @@ const Header:React.FC<Props> = ({user}) => {
                         align-items: center;
                         margin: 5px;
                         width: 100%;
+                    }
+                    #notifications:hover {
+                        cursor: pointer;
+                    }
+                    #notif-button {
+                        background:none;
+                        border: none;
                     }
                     button.nav-button {
                         background: #FFFFFF;
@@ -49,12 +67,14 @@ const Header:React.FC<Props> = ({user}) => {
                     }
                     div#auth-info {
                         display: flex;
-                        
+                    }
+                    #auth-info > p {
+                        margin-right: 7px;
                     }
                     img#notifications {
                         width: 22px;
                         height: 22px;
-                        margin: 0 10px;
+                        margin-right: 8px;
                     }   
                 `}
             </style>
