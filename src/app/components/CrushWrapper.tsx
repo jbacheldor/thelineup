@@ -38,6 +38,7 @@ function CrushWrapper(props: Props) {
 
     const showCrushUpdate = () => {
         setShowWindow(true)
+        setShowSideProfile(false)
     }
 
     

@@ -19,6 +19,8 @@ function Headstone (props: Prop) {
     }
 
     return (
+        <div id='wrapper'>
+        <img src={'/headstone.svg'} />
         <div className="crush-headstone">
         <span>
             here lies {props.retireeName}
@@ -46,6 +48,7 @@ function Headstone (props: Prop) {
                 <button onClick={()=>onVote("perish")}>unmarked grave in the woods</button>
             </div>
         }
+        </div>
         </div>
         </div>
     )
