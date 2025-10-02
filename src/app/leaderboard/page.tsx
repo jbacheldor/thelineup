@@ -1,21 +1,27 @@
 'use client'
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import CrushWrapper from "../components/CrushWrapper"
-import { getToken } from "../page";
 import { redirect } from "next/navigation";
+import { getToken } from "../utils";
 
 
 const Leaderboard:React.FC = () => {
+    const [isVerified, setIsVerified] = useState(false)
 
     useLayoutEffect(() => {
         const isAuth = getToken('access-token');
         if(!isAuth){
             redirect("/404")
         }
+        else setIsVerified(true)
     }, [])
 
-    return (
-        <CrushWrapper />
+    if(isVerified) return (<CrushWrapper />)
+        // i want something better but this is a good inbetween
+    else return (
+        <>
+            we are loading we are thinking
+        </>
     )
 }
 
