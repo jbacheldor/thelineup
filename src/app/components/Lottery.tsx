@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import WindowWrapper from "./Login/WindowWrapper";
+import CloseButton from "./General/CloseButton";
 
 type props = {
     changeLottery: () => void;
@@ -62,8 +63,8 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
     }
 
     return (
-        <div>
             <WindowWrapper onClose={changeLottery} name="Lottery">
+                <div>
                     <form id='lottery-form' onSubmit={(e)=>submitLottery(e)} onChange={(e)=> onChange(e)}>
                         <span>name*</span>
                         <input aria-label="name" required placeholder="your name"/>
@@ -80,14 +81,8 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                                 Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Thanks for taking an interest in my passions!!
                             </div>
                             }
-                        <button disabled={!submitOption} id="submit">
-                            <div id="button-inside">
-                                submit
-                            </div>
-                            </button>
+                        <CloseButton type="other" text="submit" disabled={!submitOption}/>
                     </form>
-            </WindowWrapper>
-
             <style jsx>
             {`
                 #lottery-form {
@@ -96,6 +91,7 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                     padding: 20px;
                     background-color: #E9FFFD;
                     max-width: 45ch;
+                    width: 350px;
                     border-left: 1px solid  #7DF9FF;
                     border-top: 1px solid #7DF9FF;
                     border-bottom: 1px solid  #A899E6;
@@ -120,16 +116,6 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                 }
                 button:hover, a:hover {
                     cursor: pointer;
-                }
-                #lottery-form  #submit {
-                    margin: 10px 0;
-                    width: 30%;
-                    align-self: center;
-                    border-top: 2px solid  #7DF9FF;
-                    border-left:2px solid #7DF9FF;
-                    border-bottom:2px solid  #A899E6;
-                    border-right:2px solid  #A899E6;
-                    padding: 2px;
                 }
                 #lottery-form label {
                     display: flex;
@@ -158,7 +144,8 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                 }
             `}
             </style>
-        </div>
+            </div>
+            </WindowWrapper>
     )
 }
 

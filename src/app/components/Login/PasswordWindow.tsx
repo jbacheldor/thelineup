@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
+import CloseButton from "../General/CloseButton";
 
 
 type loginFormType = {
@@ -126,9 +127,8 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
     }
 
     return (
-        <>
         <WindowWrapper onClose={setClose} name="Password Login">
-            
+            <div>
             <form onSubmit={e=>submitLogin(e)}>
                 <div id="password-style">
                     <label>email:  <input className="input-block" value={loginForm.email}  aria-label="email" onChange={(e)=> updateLoginForm(e)}/></label>
@@ -149,18 +149,17 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                     }
                 <div id="login-buttons">
                     
-                    <button>
+                    <CloseButton type="other" text="Login"/>
+                    {/* <button>
                         <div id="button-inside">
                             Login
                         </div>    
-                        </button>
+                        </button> */}
                     <Timer time={30} initialString="Forgot Password" secondString="Resend Link" disabled={resetBtn} onClick={()=> forgotPassword()}/>
                 </div>
             </form>
 
-            </WindowWrapper>
-
-            <style jsx >
+                        <style jsx >
                 {`
                #error-message {
                     color: red;
@@ -224,8 +223,8 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                 }
             `}
             </style>
-        
-        </>
+            </div>  
+            </WindowWrapper>
     )
 }
 
