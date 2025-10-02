@@ -25,6 +25,10 @@ const WindowFolder:React.FC<props> = ({closeARoo}) => {
         setCurrent(!current)
     }
 
+    const navigateBack = () => {
+        setCurrent(!current)
+    }
+
     return (
         <>
             {openLogin == "password" &&
@@ -48,8 +52,8 @@ const WindowFolder:React.FC<props> = ({closeARoo}) => {
                 <div id="search-bar-section">
                     <div id='left-side'>
                         <button>=</button>
-                        <button><img src={"/left-pointer.svg"} width="11px" height="11px"/></button>
-                        <button><img src={"/right-pointer.svg"} width="11px" height="11px"/></button>
+                        <button disabled={current} onClick={navigateBack}><img src={"/left-pointer.svg"} width="11px" height="11px"/></button>
+                        <button disabled><img src={"/right-pointer.svg"} width="11px" height="11px"/></button>
                         <div className="section">
                             <img src={"/closed-folder.svg"} width="11px" height="11px"/>
                             <input placeholder="C:\file\login"></input>

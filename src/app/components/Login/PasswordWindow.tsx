@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
 import CloseButton from "../General/CloseButton";
+import { redirect } from "next/navigation";
 
 
 type loginFormType = {
@@ -114,10 +115,10 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                     localStorage.setItem('access-token', accessToken)
                     localStorage.setItem('refresh-token', refreshToken)
                     setLoginForm(initialLoginForm)
-
-                    alert('login successful!!')
+                    
                     setMsg("")
                     closeWindow("password")
+                    redirect("/leaderboard")
                 }
             }).catch((e)=> {
                 setMsg("Error logging in")
