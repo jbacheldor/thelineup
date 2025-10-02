@@ -24,8 +24,6 @@ export async function POST(req: NextRequest){
                 {user: {
                     refreshToken: user.refreshToken,
                     accessToken: user.accessToken,
-                    expirationTime: user.expirationTime,
-                    uid: user.uid,
                 }},
                 {status: 200}
             )
