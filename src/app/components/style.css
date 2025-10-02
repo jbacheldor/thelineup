@@ -51,6 +51,19 @@ span.main-crush-header {
     /* box-shadow: 1px 1px #959595; */
 }
 
+div#wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+}
+
+img {
+    width: 50%;
+    padding-bottom: 2px; 
+}
+
 span.buttons {
     display: flex;
     align-content:flex-end;

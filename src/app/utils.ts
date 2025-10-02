@@ -1,4 +1,23 @@
 
+export function getToken(name: string) {
+  if(typeof window !== 'undefined'){
+      let parsed = localStorage.getItem(name)
+      if(parsed){
+        const check = parseJwt(parsed)
+        if(validateJWT(check)){
+          return localStorage.getItem(name);
+        }
+        else {
+          localStorage.removeItem(name)
+        }
+      }
+  }
+}
+
+export function setToken(name: string, token: string) {
+    localStorage.setItem(name, token);
+}
+
 
 // pulls jwt out in order to parse it
 export function parseJwt (token: string) {
@@ -12,7 +31,7 @@ export function parseJwt (token: string) {
 }
 
 // this doesn't include the sms or email token i think,,,
-type token = {
+export type Token = {
   "iss": string,
   "aud": string,
   "auth_time": string,
@@ -32,7 +51,7 @@ type token = {
   }
 }
 
-export function validateJWT(token: token){
+export function validateJWT(token: Token){
     if (Date.now() >= token.exp) {
       return true;
     }
