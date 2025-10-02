@@ -6,15 +6,29 @@ import { getToken } from "../utils";
 
 
 const Leaderboard:React.FC = () => {
+    const pathName = process.env.BASE_URL
     const [isVerified, setIsVerified] = useState(false)
 
     useLayoutEffect(() => {
         const isAuth = getToken('access-token');
         if(!isAuth){
+            silentRefresh()
             redirect("/404")
         }
-        else setIsVerified(true)
+        else {
+            setIsVerified(true)
+            silentRefresh()
+        }
     }, [])
+
+    // if auth is expired - we gotta get the refresh token!!!
+    // but do we store on front-end like how do we know this
+    const silentRefresh = async () => {
+        await fetch(`${pathName}/server/refreshtoken`, {
+            method: 'GET',
+        })
+    }
+
 
     if(isVerified) return (<CrushWrapper />)
         // i want something better but this is a good inbetween
