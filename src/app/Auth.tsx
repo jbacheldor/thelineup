@@ -1,13 +1,16 @@
 "use client";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
-import { getToken } from "./page";
+import { getToken } from "./utils";
+
+// what the people call a higher order component
+//  https://www.freecodecamp.org/news/secure-routes-in-next-js/
 
 
-export default function isAuth<Component>(Component: any): any {
+export default function isAuth(Component: React.FC) {
+  // this will be tricky with auth,,, 
   return function IsAuth(props: any) {
     const auth = getToken('access-token');
-
 
     useEffect(() => {
       if (!auth) {
@@ -20,6 +23,6 @@ export default function isAuth<Component>(Component: any): any {
       return null;
     }
 
-    return <Component/>
+    return <Component {...props} />;
   };
 }

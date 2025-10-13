@@ -3,21 +3,23 @@ import { useLayoutEffect, useState } from "react";
 import CrushWrapper from "../components/CrushWrapper"
 import { redirect } from "next/navigation";
 import { getToken } from "../utils";
+import isAuth from "../Auth";
 
 
 const Leaderboard:React.FC = () => {
     const pathName = process.env.BASE_URL
     const [isVerified, setIsVerified] = useState(false)
 
+    // if we are using wrapper idt we need this, but what do i know
     useLayoutEffect(() => {
         const isAuth = getToken('access-token');
         if(!isAuth){
-            silentRefresh()
+            // silentRefresh()
             redirect("/404")
         }
         else {
             setIsVerified(true)
-            silentRefresh()
+            // silentRefresh()
         }
     }, [])
 
@@ -39,4 +41,4 @@ const Leaderboard:React.FC = () => {
     )
 }
 
-export default Leaderboard
+export default isAuth(Leaderboard);
