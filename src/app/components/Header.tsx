@@ -1,15 +1,19 @@
 'use client'
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import DropDown from "./Notifications/DropDown";
+import { AuthContext } from "../context";
 
 type Props = {
     user: string
 }
 
 const Header:React.FC<Props> = ({user}) => {
-    const [alerts, setAlerts] = useState(false)
+    const [alerts, setAlerts] = useState(true)
     const [showNotifications, setNotifs] = useState(false)
+    const { isAuthenticated } = useContext(AuthContext)
+
+    console.log('ayooo is auth', isAuthenticated)
 
     const onClick = (e: any) => {
         console.log(e)
@@ -26,17 +30,22 @@ const Header:React.FC<Props> = ({user}) => {
 
     return (
         <div id="header">
-            <div id="links">
-                <button className="nav-button" onClick={(e)=> onClick(e)}>home</button>
-                <button className="nav-button" onClick={(e)=> onClick(e)}>leaderboard</button>
-            </div>
-            <div id='auth-info'>
-                <p>Logged in as: {user}</p>
-                <button id='notif-button' onClick={changeAlert}><img id="notifications" src={alerts ? "/alert-bell.svg" : "/bell.svg"}/></button>
-                <button id='notif-button' ><img id="notifications" src={"settings.png"}/></button>
-                {showNotifications && <DropDown/>}
-            </div>
-            
+                <div id="links">
+                    <button className="nav-button" onClick={(e)=> onClick(e)}>home</button>
+                    {isAuthenticated.isAuth && 
+                        <button className="nav-button" onClick={(e)=> onClick(e)}>leaderboard</button>
+                    }
+                    
+                    {/* need one for like my leaderboard and then for others */}
+                </div>
+                {isAuthenticated.isAuth && 
+                <div id='auth-info'>
+                    <p>Logged in as: {user}</p>
+                    <button id='notif-button' onClick={changeAlert}><img id="notifications" src={alerts ? "/alert-bell.svg" : "/bell.svg"}/></button>
+                    <button id='notif-button' ><img id="notifications" src={"settings.png"}/></button>
+                    {showNotifications && <DropDown/>}
+                </div>
+                }
 
             <style jsx>
                 {`

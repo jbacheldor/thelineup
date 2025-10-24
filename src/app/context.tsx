@@ -1,3 +1,4 @@
+'use client'
 import { createContext, ReactElement, ReactNode, useMemo, useState } from "react";
 import { getToken, parseJwt, Token, validateJWT, verifyJWT } from './utils';
 
