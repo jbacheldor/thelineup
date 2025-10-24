@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
 import CloseButton from "../General/CloseButton";
 import { redirect } from "next/navigation";
+import { setToken } from "@/app/utils";
+import { AuthContext } from "@/app/context";
 
 
 type loginFormType = {
@@ -26,6 +28,8 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
     const [errorMessage, setMsg] = useState("")
     const [validReq, setValidReq] = useState(true)
     const [resetBtn, setReset] = useState(false);
+
+    const { login } = useContext(AuthContext);
 
     const setClose = () => {
         closeWindow("password")
@@ -112,8 +116,10 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
 
                     // encrypted string
                     // also change the name to something random
-                    localStorage.setItem('access-token', accessToken)
-                    localStorage.setItem('refresh-token', refreshToken)
+
+                    login(accessToken, refreshToken)
+                    // setToken('access-token', accessToken)
+                    // setToken('refresh-token', refreshToken)
                     setLoginForm(initialLoginForm)
                     
                     setMsg("")

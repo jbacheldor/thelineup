@@ -42,8 +42,12 @@ export const verifyJWT = async (token: string) => {
       issuer: iss,
       audience: aud,
     })
+    if(payload && protectedHeader){
       console.log('payload', payload)
       console.log('protected header', protectedHeader)
+      return true 
+    }
+    else return false
       
   }catch(error){
     console.log('error', error)
@@ -82,6 +86,10 @@ export type Token = {
     },
     "sign_in_provider": string
   }
+}
+
+export const silentRefresh = async () => {
+  // fetch new token with the 
 }
 
 export function validateJWT(token: Token){
