@@ -2,6 +2,15 @@
 import { createContext, ReactElement, ReactNode, useMemo, useState } from "react";
 import { getToken, parseJwt, Token, validateJWT, verifyJWT } from './utils';
 
+enum Roles {
+    Demo = "Demo",
+    Lottery = "Lottery",
+    Family = "Family",
+    Recurse = "Recurse",
+    Girls = "Girls",
+    None = "None"
+}
+
 type User = {
     isAuthenticated: authObj,
     login: (accessToken: string, refreshToken: string) => void,
