@@ -1,16 +1,15 @@
 'use client'
 import styles from "./page.module.css";
 import Login from "./components/Login";
-import { getToken, setToken } from "./utils";
+import { useContext } from "react";
+import { AuthContext } from "./context";
 
-export default function Home() {
-  // if there is no login detected then yes, redirect girly
-  // const [token, setToken] = useState<string>("");
-  const tokenLocal = getToken('access-level');
+const Home:React.FC = () => {
+  const { isAuthenticated } = useContext(AuthContext);
 
-  if(!tokenLocal) {
+  if(!isAuthenticated.isAuth) {
     return (
-      <Login setToken={setToken}/>
+      <Login />
     )
   }
 
@@ -20,3 +19,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home

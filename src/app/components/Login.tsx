@@ -4,11 +4,7 @@ import Lottery from "../components/Lottery"
 import WindowFolder from "./Login/WindowFolder"
 import Folder from "./General/Folder"
 
-type Props = {
-    setToken: (name:string, token: string) => void
-}
-
-const Login:React.FC<Props> = ({setToken}) => {
+const Login:React.FC = () => {
     const [showLottery, setLottery] = useState(false)
     const [showLogin, setShowLogin] = useState(false);
 

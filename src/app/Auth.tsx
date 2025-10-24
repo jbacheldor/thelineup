@@ -1,16 +1,17 @@
 "use client";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { redirect } from "next/navigation";
-import { getToken } from "./utils";
+import { AuthContext } from "./context";
 
 // what the people call a higher order component
 //  https://www.freecodecamp.org/news/secure-routes-in-next-js/
 
 
 export default function isAuth(Component: React.FC) {
-  // this will be tricky with auth,,, 
   return function IsAuth(props: any) {
-    const auth = getToken('access-token');
+    // const auth = getToken('access-token');
+    const { isAuthenticated } = useContext(AuthContext);
+    const auth = isAuthenticated.isAuth
 
     useEffect(() => {
       if (!auth) {

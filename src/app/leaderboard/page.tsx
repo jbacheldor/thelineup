@@ -1,19 +1,20 @@
 'use client'
-import { useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import CrushWrapper from "../components/CrushWrapper"
 import { redirect } from "next/navigation";
-import { getToken } from "../utils";
 import isAuth from "../Auth";
+import { AuthContext } from "../context";
 
 
 const Leaderboard:React.FC = () => {
     const pathName = process.env.BASE_URL
     const [isVerified, setIsVerified] = useState(false)
+    const { isAuthenticated } = useContext(AuthContext);
 
     // if we are using wrapper idt we need this, but what do i know
     useLayoutEffect(() => {
-        const isAuth = getToken('access-token');
-        if(!isAuth){
+        // const isAuth = getToken('access-token');
+        if(!isAuthenticated.isAuth){
             // silentRefresh()
             redirect("/404")
         }
