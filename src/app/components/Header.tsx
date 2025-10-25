@@ -13,7 +13,6 @@ const Header:React.FC<Props> = ({user}) => {
     const [showNotifications, setNotifs] = useState(false)
     const { isAuthenticated } = useContext(AuthContext)
 
-    console.log('ayooo is auth', isAuthenticated)
 
     const onClick = (e: any) => {
         console.log(e)
@@ -40,7 +39,7 @@ const Header:React.FC<Props> = ({user}) => {
                 </div>
                 {isAuthenticated.isAuth && 
                 <div id='auth-info'>
-                    <p>Logged in as: {user}</p>
+                    <p>Logged in as: {isAuthenticated.name}</p>
                     <button id='notif-button' onClick={changeAlert}><img id="notifications" src={alerts ? "/alert-bell.svg" : "/bell.svg"}/></button>
                     <button id='notif-button' ><img id="notifications" src={"settings.png"}/></button>
                     {showNotifications && <DropDown/>}

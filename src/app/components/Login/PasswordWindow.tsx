@@ -124,12 +124,13 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                     
                     setMsg("")
                     closeWindow("password")
-                    redirect("/leaderboard")
                 }
             }).catch((e)=> {
                 setMsg("Error logging in")
+                console.log('caught an error in password window', e)
                 throw new Error('eeee on the client side', e)
             })
+            redirect("/leaderboard")
         }
     }
 

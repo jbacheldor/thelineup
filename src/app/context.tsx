@@ -72,6 +72,7 @@ const CounterProvider = (props: {children: ReactElement}) => {
 
     // this needs to be called from like,, 
     const login = (accessToken: string, refreshToken: string) => {
+        try {
         localStorage.setItem('access-token', accessToken);
         localStorage.setItem('refresh-token', refreshToken);
 
@@ -83,8 +84,12 @@ const CounterProvider = (props: {children: ReactElement}) => {
         setAuth({
             isAuth: true, 
             name: res.email, 
-            author: res.author
+            author: true
         })
+        }catch(error){
+            console.log('it appears there is an error', error)
+            throw new Error('it appears there is an error')
+        }
     }
 
 
