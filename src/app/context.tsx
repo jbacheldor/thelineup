@@ -1,6 +1,7 @@
 'use client'
-import { createContext, ReactElement, ReactNode, useMemo, useState } from "react";
-import { getToken, parseJwt, Token, validateJWT, verifyJWT } from './utils';
+import { createContext, ReactElement, useEffect, useState } from "react";
+import { getToken, parseJwt, verifyJWT } from './utils';
+import { redirect } from "next/navigation";
 
 enum Roles {
     Demo = "Demo",
@@ -45,20 +46,31 @@ const CounterProvider = (props: {children: ReactElement}) => {
     const [isAuthenticated, setAuth] = useState(initAuth)
     // const value = useMemo(() => ({ isAuthenticated, setAuth }), [isAuthenticated, setAuth]);
 
+
+    useEffect(()=> {
+        console.log('how many times is this being called,,,, ')
+        initialLoad()
+    }, [])
     // maybe a wee bit of a use effect???
     // the use case of , access token bad, refresh token, i think needs to be built out
-    const onFirstLoad = async () => {
+    const initialLoad = async () => {
         const access_token = getToken('access-token')
         if(access_token) {
             // if the access token has expired
-            if(validateJWT(parseJwt(access_token))) {
-                // check refresh token 
-                console.log('oooh no mama miaaaa, this is token is expired')
-            }
-            else if (await verifyJWT(access_token)) {
+            if(!await verifyJWT(access_token)) {
                 // this checks if the token is valid -
                 // if not 
                 console.log('oooh noooo mama miaaa, this token has been tampered with')
+            }
+            else {
+                // if valid just update state instead of making a new cal
+                const res = parseJwt(access_token)
+                setAuth({
+                    isAuth: true, 
+                    name: res.email, 
+                    author: true
+                })
+                redirect("/leaderboard")
             }
         }
     }
@@ -68,6 +80,7 @@ const CounterProvider = (props: {children: ReactElement}) => {
         setAuth(initAuth)
         localStorage.removeItem('access-token')
         localStorage.removeItem('refresh-token')
+        redirect("/")
     }
 
     // this needs to be called from like,, 
@@ -77,7 +90,6 @@ const CounterProvider = (props: {children: ReactElement}) => {
         localStorage.setItem('refresh-token', refreshToken);
 
         const res = parseJwt(accessToken)
-        console.log(res)
 
         // i think we will need to do a custom jwt situation
 

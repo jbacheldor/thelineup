@@ -4,14 +4,11 @@ import { useContext, useState } from "react";
 import DropDown from "./Notifications/DropDown";
 import { AuthContext } from "../context";
 
-type Props = {
-    user: string
-}
 
-const Header:React.FC<Props> = ({user}) => {
+const Header:React.FC = () => {
     const [alerts, setAlerts] = useState(true)
     const [showNotifications, setNotifs] = useState(false)
-    const { isAuthenticated } = useContext(AuthContext)
+    const { isAuthenticated, logout } = useContext(AuthContext)
 
 
     const onClick = (e: any) => {
@@ -42,6 +39,7 @@ const Header:React.FC<Props> = ({user}) => {
                     <p>Logged in as: {isAuthenticated.name}</p>
                     <button id='notif-button' onClick={changeAlert}><img id="notifications" src={alerts ? "/alert-bell.svg" : "/bell.svg"}/></button>
                     <button id='notif-button' ><img id="notifications" src={"settings.png"}/></button>
+                    <button id='logout-button' onClick={()=>logout()}>logout</button>
                     {showNotifications && <DropDown/>}
                 </div>
                 }
@@ -54,6 +52,11 @@ const Header:React.FC<Props> = ({user}) => {
                         align-items: center;
                         margin: 5px;
                         width: 100%;
+                    }
+                    #logout-button {
+                        background:none;
+                        border: none;
+                        margin-right: 15px;
                     }
                     #notifications:hover {
                         cursor: pointer;

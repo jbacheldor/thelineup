@@ -15,6 +15,7 @@ module.exports = {
         MESSAGING_SENDER_ID: process.env.MESSAGING_SENDER_ID,
         APP_ID: process.env.APP_ID,
         MEASUREMENT_ID: process.env.MEASUREMENT_ID,
+        PUB_KEY_URL: process.env.PUB_KEY_URL
     }
 }
 
