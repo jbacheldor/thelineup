@@ -1,5 +1,5 @@
 'use server'
-import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, User } from "firebase/auth";
+import { browserSessionPersistence, getAuth, inMemoryPersistence, setPersistence, signInWithEmailAndPassword, User } from "firebase/auth";
 import { NextRequest, NextResponse } from "next/server";
 import app from "../createClient";
 import { setCookie } from 'cookies-next/server';
@@ -17,9 +17,13 @@ export async function POST(req: NextRequest){
             // Signed in 
             user = userCredential.user;
 
-            await setCookie('access-token', user.accessToken, { cookies, httpOnly: true,  secure: true });
+            const idToken = await userCredential.user.getIdToken();
+
+
+            await setCookie('access-token', `${user.accessToken}`, { cookies, httpOnly: true,  secure: true });
             await setCookie('refresh-token', user.refreshToken, {cookies, httpOnly: true,  secure: true });
 
+        
             return NextResponse.json(
                 {user: {
                     refreshToken: user.refreshToken,

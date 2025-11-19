@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 
 export async function GET(){
+    console.log('are we in here????? in the get crushes situation')
     try {
         // call the client
         // const { error, data} = await client

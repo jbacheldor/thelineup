@@ -9,7 +9,6 @@ import { AuthContext } from "./context";
 
 export default function isAuth(Component: React.FC) {
   return function IsAuth(props: any) {
-    // const auth = getToken('access-token');
     const { isAuthenticated } = useContext(AuthContext);
     const auth = isAuthenticated.isAuth
 
