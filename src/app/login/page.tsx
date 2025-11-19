@@ -24,7 +24,7 @@ const LoginPage:React.FC = () => {
     return (
         <div>
             <h1>YOU ARE IN THE LOGIN PAGE!!!</h1>
-            <Login setToken={()=>{}}/>
+            <Login/>
         </div>
         )
 }
