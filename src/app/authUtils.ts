@@ -23,35 +23,36 @@ export const silentRefresh = async () => {
 }
 
 export const passLogin = async (email: string, password: string) => {
-        const auth = getAuth(app);
-        setPersistence(auth, browserSessionPersistence)
-        const res = await signInWithEmailAndPassword(auth, email, password)
+    const auth = getAuth(app);
+    setPersistence(auth, browserSessionPersistence)
+    const res = await signInWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
             // Signed in 
             const user = userCredential.user;
 
             const idToken = await userCredential.user.getIdToken();
-            // await fetch(`${pathName}/server/loginpassv2`, {
-            //     method: "POST",
-            //     body: JSON.stringify({
-            //         access_token: idToken,
-            //         refresh_token: user.refreshToken
-            //     })
-            // })
+            await fetch(`${pathName}/server/loginpassv2`, {
+                method: "POST",
+                body: JSON.stringify({
+                    access_token: idToken,
+                    refresh_token: user.refreshToken
+                })
+            })
 
-            Promise.resolve({
+            return ({
                     message: 'successful login',
+                    data: user,
                     status: 200
                 });
-        })
-        .catch((error) => {
+            }).catch((error) => {
             console.log('error', error)
-            Promise.reject({
+                return ({
                     message: 'invalid credential',
                     status: 400
                 });
         })
 
+        console.log('hello???', res)
         return res
 }
 

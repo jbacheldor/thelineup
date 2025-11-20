@@ -3,8 +3,11 @@ import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
 import CloseButton from "../General/CloseButton";
 import { redirect } from "next/navigation";
-import { setToken } from "@/app/utils";
 import { AuthContext } from "@/app/context";
+import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
+import app from "@/app/server/createClient";
+import { passLogin } from "@/app/authUtils";
+
 
 
 type loginFormType = {
@@ -98,40 +101,28 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
 
         // props need to do switch case login here ya knowww
         if(validReq){
-            await fetch(`${pathName}/server/loginpass`, {
-                method: "POST",
-                body: JSON.stringify(
-                    {
-                        "email": loginForm.email,
-                        "password": loginForm.password,
+                await passLogin(loginForm.email, loginForm.password)
+                .then((res)=> {
+                    if(res.status == 400){
+                        setMsg("Invalid Credentials, try again")
                     }
-                )
-            }).then(async (response)=> {
-                if(!response.ok){
-                    setMsg("Invalid Credentials, try again")
-                }
-                else{
-                    const data = await response.json()
-                    const {accessToken, refreshToken} = data.body.user
+                    else if(res.status == 200) {
+                        console.log('res!', res)
+                        const data = res.data
 
-                    // encrypted string
-                    // also change the name to something random
-
-                    login(accessToken, refreshToken)
-                    // setToken('access-token', accessToken)
-                    // setToken('refresh-token', refreshToken)
-                    setLoginForm(initialLoginForm)
+                        setLoginForm(initialLoginForm)
+                        
+                        setMsg("")
+                        closeWindow("password")
+                        // redirect("/leaderboard")
+                    }
                     
-                    setMsg("")
-                    closeWindow("password")
-                }
-            }).catch((e)=> {
-                setMsg("Error logging in")
-                console.log('caught an error in password window', e)
-                throw new Error('eeee on the client side', e)
-            })
-            redirect("/leaderboard")
-        }
+                }).catch((error)=>{
+                    setMsg("Error logging in")
+                    console.log('caught an error in password window', error)
+                    throw new Error('eeee on the client side', error)
+                })
+             }
     }
 
     return (

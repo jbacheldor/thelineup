@@ -1,7 +1,10 @@
 'use client'
-import { createContext, ReactElement, useEffect, useState } from "react";
-import { getToken, parseJwt, verifyJWT } from './utils';
+import { createContext, ReactElement, useEffect, useLayoutEffect, useState } from "react";
+import { parseJwt, validateJWT, verifyJWT } from './utils';
 import { redirect } from "next/navigation";
+import { getAuth, onAuthStateChanged, Auth, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import app from "./server/createClient";
+import { silentRefresh } from "./authUtils";
 
 enum Roles {
     Demo = "Demo",
@@ -42,62 +45,104 @@ const authObject: User = {
 
 const AuthContext = createContext(authObject)
 
-const CounterProvider = (props: {children: ReactElement}) => {
+const ContextProvider = (props: {children: ReactElement}) => {
     const [isAuthenticated, setAuth] = useState(initAuth)
+    const auth = getAuth(app);
     // const value = useMemo(() => ({ isAuthenticated, setAuth }), [isAuthenticated, setAuth]);
-
+    const pathName = process.env.BASE_URL
 
     useEffect(()=> {
-        console.log('how many times is this being called,,,, ')
-        initialLoad()
-    }, [])
+        console.log('initial use effect!!')
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('in user', user)
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/auth.user
+                const uid = user.uid;
+                // ...
+            } else {
+                console.log('idk bro')
+                // User is signed out
+                // ...
+            }
+            });
+        // initialLoad()
+    }, [auth])
+
     // maybe a wee bit of a use effect???
     // the use case of , access token bad, refresh token, i think needs to be built out
     const initialLoad = async () => {
-        const access_token = getToken('access-token')
-        if(access_token) {
-            // if the access token has expired
-            if(!await verifyJWT(access_token)) {
-                // this checks if the token is valid -
-                // if not 
-                console.log('oooh noooo mama miaaa, this token has been tampered with')
-            }
-            else {
-                // if valid just update state instead of making a new cal
-                const res = parseJwt(access_token)
-                setAuth({
-                    isAuth: true, 
-                    name: res.email, 
-                    author: true
-                })
-                redirect("/leaderboard")
-            }
+        try {
+            await fetch(`${pathName}/server/checkLogin`)
+            .then(async (res) => {
+                const res_json = await res.json()
+                console.log('what is res_json', res_json)
+                switch(res_json.status){
+                    case 200: 
+                        console.log('case 200')
+                        // login(res_json.data)
+                        break;
+                    
+                    case 401:
+                        console.log('case 401')
+                        logout()
+                        redirect("/")
+                        break;
+                    
+                    // this is the refresh use case - no http number unfortunately
+                    case 403: 
+                        console.log('case 403')
+                        const refresh = await silentRefresh()
+                        // silent refresh has to return a string
+                        if(!refresh) logout()
+                        else {
+                            const email = await refresh.json()
+                            setAuth({
+                                isAuth: true, 
+                                name: email, 
+                                author: true
+                            })
+                            redirect("/leaderboard")}
+                        break;
+                }
+            })
+        }
+        catch(error){
+            console.log('errrrorrr')
         }
     }
 
-    // this 
-    const logout = () => {
-        setAuth(initAuth)
-        localStorage.removeItem('access-token')
-        localStorage.removeItem('refresh-token')
-        redirect("/")
+    const logout = async() => {
+        await fetch(`${pathName}/server/logout`, {
+            method: 'POST',
+        }).then(async (res)=> {
+            const response = await res.json()
+
+            if(response.status == "200") {
+                const auth = getAuth(app);
+                signOut(auth)
+                .then(() => {
+                    setAuth(initAuth)
+                    redirect("/")
+                })
+                .catch((error) =>{
+                    console.log('error: ', error)
+                })
+            }
+            else console.log('error logging out.')
+        })
     }
 
-    // this needs to be called from like,, 
-    const login = (accessToken: string, refreshToken: string) => {
+    const login = async (accessToken: string, type: string) => {
         try {
-        localStorage.setItem('access-token', accessToken);
-        localStorage.setItem('refresh-token', refreshToken);
 
-        const res = parseJwt(accessToken)
+            const res = parseJwt(accessToken)
 
-        // i think we will need to do a custom jwt situation
-
-        setAuth({
-            isAuth: true, 
-            name: res.email, 
-            author: true
-        })
+            setAuth({
+                isAuth: true, 
+                name: res.email, 
+                author: true
+            })
         }catch(error){
             console.log('it appears there is an error', error)
             throw new Error('it appears there is an error')
@@ -119,4 +164,4 @@ const CounterProvider = (props: {children: ReactElement}) => {
     )
 }
 
-export {CounterProvider, AuthContext};
+export {ContextProvider, AuthContext};

@@ -13,7 +13,6 @@ const Leaderboard:React.FC = () => {
 
     // if we are using wrapper idt we need this, but what do i know
     useLayoutEffect(() => {
-        // const isAuth = getToken('access-token');
         if(!isAuthenticated.isAuth){
             // silentRefresh()
             redirect("/404")
@@ -23,14 +22,6 @@ const Leaderboard:React.FC = () => {
             // silentRefresh()
         }
     }, [])
-
-    // if auth is expired - we gotta get the refresh token!!!
-    // but do we store on front-end like how do we know this
-    const silentRefresh = async () => {
-        await fetch(`${pathName}/server/refreshtoken`, {
-            method: 'GET',
-        })
-    }
 
 
     if(isVerified) return (<CrushWrapper />)
