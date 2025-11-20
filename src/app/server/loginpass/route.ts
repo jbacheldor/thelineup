@@ -20,8 +20,9 @@ export async function POST(req: NextRequest){
             const idToken = await userCredential.user.getIdToken();
 
 
-            await setCookie('access-token', `${user.accessToken}`, { cookies, httpOnly: true,  secure: true });
-            await setCookie('refresh-token', user.refreshToken, {cookies, httpOnly: true,  secure: true });
+            // 1 hour expiration - it should expire anyways after one hour but whatever
+            await setCookie('access-token', `${user.accessToken}`, { cookies, httpOnly: true,  secure: true, sameSite: "strict", maxAge: 3600000,});
+            await setCookie('refresh-token', user.refreshToken, {cookies, httpOnly: true,  secure: true, sameSite: "strict", });
 
         
             return NextResponse.json(
