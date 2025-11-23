@@ -74,6 +74,9 @@ const Header:React.FC = () => {
                         background:none;
                         border: none;
                     }
+                    button.nav-button:hover {
+                        cursor: pointer;
+                    }
                     div#auth-info {
                         display: flex;
                     }
