@@ -8,7 +8,7 @@ export async function POST(request: NextRequest){
     const { email } = await request.json()
     const auth = getAuth(app);
     const res = await sendPasswordResetEmail(auth, email)
-      .then((data) => {
+      .then(() => {
         // Password reset email sent!
         // ..
 
@@ -45,6 +45,7 @@ export async function POST(request: NextRequest){
         }
 
   }catch (e){
+    console.log('caught an error: ', e)
     return NextResponse.json({
       'error': 'wheeeep something went horribly wrong!!',
       'status': 404

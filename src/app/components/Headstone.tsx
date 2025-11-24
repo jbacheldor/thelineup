@@ -1,5 +1,6 @@
 import React from 'react';
 import './style.css';
+import Image from 'next/image';
 
 type Prop = {
     retireeName: string;
@@ -20,7 +21,8 @@ function Headstone (props: Prop) {
 
     return (
         <div id='wrapper'>
-        <img src={'/headstone.svg'} />
+            <Image height={100} width={100} alt="dead crush headstone" src={'/headstone.svg'}/> 
+        {/* <img alt="dead crush headstone" src={'/headstone.svg'} /> */}
         <div className="crush-headstone">
         <span>
             here lies {props.retireeName}

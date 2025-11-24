@@ -1,5 +1,5 @@
 'use server'
-import { browserSessionPersistence, getAuth, inMemoryPersistence, setPersistence, signInWithEmailAndPassword, User } from "firebase/auth";
+import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, User } from "firebase/auth";
 import { NextRequest, NextResponse } from "next/server";
 import app from "../createClient";
 import { setCookie } from 'cookies-next/server';
@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest){
     const res = new NextResponse();
-    var user = null
+    let user = null
     try {
         const {email, password} = await req.json()
         const auth = getAuth(app);
@@ -17,18 +17,19 @@ export async function POST(req: NextRequest){
             // Signed in 
             user = userCredential.user;
 
-            const idToken = await userCredential.user.getIdToken();
+            console.log('user???', user)
+            // const idToken = await userCredential.user.getIdToken();
 
 
             // 1 hour expiration - it should expire anyways after one hour but whatever
-            await setCookie('access-token', `${user.accessToken}`, { cookies, httpOnly: true,  secure: true, sameSite: "strict", maxAge: 3600000,});
+            // await setCookie('access-token', `${user.accessToken}`, { cookies, httpOnly: true,  secure: true, sameSite: "strict", maxAge: 3600000,});
             await setCookie('refresh-token', user.refreshToken, {cookies, httpOnly: true,  secure: true, sameSite: "strict", });
 
         
             return NextResponse.json(
                 {user: {
                     refreshToken: user.refreshToken,
-                    accessToken: user.accessToken,
+                    // accessToken: user.accessToken,
                 }},
                 {status: 200}
             )

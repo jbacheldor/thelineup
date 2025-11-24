@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 // http proxy vs middleware in next js 
 
 const protectedRoutes = ["/settings", "/leaderboard", "/server/getcrushes"];
-const cookieRoutes = ["/server/checkLogin", "/refreshToken"]
+// const cookieRoutes = ["/server/checkLogin", "/refreshToken"]
 
 export default async function middleware(req: NextRequest) {
 

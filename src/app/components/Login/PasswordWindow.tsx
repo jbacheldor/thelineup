@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
 import CloseButton from "../General/CloseButton";
 import { redirect } from "next/navigation";
-import { AuthContext } from "@/app/context";
 import { passLogin } from "@/app/authUtils";
 
 
@@ -29,8 +28,6 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
     const [errorMessage, setMsg] = useState("")
     const [validReq, setValidReq] = useState(true)
     const [resetBtn, setReset] = useState(false);
-
-    const { login } = useContext(AuthContext);
 
     const setClose = () => {
         closeWindow("password")
@@ -63,19 +60,21 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
         }
     }, [loginForm.email])
 
-    const togglePassword = (e: any) => {
+    const togglePassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setShowPassword(!showPassword)
     }
 
-    const updateLoginForm = (e: any) => {
-        setLoginForm({
-            ...loginForm,
-            [e.target.ariaLabel]: e.target.value
-        })
+    const updateLoginForm = (e: ChangeEvent) => {
+        if(e.target){
+            setLoginForm({
+                ...loginForm,
+                [(e.target as HTMLInputElement).ariaLabel || '']: (e.target as HTMLInputElement).value
+            })
+        }
     }
 
-    const submitLogin = async (e: any) => {
+    const submitLogin = async (e: FormEvent) => {
         e.preventDefault()
 
         // error handling

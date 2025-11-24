@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import WindowWrapper from "./Login/WindowWrapper";
 import CloseButton from "./General/CloseButton";
 
@@ -16,7 +16,7 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
     });
     const [submitOption, setSubmit] = useState(false);
 
-    const submitLottery = (e: any) => {
+    const submitLottery = (e: FormEvent) => {
         e.preventDefault()
     }  
 
@@ -24,24 +24,24 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
         setTerms(!terms)
     }
 
-    const onChange = (e: any) => {
-        if(e.target.ariaLabel == 'consent'){
+    const onChange = (e: FormEvent) => {
+        if((e.target as HTMLElement).ariaLabel == 'consent'){
             setForm({
                 ...form,
-                [e.target.ariaLabel]: e.target.checked
+                [(e.target as HTMLElement).ariaLabel || '']: (e.target as HTMLInputElement).checked
             })
         }
         else {
             setForm({
                 ...form,
-                [e.target.ariaLabel]: e.target.value
+                [(e.target as HTMLElement).ariaLabel || '']: (e.target as HTMLInputElement).value
             })
         }
     }
 
     useEffect(()=> {
         isValid()
-    }, [form])
+    })
 
     // checks to see is form submission should be disabled or not 
     const isValid = () => {
@@ -78,7 +78,7 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                         </label>
                         {terms && 
                             <div id="tc">
-                                Submitting this doesn't entail that you will get access. It does, however, show that you think I'm really really cool. Thanks for taking an interest in my passions!!
+                                Submitting this doesn&apos;t entail that you will get access. It does, however, show that you think I&apos;m really really cool. Thanks for taking an interest in my passions!!
                             </div>
                             }
                         <CloseButton type="other" text="submit" disabled={!submitOption}/>

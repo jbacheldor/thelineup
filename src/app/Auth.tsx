@@ -8,7 +8,8 @@ import { AuthContext } from "./context";
 
 
 export default function isAuth(Component: React.FC) {
-  return function IsAuth(props: any) {
+
+  return function IsAuth() {
     const { isAuthenticated } = useContext(AuthContext);
     const auth = isAuthenticated.isAuth
 
@@ -16,13 +17,13 @@ export default function isAuth(Component: React.FC) {
       if (!auth) {
         return redirect("/");
       }
-    }, []);
+    }, [auth]);
 
 
     if (!auth) {
       return null;
     }
 
-    return <Component {...props} />;
+    return <Component/>;
   };
 }

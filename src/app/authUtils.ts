@@ -1,4 +1,4 @@
-import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import app from "./server/createClient";
 import { parseJwt } from "./utils";
 
@@ -7,7 +7,6 @@ const pathName = process.env.BASE_URL
 // but do we store on front-end like how do we know this
 export const silentRefresh = async () => {
     try {
-        const auth = getAuth(app);
       const res = await fetch(`${pathName}/server/refreshtoken`, {
           method: 'GET',
       })

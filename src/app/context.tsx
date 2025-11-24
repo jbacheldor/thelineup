@@ -1,20 +1,10 @@
 'use client'
-import { createContext, ReactElement, useEffect, useLayoutEffect, useState } from "react";
-import { parseJwt, validateJWT, verifyJWT } from './utils';
+import { createContext, ReactElement, useEffect, useState } from "react";
+import { parseJwt } from './utils';
 import { redirect } from "next/navigation";
-import { getAuth, onAuthStateChanged, Auth, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import app from "./server/createClient";
-import { silentRefresh } from "./authUtils";
-import path from "path";
 
-enum Roles {
-    Demo = "Demo",
-    Lottery = "Lottery",
-    Family = "Family",
-    Recurse = "Recurse",
-    Girls = "Girls",
-    None = "None"
-}
 
 type User = {
     isAuthenticated: authObj,
@@ -58,11 +48,13 @@ const ContextProvider = (props: {children: ReactElement}) => {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
                 // const uid = user.uid;
-                setAuth({
-                    isAuth: true,
-                    name: user.email,
-                    author: false
-                })
+                if(user.email){
+                    setAuth({
+                        isAuth: true,
+                        name: user.email,
+                        author: false
+                    })
+                }
                 // ...
             } 
             });
@@ -70,46 +62,46 @@ const ContextProvider = (props: {children: ReactElement}) => {
 
     // maybe a wee bit of a use effect???
     // the use case of , access token bad, refresh token, i think needs to be built out
-    const initialLoad = async () => {
-        try {
-            await fetch(`${pathName}/server/checkLogin`)
-            .then(async (res) => {
-                const res_json = await res.json()
-                console.log('what is res_json', res_json)
-                switch(res_json.status){
-                    case 200: 
-                        console.log('case 200')
-                        // login(res_json.data)
-                        break;
+    // const initialLoad = async () => {
+    //     try {
+    //         await fetch(`${pathName}/server/checkLogin`)
+    //         .then(async (res) => {
+    //             const res_json = await res.json()
+    //             console.log('what is res_json', res_json)
+    //             switch(res_json.status){
+    //                 case 200: 
+    //                     console.log('case 200')
+    //                     // login(res_json.data)
+    //                     break;
                     
-                    case 401:
-                        console.log('case 401')
-                        logout()
-                        redirect("/")
-                        break;
+    //                 case 401:
+    //                     console.log('case 401')
+    //                     logout()
+    //                     redirect("/")
+    //                     break;
                     
-                    // this is the refresh use case - no http number unfortunately
-                    case 403: 
-                        console.log('case 403')
-                        const refresh = await silentRefresh()
-                        // silent refresh has to return a string
-                        if(!refresh) logout()
-                        else {
-                            const email = await refresh.json()
-                            setAuth({
-                                isAuth: true, 
-                                name: email, 
-                                author: true
-                            })
-                            redirect("/leaderboard")}
-                        break;
-                }
-            })
-        }
-        catch(error){
-            console.log('errrrorrr')
-        }
-    }
+    //                 // this is the refresh use case - no http number unfortunately
+    //                 case 403: 
+    //                     console.log('case 403')
+    //                     const refresh = await silentRefresh()
+    //                     // silent refresh has to return a string
+    //                     if(!refresh) logout()
+    //                     else {
+    //                         const email = await refresh.json()
+    //                         setAuth({
+    //                             isAuth: true, 
+    //                             name: email, 
+    //                             author: true
+    //                         })
+    //                         redirect("/leaderboard")}
+    //                     break;
+    //             }
+    //         })
+    //     }
+    //     catch(error){
+    //         console.log('errrrorrr: ', error)
+    //     }
+    // }
 
     const logout = async() => {
         await fetch(`${pathName}/server/logout`, {
@@ -133,7 +125,7 @@ const ContextProvider = (props: {children: ReactElement}) => {
         })
     }
 
-    const login = async (accessToken: string, type: string) => {
+    const login = async (accessToken: string) => {
         try {
 
             const res = parseJwt(accessToken)

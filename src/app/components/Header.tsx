@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { useContext, useState } from "react";
 import DropDown from "./Notifications/DropDown";
 import { AuthContext } from "../context";
+import Image from "next/image";
 
 
 const Header:React.FC = () => {
@@ -11,28 +12,19 @@ const Header:React.FC = () => {
     const { isAuthenticated, logout } = useContext(AuthContext)
 
 
-    const onClick = (e: any) => {
-        console.log(e)
-        if(e.target.innerHTML == "home"){
-            redirect("/")
-        }
-        else redirect(`/${e.target.innerHTML}`)
+    const onClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if(e.target){
+            const value = (e.target as HTMLButtonElement).innerHTML
+            if(value == "home"){
+                redirect("/")
+            }
+            else redirect(`/${value}`)
+            }
     }
 
     const changeAlert = () => {
         setAlerts(!alerts)
         setNotifs(!showNotifications)
-    }
-
-    const style = {
-        "background": "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(245, 233, 191, 1) 0%, rgba(232, 197, 70, 1) 99%)",
-        "borderStartStartRadius": "50px 100px",
-        "borderStartEndRadius": "50px 100px",
-        "padding": "7px 15px",
-        "textAlign": "center",
-        "border": "none",
-        "borderRight": "1px solid pink",
-        "boxShadow": "4px 4px 10px grey",
     }
 
     return (
@@ -43,9 +35,23 @@ const Header:React.FC = () => {
                         "margin": "5px",
                         "width": "100%",}}>
                 <div id="links">
-                    <button style={style} className="nav-button" onClick={(e)=> onClick(e)}>home</button>
+                    <button style={{"background": "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(245, 233, 191, 1) 0%, rgba(232, 197, 70, 1) 99%)",
+        "borderStartStartRadius": "50px 100px",
+        "borderStartEndRadius": "50px 100px",
+        "padding": "7px 15px",
+        "textAlign": "center",
+        "border": "none",
+        "borderRight": "1px solid pink",
+        "boxShadow": "4px 4px 10px grey"}} className="nav-button" onClick={(e)=> onClick(e)}>home</button>
                     {isAuthenticated.isAuth && 
-                        <button style={style} className="nav-button" onClick={(e)=> onClick(e)}>leaderboard</button>
+                        <button style={{"background": "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(245, 233, 191, 1) 0%, rgba(232, 197, 70, 1) 99%)",
+        "borderStartStartRadius": "50px 100px",
+        "borderStartEndRadius": "50px 100px",
+        "padding": "7px 15px",
+        "textAlign": "center",
+        "border": "none",
+        "borderRight": "1px solid pink",
+        "boxShadow": "4px 4px 10px grey"}} className="nav-button" onClick={(e)=> onClick(e)}>leaderboard</button>
                     }
                     
                     {/* need one for like my leaderboard and then for others */}
@@ -53,8 +59,12 @@ const Header:React.FC = () => {
                 {isAuthenticated.isAuth && 
                 <div id='auth-info'>
                     <p>Logged in as: {isAuthenticated.name}</p>
-                    <button id='notif-button' onClick={changeAlert}><img id="notifications" src={alerts ? "/alert-bell.svg" : "/bell.svg"}/></button>
-                    <button id='notif-button' ><img id="notifications" src={"settings.png"}/></button>
+                    <button id='notif-button' onClick={changeAlert}>
+                        <Image width={20} height={20} alt="alert notification button" id="notifications" src={alerts ? "/alert-bell.svg" : "/bell.svg"}/> 
+                        </button>
+                    <button id='notif-button' >
+                        <Image  width={20} height={20}  alt="setting button" id="notifications" src={"/settings.png"}/> 
+                        </button>
                     <button id='logout-button' onClick={()=>logout()}>logout</button>
                     {showNotifications && <DropDown/>}
                 </div>

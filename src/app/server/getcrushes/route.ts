@@ -11,6 +11,7 @@ export async function GET(){
         return NextResponse.json({})
     }
     catch(e){
+        console.log('caught error: ', e )
         return NextResponse.json(
             {error: 'error in retrieving data from server'},
             {status: 400}

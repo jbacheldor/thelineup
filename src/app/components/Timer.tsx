@@ -21,7 +21,7 @@ const Timer:React.FC<Props> = ({time, initialString, secondString, onClick, disa
             setTimer(time)
             setResend(false)
         }
-    }, [timer])
+    }, [time, timer])
 
         // 30 second countdown timer 
     const countDownTimer = () => {

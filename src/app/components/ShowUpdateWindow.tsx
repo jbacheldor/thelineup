@@ -1,5 +1,6 @@
 import React from 'react';
 import './style.css'
+import Image from 'next/image';
 
 type Props = {
     crushName?: string,
@@ -42,14 +43,14 @@ function ShowUpdateWindow (props: Props) {
                 </div>
                 <div className ="crush-scroll-bar">
                 <div className="button-wrapper">
-                    <img src={`/up-arrow.svg`} alt="up arrow"/>
+                    <Image  src={`/up-arrow.svg`} alt="up arrow" width={20} height={20}/> 
                 </div>
                     <div className='scroll-available' >
                         <div className="scroll-remaining" style={{height: scrollHeight ? scrollHeight : "10px"}}>
                         </div>
                     </div>
                     <div className="button-wrapper">
-                        <img src={`/down-arrow.svg`} alt="down arrow"/>
+                        <Image  src={`/down-arrow.svg`} alt="down arrow" width={20} height={20}/> 
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PasswordWindow from "./PasswordWindow";
 import CodeWindow from "./CodeWindow";
+import Image from "next/image";
 
 type props = {
     closeARoo: () => void;
@@ -10,14 +11,16 @@ const WindowFolder:React.FC<props> = ({closeARoo}) => {
     const [openLogin, setOpenLogin] = useState("");
     const [current, setCurrent] = useState(true)
 
-    const openWindow = (e: any) => {
-        if(e.target.ariaLabel == "password") setOpenLogin(e.target.ariaLabel)
-        else {
-            setOpenLogin(e.target.ariaLabel)
+    const openWindow = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+        if(e.target){
+            if((e.target as HTMLElement).ariaLabel == "password") setOpenLogin((e.target as HTMLElement).ariaLabel || '')
+            else {
+                setOpenLogin((e.target as HTMLElement).ariaLabel || '')
+            }
         }
     }
     
-    const closeWindow = (e: any) => {
+    const closeWindow = () => {
         setOpenLogin("")
     }
 
@@ -52,26 +55,30 @@ const WindowFolder:React.FC<props> = ({closeARoo}) => {
                 <div id="search-bar-section">
                     <div id='left-side'>
                         <button>=</button>
-                        <button disabled={current} onClick={navigateBack}><img src={"/left-pointer.svg"} width="11px" height="11px"/></button>
-                        <button disabled><img src={"/right-pointer.svg"} width="11px" height="11px"/></button>
+                        <button disabled={current} onClick={navigateBack}>
+                            <Image  alt="button to return to previous window" src={"/left-pointer.svg"} width={11} height={11}/>
+                            </button>
+                        <button disabled>
+                            <Image alt="button to go to next window" src={"/right-pointer.svg"} width={11} height={11}/>
+                            </button>
                         <div className="section">
-                            <img src={"/closed-folder.svg"} width="11px" height="11px"/>
+                            <Image alt=" closed foler - in fake windows search - nothing to see here" src={"/closed-folder.svg"} width={11} height={11}/> 
                             <input placeholder="C:\file\login"></input>
                         </div>
                     </div>
                     <div className='section'>
-                        <img src={"/search.svg"} width="11px" height="11px"/>
+                        <Image alt="search bar" src={"/search.svg"} width={11} height={11}/> 
                         <input placeholder="Search"></input>
                     </div>
                 </div>
                     {current && 
                         <div id="main-login-window">
                             <div id="folder">
-                                <img src={"/closed-folder.svg"} aria-label="code" onClick={updateCurrentFolders}/>
+                                <Image alt="folder pop up window for code login" src={"/closed-folder.svg"} aria-label="code" onClick={updateCurrentFolders} width={84} height={65}/> 
                                 <p>code.exe</p>
                             </div>
                             <div id="folder">
-                                <img src={"/closed-folder.svg"}  aria-label="password" onClick={(e)=> {openWindow(e)}}/>
+                                <Image alt="folder pop up for password login" src={"/closed-folder.svg"}  aria-label="password" onClick={(e)=> {openWindow(e)}} width={84} height={65}/> 
                                 <p>password.exe</p>
                             </div>
                         </div>
@@ -79,11 +86,11 @@ const WindowFolder:React.FC<props> = ({closeARoo}) => {
                     {!current &&
                         <div id="main-login-window">
                             <div id="folder">
-                                <img src={"/closed-folder.svg"} aria-label="sms" onClick={(e)=> {openWindow(e)}}/>
+                                <Image alt="folder navigation to sms login" src={"/closed-folder.svg"} aria-label="sms" onClick={(e)=> {openWindow(e)}} width={84} height={65}/>
                                 <p>sms.exe</p>
                             </div>
                             <div id="folder">
-                                <img src={"/closed-folder.svg"}  aria-label="email" onClick={(e)=> {openWindow(e)}}/>
+                                <Image alt="folder navigation to email login" src={"/closed-folder.svg"}  aria-label="email" onClick={(e)=> {openWindow(e)}} width={84} height={65}/> 
                                 <p>email.exe</p>
                             </div>
                         </div>

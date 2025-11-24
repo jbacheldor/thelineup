@@ -1,7 +1,5 @@
 import { jwtDecode } from "jwt-decode";
 import * as jose from 'jose'
-import { getAuth } from "firebase/auth";
-import app from "./server/createClient";
 
 export const verifyJWT = async (token: string) => {
   const iss = process.env.ISSUER
@@ -39,17 +37,17 @@ export const verifyJWT = async (token: string) => {
 
 // pulls jwt out in order to parse it
 export function parseJwt (token: string) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     if(typeof window == 'undefined') {
-      var jsonPayload = decodeURIComponent(Buffer.from(base64, 'base64').toString('binary').split('').map(function(c) {
+      const jsonPayload = decodeURIComponent(Buffer.from(base64, 'base64').toString('binary').split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
        }).join(''));
        return JSON.parse(jsonPayload);
 
     }
     else {
-      var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
 

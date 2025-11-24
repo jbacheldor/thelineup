@@ -7,7 +7,6 @@ import { AuthContext } from "../context";
 
 
 const Leaderboard:React.FC = () => {
-    const pathName = process.env.BASE_URL
     const [isVerified, setIsVerified] = useState(false)
     const { isAuthenticated } = useContext(AuthContext);
 
@@ -21,7 +20,7 @@ const Leaderboard:React.FC = () => {
             setIsVerified(true)
             // silentRefresh()
         }
-    }, [])
+    }, [isAuthenticated])
 
 
     if(isVerified) return (<CrushWrapper />)

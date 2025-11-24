@@ -5,10 +5,10 @@ import './style.css'
 import Headstone from './Headstone';
 // import { ReactComponent as MinimizeIcon }  from '../../assets/minimize-8.svg';
 
-type Props = {
-    theme?: string;
-    crushName?: string;
-}
+// type Props = {
+//     theme?: string;
+//     crushName?: string;
+// }
 
 type updateFormat = {
     event: string,
@@ -29,8 +29,8 @@ export type crushType = {
 }
 
 
-function CrushWrapper(props: Props) {
-    const {crushName} = props
+function CrushWrapper() {
+    // const {crushName} = props
     const pathName = process.env.BASE_URL
     const [showWindow, setShowWindow] = React.useState(false)
     const [showSideProfile, setShowSideProfile] = React.useState(false)
@@ -93,7 +93,7 @@ function CrushWrapper(props: Props) {
 
     useEffect(()=> {
         getCrush()
-    }, [])
+    })
 
     return (
         <>
