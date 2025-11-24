@@ -63,7 +63,7 @@ const Header:React.FC = () => {
                         <Image width={20} height={20} alt="alert notification button" id="notifications" src={alerts ? "/alert-bell.svg" : "/bell.svg"}/> 
                         </button>
                     <button id='notif-button' >
-                        <Image  width={20} height={20}  alt="setting button" id="notifications" src={"/settings.png"}/> 
+                        <Image  width={20} height={20}  alt="setting button" id="notifications" src={"/settings.png"} onClick={()=> {redirect('/settings')}}/> 
                         </button>
                     <button id='logout-button' onClick={()=>logout()}>logout</button>
                     {showNotifications && <DropDown/>}
