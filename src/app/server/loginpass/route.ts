@@ -1,26 +1,35 @@
-import { getAuth, signInWithEmailAndPassword, User } from "firebase/auth";
+'use server'
+import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, User } from "firebase/auth";
 import { NextRequest, NextResponse } from "next/server";
 import app from "../createClient";
+import { setCookie } from 'cookies-next/server';
+import { cookies } from 'next/headers';
 
-export async function POST(request: NextRequest){
-    var user = null
+export async function POST(req: NextRequest){
+    const res = new NextResponse();
+    let user = null
     try {
-        const {email, password} = await request.json()
+        const {email, password} = await req.json()
         const auth = getAuth(app);
-        const res:NextResponse | User = await signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        setPersistence(auth, browserSessionPersistence)
+        const response:NextResponse | User = await signInWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
             // Signed in 
             user = userCredential.user;
-            // would be cooool, if we could like,,,,
-            // gather this data and figure out who exactly is logged in
-            // and what level of access they should get
-            // i can probably implement this...
+
+            console.log('user???', user)
+            // const idToken = await userCredential.user.getIdToken();
+
+
+            // 1 hour expiration - it should expire anyways after one hour but whatever
+            // await setCookie('access-token', `${user.accessToken}`, { cookies, httpOnly: true,  secure: true, sameSite: "strict", maxAge: 3600000,});
+            await setCookie('refresh-token', user.refreshToken, {cookies, httpOnly: true,  secure: true, sameSite: "strict", });
+
+        
             return NextResponse.json(
                 {user: {
                     refreshToken: user.refreshToken,
-                    accessToken: user.accessToken,
-                    expirationTime: user.expirationTime,
-                    uid: user.uid,
+                    // accessToken: user.accessToken,
                 }},
                 {status: 200}
             )
@@ -36,19 +45,19 @@ export async function POST(request: NextRequest){
             )
         })
 
-        const res_json = await res.json()
+        const res_json = await response.json()
         // console.log("", await res.body)
 
         if(res.status == 200) {
             return NextResponse.json(
                 {body:  res_json},
-                {status: res.status},
+                {status: response.status},
             )
         }
         else {
             return NextResponse.json(
                 {error: "womp womp womp, looks like something is funky around here"},
-                {status: res.status},
+                {status: response.status},
             )
         }
     }catch (e){

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Timer from "../Timer";
 import WindowWrapper from "./WindowWrapper";
 import CloseButton from "../General/CloseButton";
@@ -29,18 +29,16 @@ const CodeWindow:React.FC<Props> = ({type, closeWindow}) => {
         closeWindow("code")
     }
 
-    const submitLogin =  async (e: any) => {
+    const submitLogin =  async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
     }
 
     // returns false if there are any characters that are not numbers!!
     // including alphanumerics and symbols
     const checkForNums = () => {
-        let pattern = /\d/g;
+        const pattern = /\d/g;
         if((loginForm.sms)) {
-            let charCount = (loginForm.sms).replace(pattern, '').length; 
-            console.log('char count', charCount)
+            const charCount = (loginForm.sms).replace(pattern, '').length; 
             if(charCount > 0) return false
             else return true
         }
@@ -64,10 +62,10 @@ const CodeWindow:React.FC<Props> = ({type, closeWindow}) => {
         // if code has bene sent and sms / email is valid,,, then put code in
         if(isvalid && codeSent){
             // maybe we need to check length of code,,, 
-            setLoginValid
+            setLoginValid(true)
         }
 
-    }, [loginForm])
+    }, [type, isvalid, codeSent, loginForm])
 
     const sendLink = async () => {
         if(isvalid){
@@ -105,14 +103,17 @@ const CodeWindow:React.FC<Props> = ({type, closeWindow}) => {
                     setCodeSent(false)
                 }
                 console.log(res)
+            }).catch((e)=> {
+                console.log('error in sending out code', e)
+                setMsg("Error sending out code. Try again please!")
             })
         }
     }
 
-    const updateLoginForm = (e: any) => {
+    const updateLoginForm = (e: FormEvent) => {
         setLoginForm({
             ...loginForm,
-            [e.target.ariaLabel]: e.target.value
+            [(e.target as HTMLElement).ariaLabel || '']: (e.target as HTMLInputElement).value
         })
     }
 

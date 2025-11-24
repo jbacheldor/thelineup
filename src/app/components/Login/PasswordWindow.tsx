@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import WindowWrapper from "./WindowWrapper";
 import Timer from "../Timer";
 import CloseButton from "../General/CloseButton";
+import { redirect } from "next/navigation";
+import { passLogin } from "@/app/authUtils";
+
 
 
 type loginFormType = {
@@ -57,19 +60,21 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
         }
     }, [loginForm.email])
 
-    const togglePassword = (e: any) => {
+    const togglePassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setShowPassword(!showPassword)
     }
 
-    const updateLoginForm = (e: any) => {
-        setLoginForm({
-            ...loginForm,
-            [e.target.ariaLabel]: e.target.value
-        })
+    const updateLoginForm = (e: ChangeEvent) => {
+        if(e.target){
+            setLoginForm({
+                ...loginForm,
+                [(e.target as HTMLInputElement).ariaLabel || '']: (e.target as HTMLInputElement).value
+            })
+        }
     }
 
-    const submitLogin = async (e: any) => {
+    const submitLogin = async (e: FormEvent) => {
         e.preventDefault()
 
         // error handling
@@ -93,37 +98,27 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
 
         // props need to do switch case login here ya knowww
         if(validReq){
-            await fetch(`${pathName}/server/loginpass`, {
-                method: "POST",
-                body: JSON.stringify(
-                    {
-                        "email": loginForm.email,
-                        "password": loginForm.password,
+                await passLogin(loginForm.email, loginForm.password)
+                .then((res)=> {
+                    if(res.status == 400){
+                        setMsg("Invalid Credentials, try again")
                     }
-                )
-            }).then(async (response)=> {
-                if(!response.ok){
-                    setMsg("Invalid Credentials, try again")
-                }
-                else{
-                    const data = await response.json()
-                    const {accessToken, refreshToken} = data.body.user
-
-                    // encrypted string
-                    // also change the name to something random
-                    localStorage.setItem('access-token', accessToken)
-                    localStorage.setItem('refresh-token', refreshToken)
-                    setLoginForm(initialLoginForm)
-
-                    alert('login successful!!')
-                    setMsg("")
-                    closeWindow("password")
-                }
-            }).catch((e)=> {
-                setMsg("Error logging in")
-                throw new Error('eeee on the client side', e)
-            })
-        }
+                    else if(res.status == 200) {
+                        setLoginForm(initialLoginForm)
+                        
+                        setMsg("")
+                        closeWindow("password")
+                        
+                    }
+                    
+                }).catch((error)=>{
+                    setMsg("Error logging in")
+                    console.log('caught an error in password window', error)
+                    throw new Error('eeee on the client side', error)
+                }).finally(()=> {
+                    redirect("/leaderboard")
+                })
+             }
     }
 
     return (

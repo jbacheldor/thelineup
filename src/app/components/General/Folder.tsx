@@ -1,3 +1,4 @@
+import Image from "next/image";
 
 type Props = {
     onClickEvent: () => void;
@@ -8,15 +9,11 @@ type Props = {
 const Folder:React.FC<Props> = ({onClickEvent, text}) => {
 
     return (
-        <div id="folder">
-                <img src={"/closed-folder.svg"} onClick={onClickEvent}/>
+        <div id="folder" style={{"margin": "5px","padding": "10px"}}>
+            <Image alt="folder navigation button" width={84} height={65} style={{"width": "84px", "height": "65px"}} className="folder-img" src={"/closed-folder.svg"} onClick={onClickEvent}/>
                 <p>{text}</p>
             <style jsx>
             {`
-                #folder {
-                    margin: 5px;
-                    padding: 10px;
-                }
                 #folder:hover {
                     cursor: pointer;
                 }

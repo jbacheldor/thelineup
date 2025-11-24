@@ -4,11 +4,7 @@ import Lottery from "../components/Lottery"
 import WindowFolder from "./Login/WindowFolder"
 import Folder from "./General/Folder"
 
-type Props = {
-    setToken: (name:string, token: string) => void
-}
-
-const Login:React.FC<Props> = ({setToken}) => {
+const Login:React.FC = () => {
     const [showLottery, setLottery] = useState(false)
     const [showLogin, setShowLogin] = useState(false);
 
@@ -23,9 +19,23 @@ const Login:React.FC<Props> = ({setToken}) => {
     }
 
     return (
-        <div id="login-body">
-            <h2>Login</h2>
-            <div id="folders">
+        <>
+        <div id="login-body"
+        style={{
+            'display': 'flex',
+            'alignItems': 'center',
+            'flexDirection': 'column',
+            'height': '100%',
+        }}
+        >
+
+            <h2 style={{'margin': '20px'}}>Login</h2>
+            <div id="folders" style={{
+                'position': 'absolute',
+                'left': '10px',
+                'top': '40%',
+                'textAlign': 'center'
+            }}>
                 <Folder onClickEvent={changeLottery} text="lottery"/>
                 <Folder onClickEvent={changeShowWindow} text="login"/>
             </div>
@@ -37,27 +47,9 @@ const Login:React.FC<Props> = ({setToken}) => {
                 <Lottery changeLottery={changeLottery}/>
             }
         
-            <style jsx>
-            {`
-                #folders {
-                    position: absolute;
-                    left: 10px;
-                    top: 40%;
-                    text-align: center;
-                }
-                #login-body {
-                    display: flex;
-                    align-items: center;
-                    flex-direction: column; 
-                    height: 100%;
-                }
-                h2 {
-                    margin: 20px;   
-                }
-            
-            `}
-            </style>
+
         </div>
+        </>
     )
 }
 
