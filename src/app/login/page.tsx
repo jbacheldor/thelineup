@@ -1,8 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from "react"
-import Lottery from "../components/Lottery"
-import path from "path"
+import React from "react"
 import Login from "../components/Login"
 
 type loginFormType = {
@@ -23,7 +21,6 @@ const LoginPage:React.FC = () => {
     
     return (
         <div>
-            <h1>YOU ARE IN THE LOGIN PAGE!!!</h1>
             <Login/>
         </div>
         )

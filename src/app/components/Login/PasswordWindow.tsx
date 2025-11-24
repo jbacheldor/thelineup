@@ -4,8 +4,6 @@ import Timer from "../Timer";
 import CloseButton from "../General/CloseButton";
 import { redirect } from "next/navigation";
 import { AuthContext } from "@/app/context";
-import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
-import app from "@/app/server/createClient";
 import { passLogin } from "@/app/authUtils";
 
 
@@ -107,20 +105,19 @@ const PasswordWindow:React.FC<Props> = ({closeWindow}) => {
                         setMsg("Invalid Credentials, try again")
                     }
                     else if(res.status == 200) {
-                        console.log('res!', res)
-                        const data = res.data
-
                         setLoginForm(initialLoginForm)
                         
                         setMsg("")
                         closeWindow("password")
-                        // redirect("/leaderboard")
+                        
                     }
                     
                 }).catch((error)=>{
                     setMsg("Error logging in")
                     console.log('caught an error in password window', error)
                     throw new Error('eeee on the client side', error)
+                }).finally(()=> {
+                    redirect("/leaderboard")
                 })
              }
     }

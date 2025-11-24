@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getAuth, onAuthStateChanged, Auth, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import app from "./server/createClient";
 import { silentRefresh } from "./authUtils";
+import path from "path";
 
 enum Roles {
     Demo = "Demo",
@@ -52,21 +53,19 @@ const ContextProvider = (props: {children: ReactElement}) => {
     const pathName = process.env.BASE_URL
 
     useEffect(()=> {
-        console.log('initial use effect!!')
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log('in user', user)
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
-                const uid = user.uid;
+                // const uid = user.uid;
+                setAuth({
+                    isAuth: true,
+                    name: user.email,
+                    author: false
+                })
                 // ...
-            } else {
-                console.log('idk bro')
-                // User is signed out
-                // ...
-            }
+            } 
             });
-        // initialLoad()
     }, [auth])
 
     // maybe a wee bit of a use effect???
@@ -121,12 +120,13 @@ const ContextProvider = (props: {children: ReactElement}) => {
             if(response.status == "200") {
                 const auth = getAuth(app);
                 signOut(auth)
-                .then(() => {
+                .then(async () => {
                     setAuth(initAuth)
-                    redirect("/")
                 })
                 .catch((error) =>{
                     console.log('error: ', error)
+                }).finally(()=> {
+                    redirect("/")
                 })
             }
             else console.log('error logging out.')

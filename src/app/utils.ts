@@ -26,8 +26,6 @@ export const verifyJWT = async (token: string) => {
       audience: aud,
     })
     if(payload && protectedHeader){
-      // console.log('payload', payload)
-      // console.log('protected header', protectedHeader)
       return true 
     }
     else return false

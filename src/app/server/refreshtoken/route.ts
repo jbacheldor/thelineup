@@ -6,9 +6,7 @@ import { setCookie } from 'cookies-next/server';
 import { cookies } from 'next/headers';
 
 export async function GET() {
-    console.log('we are in refresh token~')
     const auth = getAuth(app);
-    console.log("auth", auth.currentUser)
 
     try {
         // force refresh is true

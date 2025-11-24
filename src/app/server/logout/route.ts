@@ -7,9 +7,9 @@ export async function POST() {
         // PELASE FOR THE LOVE OF PEARLS REMEMBER TO UNCOMMENT THIS
         // WHEN U R DONE TROUBLESHOOTING
         
-        // const cookieStore = await cookies()
-        // cookieStore.delete('access-token')
-        // cookieStore.delete('refresh-token')
+        const cookieStore = await cookies()
+        cookieStore.delete('access-token')
+        cookieStore.delete('refresh-token')
 
         return NextResponse.json({
             message: 'logout successful',

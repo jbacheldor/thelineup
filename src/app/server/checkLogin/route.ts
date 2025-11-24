@@ -4,7 +4,6 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 export async function GET(){
-    console.log('we are in check login!')
     try {
         const cookieStore = await cookies()
         const access_token = cookieStore.get('access-token')
@@ -16,7 +15,6 @@ export async function GET(){
             const verify = await verifyJWT(access_token.value)
 
             if(!verify) {
-                console.log('is unverified?')
                 cookieStore.delete('access-token')
                 cookieStore.delete('refresh-token')
                 return NextResponse.json({
@@ -26,7 +24,6 @@ export async function GET(){
             }
             // need to change this to NOT! expired
             if(exp) {
-                console.log('is expired?')
                 return NextResponse.json({
                     data: 'refresh', 
                     status: 403
@@ -34,7 +31,6 @@ export async function GET(){
             }
             else {
                 // then u also need to send data object back,,,
-                console.log('else??? parsed', parsed)
                 return NextResponse.json({
                     data: parsed, 
                     status: 200

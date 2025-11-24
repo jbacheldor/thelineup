@@ -26,13 +26,13 @@ const Header:React.FC = () => {
 
     const style = {
         "background": "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(245, 233, 191, 1) 0%, rgba(232, 197, 70, 1) 99%)",
-        "border-start-start-radius": "50px 100px",
-       "border-start-end-radius": "50px 100px",
+        "borderStartStartRadius": "50px 100px",
+        "borderStartEndRadius": "50px 100px",
         "padding": "7px 15px",
-        "text-align": "center",
+        "textAlign": "center",
         "border": "none",
-        "border-right": "1px solid pink",
-        "box-shadow": "4px 4px 10px grey",
+        "borderRight": "1px solid pink",
+        "boxShadow": "4px 4px 10px grey",
     }
 
     return (

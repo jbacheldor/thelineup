@@ -32,7 +32,6 @@ export type crushType = {
 function CrushWrapper(props: Props) {
     const {crushName} = props
     const pathName = process.env.BASE_URL
-    console.log('crushName', crushName)
     const [showWindow, setShowWindow] = React.useState(false)
     const [showSideProfile, setShowSideProfile] = React.useState(false)
 

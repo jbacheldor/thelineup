@@ -1,7 +1,6 @@
 import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import app from "./server/createClient";
 import { parseJwt } from "./utils";
-import { NextResponse } from "next/server";
 
 const pathName = process.env.BASE_URL
 
@@ -9,7 +8,6 @@ const pathName = process.env.BASE_URL
 export const silentRefresh = async () => {
     try {
         const auth = getAuth(app);
-        console.log("authxxxx", auth.currentUser)
       const res = await fetch(`${pathName}/server/refreshtoken`, {
           method: 'GET',
       })
@@ -52,7 +50,6 @@ export const passLogin = async (email: string, password: string) => {
                 });
         })
 
-        console.log('hello???', res)
         return res
 }
 
