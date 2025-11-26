@@ -5,7 +5,7 @@ import AddFriend from "../components/Settings/AddFriend";
 import Friends from "../components/Settings/Friends"
 
 import { AuthContext } from "@/app/context";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 type contactForm = {
     username: string,
@@ -22,6 +22,7 @@ const initialContact:contactForm = {
 const Settings:React.FC = () => {
     const { isAuthenticated } = useContext(AuthContext)
     const [contact, setContact] = useState(initialContact)
+    const pathName = process.env.BASE_URL
 
     const [editMode, setEditMode] = useState(false)
 
@@ -30,6 +31,18 @@ const Settings:React.FC = () => {
     const onClick = () => {
         setEditMode(!editMode)
     }
+
+    const getUserInfo = async () => {
+        await fetch(`${pathName}/server/settings/getsettings?` + new URLSearchParams({
+            id: '7jfdseIaBpPnCNNPSw27l6WoG8w2'
+        }).toString()), {
+            method: "GET"
+        }
+    }
+
+    useEffect(()=> {
+        // getUserInfo()
+    }, [])
 
     const updateContact = (e: React.FormEvent) => {
         
