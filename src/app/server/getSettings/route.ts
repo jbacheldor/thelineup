@@ -1,5 +1,5 @@
 import { turso } from "@/app/tursoClient";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 type user = {
     user_id: string,
@@ -10,33 +10,43 @@ type user = {
 }
 
 export async function GET(req: NextRequest) {
+
+    const id = req.nextUrl.searchParams.get('id')
     
-    // fetch from server
+    // // get contact info
+    try {
+        const user = await turso.execute({
+            sql: "SELECT * FROM User WHERE user_id = ?",
+            args: [id],
+        });
 
-    // get contact info
-    const user = await turso.execute({
-        sql: "SELECT * FROM User WHERE user_id = ?",
-        args: [1],
-    });
+        // // get membership
 
-    console.log('what is user', user)
+        // // this works within sql console query
+        const member = await turso.execute({
+            sql: "SELECT user_id, name, email FROM User WHERE user_id in (SELECT user_id FROM Membership WHERE instance_id = (SELECT instance_id FROM Instance WHERE owner_id = ?))",
+            args: [id]
+        })
 
-    // get membership
+        const invites = await turso.execute({
+            sql: 'SELECT name, email, sent_on FROM invites WHERE from_user = ?',
+            args: [id]
+        })
 
-    // this works within sql console query
-    const member = await turso.execute({
-        sql: "SELECT user_id, name, email FROM User WHERE user_id in (SELECT user_id FROM Membership WHERE instance_id = (SELECT instance_id FROM Instance WHERE owner_id = '?'))",
-        args: [1]
-    })
-
-    console.log('what is member', member)
-
-    const invites = await turso.execute({
-        sql: 'SELECT name, email, sent_on FROM invites WHERE from_user = ?',
-        args: [1]
-    })
-
-    console.log('what is invites', invites)
+        return NextResponse.json({
+            status: 200,
+            data: {
+                user: user.rows,
+                friends: member.rows,
+                invites: invites.rows
+            }
+        })
+    }catch(error) {
+        return NextResponse.json({
+            status: 400,
+            message: 'error trying to fetch turso data'
+        })
+    }
 
     // get invites sent
 }

@@ -15,7 +15,9 @@ module.exports = {
         MESSAGING_SENDER_ID: process.env.MESSAGING_SENDER_ID,
         APP_ID: process.env.APP_ID,
         MEASUREMENT_ID: process.env.MEASUREMENT_ID,
-        PUB_KEY_URL: process.env.PUB_KEY_URL
+        PUB_KEY_URL: process.env.PUB_KEY_URL,
+        TURSO_DATABASE_URL: process.env.TURSO_DATABASE_URL,
+        TURSON_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN,
     }
 }
 
