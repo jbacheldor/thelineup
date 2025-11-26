@@ -2,29 +2,38 @@
 
 import { useEffect, useState } from "react"
 
-const currentFriends = [
-    'George', 'Larry', 'Edmund', 'Lionette', 'Afifah'
-]
+export type FriendType = {
+    name: string,
+    user_id: string,
+}
 
-const Friends:React.FC = () => {
-    const [friends, setFriends] = useState(currentFriends)
-    const [removedFriends, setRemoved] = useState<string[]>([])
+export type FriendsType = FriendType[];
+
+type Props = {
+    friendList: FriendsType
+}
+
+const Friends:React.FC<Props> = (Props) => {
+    const {friendList} = Props
+    const [friends, setFriends] = useState<FriendType[]>(friendList)
+    const [removedFriends, setRemoved] = useState<FriendType[]>([])
     const [saveDisabled, setSave] = useState(true)
 
-    const removeFriend = (name: string) => {
-        const newFriends = friends.filter((e)=>  e!=name)
+
+    const removeFriend = (friend: FriendType) => {
+        const newFriends = friends.filter((e)=>  e.user_id!=friend.user_id)
         setFriends(newFriends)
-        setRemoved([...removedFriends, name])
+        setRemoved([...removedFriends, friend])
     }
 
-    const addFriend = (name: string) => {
-        const removed = removedFriends.filter((e)=> e!=name)
+    const addFriend = (friend: FriendType) => {
+        const removed = removedFriends.filter((e)=> e.user_id!=friend.user_id)
         setRemoved(removed)
-        setFriends([...friends, name])
+        setFriends([...friends, friend])
     }
 
     useEffect(()=> {
-        if(currentFriends.length == friends.length) setSave(true)
+        if(friendList.length == friends.length) setSave(true)
         else setSave(false)
     }, [friends])
 
@@ -35,7 +44,7 @@ const Friends:React.FC = () => {
                     <div id="friend" key={index}>
                         <button onClick={()=>removeFriend(val)}>-</button>
                         <img id="friend-pic" src="./old-windows-screen-saver.jpg"/>
-                        <p>{val}</p>
+                        <p>{val.name}</p>
                     </div>
                 ))}
                 {removedFriends.length > 0 && 
@@ -45,7 +54,7 @@ const Friends:React.FC = () => {
                     <div id="friend" key={index}>
                         <button onClick={()=>addFriend(val)}>+</button>
                         <img id="friend-pic" src="./old-windows-screen-saver.jpg"/>
-                        <p>{val}</p>
+                        <p>{val.name}</p>
                     </div>
                 ))}
                 <button disabled={saveDisabled}>save</button>

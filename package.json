@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@libsql/client": "^0.15.15",
         "cookies-next": "^6.1.0",
         "firebase": "^12.6.0",
         "jose": "^6.1.0",

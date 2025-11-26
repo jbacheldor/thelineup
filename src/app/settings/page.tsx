@@ -1,30 +1,41 @@
 'use client'
 
 import Image from "next/image";
-import AddFriend from "../components/Settings/AddFriend";
-import Friends from "../components/Settings/Friends"
+import AddFriend, { InvitesType } from "../components/Settings/AddFriend";
+import Friends, { FriendsType } from "../components/Settings/Friends"
 
-import { AuthContext } from "@/app/context";
 import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../userContext";
 
 type contactForm = {
     username: string,
     email: string,
     number: string
 }
-
 const initialContact:contactForm = {
     username: '',
-    email: 'eggs@egg.com',
-    number: '313-664-5502'
+    email: '',
+    number: ''
+}
+
+type SettingInfo = {
+    friends: FriendsType,
+    invites: InvitesType[]
+}
+
+const initInfo: SettingInfo = {
+    friends: [],
+    invites: []
 }
 
 const Settings:React.FC = () => {
-    const { isAuthenticated } = useContext(AuthContext)
+    const { user } = useContext(UserContext)
     const [contact, setContact] = useState(initialContact)
     const pathName = process.env.BASE_URL
+    const [settingInfo, setInfo] = useState<SettingInfo>(initInfo);
 
     const [editMode, setEditMode] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     // do a query to get all friends 
 
@@ -33,15 +44,32 @@ const Settings:React.FC = () => {
     }
 
     const getUserInfo = async () => {
+        console.log('???')
+        console.log('what is user', user)
         await fetch(`${pathName}/server/settings/getsettings?` + new URLSearchParams({
-            id: '7jfdseIaBpPnCNNPSw27l6WoG8w2'
-        }).toString()), {
+            id: user.id
+        }).toString(), {
             method: "GET"
-        }
+        }).then(async (data)=> {
+            const res = await data.json()
+            if(res.status == 200){
+                console.log('res. data', res.data)
+                setInfo(res.data)
+                setLoading(false)
+            }
+
+        }).catch((error)=> {
+            console.log('catch an error: ', error)
+        })
     }
 
     useEffect(()=> {
-        // getUserInfo()
+        setContact({
+            username: user.name,
+            email: user.email,
+            number: user.number,
+        })
+        getUserInfo()
     }, [])
 
     const updateContact = (e: React.FormEvent) => {
@@ -81,8 +109,12 @@ const Settings:React.FC = () => {
                 {editMode && <button id="save-button" onClick={()=> onClick()}>save</button>}
             </div>
             <hr/>
-            <Friends/>
-            <AddFriend/>
+            {!loading && 
+                <>
+                    <Friends friendList={settingInfo.friends}/>
+                    <AddFriend invitesList={settingInfo.invites}/>
+                </>
+            }
         </div>
         <style jsx>
             {`

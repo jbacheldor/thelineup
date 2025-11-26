@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import app from "./server/createClient";
 
-
 type User = {
     isAuthenticated: authObj,
     login: (accessToken: string, refreshToken: string) => void,
@@ -17,12 +16,14 @@ type authObj = {
     isAuth: boolean,
     name: string,
     author: boolean,
+    id: string,
 }
 
 const initAuth: authObj = {
     isAuth: false,
     name: "",
-    author: false
+    author: false,
+    id: ''
 }
 
 const authObject: User = {
@@ -32,33 +33,33 @@ const authObject: User = {
     logout: () => {},
 }
 
-
-
 const AuthContext = createContext(authObject)
 
 const ContextProvider = (props: {children: ReactElement}) => {
     const [isAuthenticated, setAuth] = useState(initAuth)
-    const auth = getAuth(app);
     // const value = useMemo(() => ({ isAuthenticated, setAuth }), [isAuthenticated, setAuth]);
     const pathName = process.env.BASE_URL
 
-    useEffect(()=> {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/auth.user
-                // const uid = user.uid;
-                if(user.email){
-                    setAuth({
-                        isAuth: true,
-                        name: user.email,
-                        author: false
-                    })
-                }
-                // ...
-            } 
-            });
-    }, [auth])
+
+    // useEffect(()=> {
+    //     onAuthStateChanged(auth, (user) => {
+    //         if (user) {
+
+    //             // User is signed in, see docs for a list of available properties
+    //             // https://firebase.google.com/docs/reference/js/auth.user
+    //             // const uid = user.uid;
+    //             if(user.email){
+    //                 setAuth({
+    //                     isAuth: true,
+    //                     name: user.email,
+    //                     author: false, 
+    //                     id: user.uid
+    //                 })
+    //             }
+    //             // ...
+    //         } 
+    //         });
+    // }, [auth])
 
     // maybe a wee bit of a use effect???
     // the use case of , access token bad, refresh token, i think needs to be built out
@@ -130,10 +131,13 @@ const ContextProvider = (props: {children: ReactElement}) => {
 
             const res = parseJwt(accessToken)
 
+            console.log('what is res???', res)
+
             setAuth({
                 isAuth: true, 
                 name: res.email, 
-                author: true
+                author: true,
+                id: res.id
             })
         }catch(error){
             console.log('it appears there is an error', error)

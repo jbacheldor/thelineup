@@ -6,7 +6,7 @@ type user = {
     name: string,
     email: string,
     author: boolean,
-    numer: string,
+    number: string,
 }
 
 export async function GET(req: NextRequest) {
@@ -15,11 +15,6 @@ export async function GET(req: NextRequest) {
     
     // // get contact info
     try {
-        const user = await turso.execute({
-            sql: "SELECT * FROM User WHERE user_id = ?",
-            args: [id],
-        });
-
         // // get membership
 
         // // this works within sql console query
@@ -36,7 +31,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({
             status: 200,
             data: {
-                user: user.rows,
                 friends: member.rows,
                 invites: invites.rows
             }

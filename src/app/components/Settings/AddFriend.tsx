@@ -2,10 +2,22 @@
 
 import { useState } from "react";
 
+type Props = {
+    invitesList: InvitesType[]
+}
+
 const invites = [{name: 'lisa', email: 'lisalovessoccer@gmail.com', date: '13 days ago'}, {name: 'jane', email: 'sexygurl123@hotmail.com', date: '23 days ago'}]
 
-const AddFriend:React.FC = () => {
-    const [invitesSent, setInvites] = useState<{name: string, email: string, date: string}[]>(invites)
+export type InvitesType = {
+    name: string,
+    email: string, 
+    sent_on: string,
+    id: string,
+}
+
+
+const AddFriend:React.FC<Props> = ({invitesList}) => {
+    const [invitesSent, setInvites] = useState<InvitesType[]>(invitesList)
 
     return (
         <div id="add-friends">
@@ -22,12 +34,12 @@ const AddFriend:React.FC = () => {
             <button>send invite email</button>
             <h3>invites sent</h3>
             <div id="invites">
-                {invites.map((val, index)=> (
+                {invitesSent.map((val, index)=> (
                     <div id="invite" key={index}>
                         <div id="invite-info">
                             <p>{val.name}</p>
                             <p>{val.email}</p>
-                            <p>{val.date}</p>
+                            <p>{val.sent_on}</p>
                         </div>
                         <div id="buttons">
                             <button>resend email</button>
