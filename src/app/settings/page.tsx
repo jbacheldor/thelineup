@@ -67,7 +67,7 @@ const Settings:React.FC = () => {
         setContact({
             username: user.name,
             email: user.email,
-            number: user.number,
+            number: user.number || '',
         })
         getUserInfo()
     }, [])
