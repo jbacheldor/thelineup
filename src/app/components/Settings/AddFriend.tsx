@@ -32,7 +32,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
         
         // update db
         await fetch(`${pathName}/server/settings/cancelinvite`, {
-            method: 'POST',
+            method: 'PATCH',
             body: JSON.stringify({
                 id: uuid
             })

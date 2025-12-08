@@ -1,6 +1,7 @@
 'use clients'
 
-import { useEffect, useState } from "react"
+import { UserContext } from "@/app/userContext";
+import { useContext, useEffect, useState } from "react"
 
 export type FriendType = {
     name: string,
@@ -14,22 +15,38 @@ type Props = {
 }
 
 const Friends:React.FC<Props> = (Props) => {
+    const pathname = process.env.BASE_URL
     const {friendList} = Props
     const [friends, setFriends] = useState<FriendType[]>(friendList)
     const [removedFriends, setRemoved] = useState<FriendType[]>([])
-    const [saveDisabled, setSave] = useState(true)
+    const [saveDisabled, setSave] = useState(true);
+    const {user} = useContext(UserContext);
 
-
-    const removeFriend = (friend: FriendType) => {
+    function removeFriend(friend: FriendType){
         const newFriends = friends.filter((e)=>  e.user_id!=friend.user_id)
         setFriends(newFriends)
         setRemoved([...removedFriends, friend])
     }
 
-    const addFriend = (friend: FriendType) => {
+    function addFriend(friend: FriendType) {
         const removed = removedFriends.filter((e)=> e.user_id!=friend.user_id)
         setRemoved(removed)
         setFriends([...friends, friend])
+    }
+
+    // remove the following people from the database
+    const saveList = async() => {
+        await fetch(`${pathname}/server/settings/removefriend`, {
+            method: 'DELETE',
+            body: JSON.stringify({
+                id: removedFriends,
+                instance_id: user.instance_id 
+            })
+        }).then((res)=> {
+            if(res.status == 200){
+                // then go through and update the list
+            }
+        })
     }
 
     useEffect(()=> {
@@ -57,7 +74,7 @@ const Friends:React.FC<Props> = (Props) => {
                         <p>{val.name}</p>
                     </div>
                 ))}
-                <button disabled={saveDisabled}>save</button>
+                <button disabled={saveDisabled} onClick={()=>saveList()}>save</button>
                 <style jsx>
                 {`
                 h3 {

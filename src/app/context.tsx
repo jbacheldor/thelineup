@@ -23,7 +23,7 @@ const initAuth: authObj = {
     isAuth: false,
     name: "",
     author: false,
-    id: ''
+    id: '',
 }
 
 const authObject: User = {
@@ -137,7 +137,7 @@ const ContextProvider = (props: {children: ReactElement}) => {
                 isAuth: true, 
                 name: res.email, 
                 author: true,
-                id: res.id
+                id: res.id,
             })
         }catch(error){
             console.log('it appears there is an error', error)

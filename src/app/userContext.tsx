@@ -10,7 +10,9 @@ type UserObj = {
     number: string, 
     email: string,
     author: boolean,
-    name: string
+    name: string,
+    instance_id: string,
+    title: string
 }
 
 const initObj: UserObj = {
@@ -18,7 +20,9 @@ const initObj: UserObj = {
     number: '',
     email: '',
     author: false,
-    name: ''
+    name: '',
+    instance_id: '',
+    title: ''
 }
 
 type contextType = {
@@ -51,13 +55,14 @@ const UserContextProvider = (props: {children: ReactElement}) => {
             const res = await data.json()
             console.log('what is data', res.data)
             if(res.status == 200) {
-                console.log('are we in here???')
                 setUser({
                     id: res.data.user_id,
                     number: res.data.number,
                     email: res.data.email,
                     author: res.data.author == 1 ? true : false,
                     name: res.data.name,
+                    instance_id: res.data.instance_id,
+                    title: res.data.title
                 })
             }
         }).catch((error)=> {

@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
 
     try {
         const user = await turso.execute({
-            sql: "SELECT * FROM User WHERE user_id = ?",
+            sql: "SELECT * FROM User JOIN Instance ON User.user_id = owner_id WHERE owner_id = ?",
             args: [id],
         });
 
