@@ -44,8 +44,6 @@ const Settings:React.FC = () => {
     }
 
     const getUserInfo = async () => {
-        console.log('???')
-        console.log('what is user', user)
         await fetch(`${pathName}/server/settings/getsettings?` + new URLSearchParams({
             id: user.id
         }).toString(), {

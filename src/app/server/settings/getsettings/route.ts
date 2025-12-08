@@ -24,9 +24,11 @@ export async function GET(req: NextRequest) {
         })
 
         const invites = await turso.execute({
-            sql: 'SELECT name, email, sent_on FROM invites WHERE from_user = ?',
+            sql: 'SELECT name, email, sent_on, uuid FROM invites WHERE (from_user = ? AND status != "cancelled")',
             args: [id]
         })
+
+
 
         return NextResponse.json({
             status: 200,
