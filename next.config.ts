@@ -18,6 +18,7 @@ module.exports = {
         PUB_KEY_URL: process.env.PUB_KEY_URL,
         TURSO_DATABASE_URL: process.env.TURSO_DATABASE_URL,
         TURSON_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN,
+        RESEND_KEY: process.env.RESEND_KEY,
     }
 }
 

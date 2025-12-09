@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import Image from "next/image";
+import { UserContext } from "@/app/userContext";
 
 type Props = {
     invitesList: InvitesType[]
@@ -14,20 +15,27 @@ export type InvitesType = {
     uuid: string,
 }
 
+type Form = {
+    name: string,
+    email: string
+}
+
+const initialForm: Form = {
+    name: '',
+    email: ''
+}
+
 
 const AddFriend:React.FC<Props> = ({invitesList}) => {
     const pathName = process.env.BASE_URL
     const [invitesSent, setInvites] = useState<InvitesType[]>(invitesList)
+    const [form, setForm] = useState<Form>(initialForm)
 
     const resendEmail = async () => {
         // hit endpoint which handles this
     }
 
     const cancelInvite =  async (e: React.MouseEvent) => {
-        console.log('eee', e)
-        console.log('ayo', (e.target as HTMLElement).ariaLabel)
-
-        console.log('???')
         const uuid = (e.target as HTMLElement).ariaLabel
         
         // update db
@@ -51,20 +59,46 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
 
     }
 
+    const {user} = useContext(UserContext)
+
+    const sendInitialInvite = async (e: React.FormEvent) => {
+        e.preventDefault()
+        await fetch(`${pathName}/server/settings/sendinvite`, {
+            method: 'POST',
+            body: JSON.stringify({
+                form,
+                name: user.name,
+                user_id: user.id,
+                instance: user.instance_id
+            })
+        })
+
+        // add to data base
+        // also randomly generate id
+    }  
+
+    const updateForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({...form, [e.target.ariaLabel || '']: e.target.value})
+    }
+
     return (
         <div id="add-friends">
-            <h3>Add Friends</h3>
-            <label>
-                <span>name</span>
-                <input/>
-            </label>
-            <label>
-                <span>email</span>
-                <input/>
-            </label>
+            <h3>invite link</h3>
+            <div>link here</div><button>copy to clipboard</button>
             
-            <button>send invite email</button>
+            <h3>Add Friends</h3>
+                <label>
+                    <span>name</span>
+                    <input aria-label="name" value={form.name} onChange={(e)=>updateForm(e)}/>
+                </label>
+                <label>
+                    <span>email</span>
+                    <input aria-label="email" value={form.email} onChange={(e)=>updateForm(e)}/>
+                </label>
+            <button onClick={(e)=> sendInitialInvite(e)}>send invite email</button>
             <h3>invites sent</h3>
+
+            
            <div id="invites">
                 <div id='login-window-folder'>
                 <div id="top-bar">
