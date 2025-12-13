@@ -36,9 +36,24 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
     const [linkVal, setLink] = useState('')
 
     const [msg, setMsg] = useState('')
+    const {user} = useContext(UserContext)
 
-    const resendEmail = async () => {
+    const resendEmail = async (val: InvitesType) => {
         // hit endpoint which handles this
+
+        await fetch(`${pathName}/server/settings/resendinvite`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                email: val.email,
+                name: val.name,
+                uuid: val.uuid,
+                instance: user.instance_id
+            })
+        }).then((res)=> {
+            if(res.status == 200){
+                console.log('yipeeee!')
+            }
+        })
     }
 
     const cancelInvite =  async (e: React.MouseEvent) => {
@@ -63,7 +78,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
 
     }
 
-    const {user} = useContext(UserContext)
+   
 
     const sendInitialInvite = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -111,7 +126,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
 
     const generateLink = () => {
         const uuid = v4();
-        setLink(`${pathName}/invite/instance?=${user.instance_id}/${uuid}`)
+        setLink(`${pathName}/signup/instance?=${user.instance_id}/${uuid}`)
     }
 
     return (
@@ -122,7 +137,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
             <div id="link-generation">
                 
                 <p>{linkVal}</p>
-                <button disabled={linkVal == ''} onClick={()=> copyText()}>copy to clipboard</button>
+                <button style={{visibility: linkVal == '' ?  'hidden': 'visible'}} onClick={()=> copyText()}>copy to clipboard</button>
             </div>
 
             
@@ -173,6 +188,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
                 </div>
                      <div id="main-login-window">
                         <table>
+                            <thead>
                             <tr>    
                                 <th></th>
                                 <th>name</th>
@@ -181,17 +197,19 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
                                 <th>resend</th>
                                 <th>cancel</th>
                             </tr>
+                            </thead>
+                            <tbody>
                         {invitesSent.map((val, index)=> (
                                 <tr  key={index}>
                                     <td><Image alt="closed folder" width={20} height={20} style={{transform: 'rotate(90deg)'}} src="./closed-folder.svg"/></td>
                                     <td id="name"> {val.name}</td>
                                     <td>{val.email}</td>
                                     <td>{val.sent_on}</td>
-                                    <td><button>resend</button></td>
+                                    <td><button onClick={(val)=>resendEmail(val)}>resend</button></td>
                                     <td><button aria-label={val.uuid} onClick={(e)=>cancelInvite(e)}>cancel</button></td>
                                 </tr>
                             
-                        ))}
+                        ))}</tbody>
                         </table>
                 </div>
                 </div>

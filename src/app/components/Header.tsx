@@ -53,6 +53,16 @@ const Header:React.FC = () => {
         "borderRight": "1px solid pink",
         "boxShadow": "4px 4px 10px grey"}} className="nav-button" onClick={(e)=> onClick(e)}>leaderboard</button>
                     }
+                    {isAuthenticated.isAuth && 
+                        <button style={{"background": "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(245, 233, 191, 1) 0%, rgba(232, 197, 70, 1) 99%)",
+        "borderStartStartRadius": "50px 100px",
+        "borderStartEndRadius": "50px 100px",
+        "padding": "7px 15px",
+        "textAlign": "center",
+        "border": "none",
+        "borderRight": "1px solid pink",
+        "boxShadow": "4px 4px 10px grey"}} className="nav-button" onClick={(e)=> onClick(e)}>activity</button>
+                    }
                     
                     {/* need one for like my leaderboard and then for others */}
                 </div>
