@@ -1,6 +1,7 @@
 import { turso } from '@/app/tursoClient';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
     const resend_key = process.env.RESEND_KEY
@@ -11,11 +12,13 @@ export async function POST(req: NextRequest) {
     try {
         const date = new Date()
 
+        const uuid =  uuidv4()
+
         const sent_on = `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDay()}`
 
         await turso.execute({
-            sql: "INSERT INTO invites (email, sent_on, from_user, name, status) VALUES(?, ?, ?, ?, ? )",
-            args: [ form.email, sent_on, user_id, form.name , 'pending']
+            sql: "INSERT INTO invites (uuid, email, sent_on, from_user, name, status) VALUES(?, ?, ?, ?, ? )",
+            args: [ uuid, form.email, sent_on, user_id, form.name , 'pending']
         })
 
     }catch(error){

@@ -10,7 +10,7 @@ type user = {
 }
 
 export async function GET(req: NextRequest) {
-
+    // 'use cache'
     const id = req.nextUrl.searchParams.get('id')
     
     // // get contact info

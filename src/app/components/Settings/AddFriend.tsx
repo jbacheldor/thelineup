@@ -1,8 +1,11 @@
 'use client'
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Image from "next/image";
 import { UserContext } from "@/app/userContext";
+import revalidateAction from "@/app/actions";
+import { v4 } from "uuid";
+import { link } from "fs";
 
 type Props = {
     invitesList: InvitesType[]
@@ -30,6 +33,9 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
     const pathName = process.env.BASE_URL
     const [invitesSent, setInvites] = useState<InvitesType[]>(invitesList)
     const [form, setForm] = useState<Form>(initialForm)
+    const [linkVal, setLink] = useState('')
+
+    const [msg, setMsg] = useState('')
 
     const resendEmail = async () => {
         // hit endpoint which handles this
@@ -45,13 +51,11 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
                 id: uuid
             })
         }).then((res) => {
-            console.log('what is res', res)
             if(res.status == 200) {
                 // find the friend in the list
                 // then remove it from the list
                 const newFriends = invitesSent.filter((e)=>  e.uuid!= uuid)
                 setInvites(newFriends)
-            
             }
         })
         // update the above list
@@ -63,15 +67,31 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
 
     const sendInitialInvite = async (e: React.FormEvent) => {
         e.preventDefault()
-        await fetch(`${pathName}/server/settings/sendinvite`, {
-            method: 'POST',
-            body: JSON.stringify({
-                form,
-                name: user.name,
-                user_id: user.id,
-                instance: user.instance_id
+
+        if(!form.email.includes('@') || !form.email.includes('.')){
+            setMsg('improper email. try again')
+            return
+        }
+        
+        if(invitesSent.find((element)=> form.email == element.email)) {
+            setMsg('User already exists - Check existing invite list')
+        } else {
+            await fetch(`${pathName}/server/settings/sendinvite`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    form,
+                    name: user.name,
+                    user_id: user.id,
+                    instance: user.instance_id
+                })
+            }).then((res)=> {
+                // we should revalidate this query bc uuid kept on server side
+                if(res.status == 200){
+                    // unsure if this is working rn
+                    // revalidateAction('invites')
+                }   
             })
-        })
+        }
 
         // add to data base
         // also randomly generate id
@@ -81,12 +101,34 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
         setForm({...form, [e.target.ariaLabel || '']: e.target.value})
     }
 
+    const copyText = () => {
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(linkVal);
+
+        // Alert the copied text
+        alert("Copied the text: " + linkVal);
+    }
+
+    const generateLink = () => {
+        const uuid = v4();
+        setLink(`${pathName}/invite/instance?=${user.instance_id}/${uuid}`)
+    }
+
     return (
         <div id="add-friends">
             <h3>invite link</h3>
-            <div>link here</div><button>copy to clipboard</button>
+            
+            <button onClick={()=>generateLink()}>generate link</button>
+            <div id="link-generation">
+                
+                <p>{linkVal}</p>
+                <button disabled={linkVal == ''} onClick={()=> copyText()}>copy to clipboard</button>
+            </div>
+
             
             <h3>Add Friends</h3>
+                <h4>{msg}</h4>
+                <form id="send-invite">
                 <label>
                     <span>name</span>
                     <input aria-label="name" value={form.name} onChange={(e)=>updateForm(e)}/>
@@ -96,9 +138,10 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
                     <input aria-label="email" value={form.email} onChange={(e)=>updateForm(e)}/>
                 </label>
             <button onClick={(e)=> sendInitialInvite(e)}>send invite email</button>
+                </form>
             <h3>invites sent</h3>
 
-            
+
            <div id="invites">
                 <div id='login-window-folder'>
                 <div id="top-bar">
@@ -154,7 +197,19 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
                 </div>
                 </div>
             <style jsx>
-            {`
+            {`  
+                #send-invite {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                #send-invite > input {
+                    min-width: 50ch;
+                }
+                #link-generation {
+                    display: flex;
+                    flex-direction: row;
+                }
                 #invite button {
                     padding: 0 5px;
                     height: fit-content;

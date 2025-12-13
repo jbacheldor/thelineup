@@ -1,8 +1,8 @@
 'use client'
-
 import Image from "next/image";
 import AddFriend, { InvitesType } from "../components/Settings/AddFriend";
 import Friends, { FriendsType } from "../components/Settings/Friends"
+import { cache } from 'react'
 
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../userContext";
@@ -43,12 +43,13 @@ const Settings:React.FC = () => {
         setEditMode(!editMode)
     }
 
-    const getUserInfo = async () => {
+    const getUserInfo = cache(async () => {
         await fetch(`${pathName}/server/settings/getsettings?` + new URLSearchParams({
             id: user.id
         }).toString(), {
-            method: "GET"
-        }).then(async (data)=> {
+            method: "GET",
+            next: { tags: ['invites']}
+        }, ).then(async (data)=> {
             const res = await data.json()
             if(res.status == 200){
                 console.log('res. data', res.data)
@@ -59,7 +60,7 @@ const Settings:React.FC = () => {
         }).catch((error)=> {
             console.log('catch an error: ', error)
         })
-    }
+    })
 
     useEffect(()=> {
         setContact({

@@ -5,7 +5,6 @@ export async function PATCH(req: NextRequest){
 
     const {id} =  await req.json()
 
-    console.log('what is uuid', id)
     try {
         await turso.execute({
             sql: `UPDATE invites SET status = 'cancelled' WHERE uuid = ?`,
