@@ -39,7 +39,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
     const resendEmail = async (val: InvitesType) => {
         // hit endpoint which handles this
 
-        await fetch(`${pathName}/server/resendinvite`, {
+        await fetch(`${pathName}/server/settings/resendinvite`, {
             method: 'PATCH',
             body: JSON.stringify({
                 email: val.email,
@@ -54,27 +54,27 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
         })
     }
 
-    // const cancelInvite =  async (e: React.MouseEvent) => {
-    //     const uuid = (e.target as HTMLElement).ariaLabel
+    const cancelInvite =  async (e: React.MouseEvent) => {
+        const uuid = (e.target as HTMLElement).ariaLabel
         
-    //     // update db
-    //     await fetch(`${pathName}/server/cancelinvite`, {
-    //         method: 'PATCH',
-    //         body: JSON.stringify({
-    //             id: uuid
-    //         })
-    //     }).then((res) => {
-    //         if(res.status == 200) {
-    //             // find the friend in the list
-    //             // then remove it from the list
-    //             const newFriends = invitesSent.filter((e)=>  e.uuid!= uuid)
-    //             setInvites(newFriends)
-    //         }
-    //     })
-    //     // update the above list
-    //     // look into the ssg regeneration situation from next js and see if it's applicable
+        // update db
+        await fetch(`${pathName}/server/settings/cancelinvite`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                id: uuid
+            })
+        }).then((res) => {
+            if(res.status == 200) {
+                // find the friend in the list
+                // then remove it from the list
+                const newFriends = invitesSent.filter((e)=>  e.uuid!= uuid)
+                setInvites(newFriends)
+            }
+        })
+        // update the above list
+        // look into the ssg regeneration situation from next js and see if it's applicable
 
-    // }
+    }
 
    
 
@@ -89,7 +89,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
         if(invitesSent.find((element)=> form.email == element.email)) {
             setMsg('User already exists - Check existing invite list')
         } else {
-            await fetch(`${pathName}/server/sendinvite`, {
+            await fetch(`${pathName}/server/settings/sendinvite`, {
                 method: 'POST',
                 body: JSON.stringify({
                     form,
@@ -204,7 +204,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
                                     <td>{val.email}</td>
                                     <td>{val.sent_on}</td>
                                     <td><button onClick={()=>resendEmail(val)}>resend</button></td>
-                                    {/* <td><button aria-label={val.uuid} onClick={(e)=>cancelInvite(e)}>cancel</button></td> */}
+                                    <td><button aria-label={val.uuid} onClick={(e)=>cancelInvite(e)}>cancel</button></td>
                                 </tr>
                             
                         ))}</tbody>

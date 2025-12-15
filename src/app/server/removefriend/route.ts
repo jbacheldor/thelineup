@@ -1,3 +1,4 @@
+'use server'
 import { FriendType } from "@/app/components/Settings/Friends";
 import { createDBClient } from "@/app/tursoClient";
 import { NextRequest, NextResponse } from "next/server";
@@ -6,9 +7,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function DELETE(req: NextRequest) {
     let val: string = ''
     const {id, instance_id} = await req.json()
-
-    
-    console.log('values', val)
 
     try {
         if(!id || !instance_id) throw new Error('error getting json body')
@@ -20,12 +18,12 @@ export async function DELETE(req: NextRequest) {
             else val = val + `${obj.user_id},  `
         }
         )
-        // const turso = createDBClient()
+        const turso = createDBClient()
         
-        // turso.execute({
-        //     sql: 'DELETE FROM Membership WHERE (instance_id is ? AND user_id in (?))',
-        //     args: [instance_id, val]
-        // })
+        turso.execute({
+            sql: 'DELETE FROM Membership WHERE (instance_id is ? AND user_id in (?))',
+            args: [instance_id, val]
+        })
 
         return NextResponse.json({
             message: 'successfully removed friend',

@@ -11,9 +11,3 @@ export const createDBClient = () => {
     throw new Error('wheee error in creating this')
   }
 }
-
-
-export const turso2 = createClient({
-  url: process.env.TURSO_DATABASE_URL || '',
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
