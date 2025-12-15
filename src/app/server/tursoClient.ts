@@ -1,6 +1,8 @@
 import { createClient } from "@libsql/client";
 
 export const createDBClient = () => {
+  console.log('process.env.TURSO_DATABASE_URL',process.env.TURSO_DATABASE_URL)
+  
   if(process.env.TURSO_DATABASE_URL) {
     const x = createClient({
       url: process.env.TURSO_DATABASE_URL,
@@ -8,6 +10,7 @@ export const createDBClient = () => {
     })
     return x
   } else {
+    console.log('throwing an error we cant see process env')
     throw new Error('wheee error in creating this')
   }
 }

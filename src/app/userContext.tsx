@@ -47,6 +47,7 @@ const UserContextProvider = (props: {children: ReactElement}) => {
     const {setAuth} = useContext(AuthContext)
 
     const getUser = async (id: string) => {
+        console.log('does this even get called??? ', id)
         await fetch(`${pathName}/server/getuserinfo?` + new URLSearchParams({
             id: id,
         }).toString(), {
@@ -75,11 +76,14 @@ const UserContextProvider = (props: {children: ReactElement}) => {
     useEffect(()=> {
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                console.log('has auth changed?', user)
+
 
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
                 // const uid = user.uid;
                 if(user.email){
+                    console.log('are we in here??')
                     setAuth({
                         isAuth: true,
                         name: user.email,
