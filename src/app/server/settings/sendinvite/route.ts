@@ -1,4 +1,4 @@
-import { turso } from '@/app/tursoClient';
+import { createDBClient } from '@/app/tursoClient';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,6 +10,8 @@ export async function POST(req: NextRequest) {
     const {form, name, user_id, instance} = await req.json()
 
     try {
+        const turso = createDBClient()
+        
         const date = new Date()
 
         const uuid =  uuidv4()

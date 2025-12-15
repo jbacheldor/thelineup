@@ -1,5 +1,5 @@
 import { FriendType } from "@/app/components/Settings/Friends";
-import { turso } from "@/app/tursoClient";
+import { createDBClient } from "@/app/tursoClient";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -18,6 +18,8 @@ export async function DELETE(req: NextRequest) {
     console.log('values', val)
 
     try {
+        const turso = createDBClient()
+        
         turso.execute({
             sql: 'DELETE FROM Membership WHERE (instance_id is ? AND user_id in (?))',
             args: [instance_id, val]

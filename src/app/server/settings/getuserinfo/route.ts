@@ -1,4 +1,4 @@
-import { turso } from "@/app/tursoClient";
+import { createDBClient } from "@/app/tursoClient";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
     const id = req.nextUrl.searchParams.get('id')
 
     try {
+        const turso = createDBClient()
         const user = await turso.execute({
             sql: "SELECT * FROM User JOIN Instance ON User.user_id = owner_id WHERE owner_id = ?",
             args: [id],
