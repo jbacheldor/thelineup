@@ -1,14 +1,6 @@
 import { turso } from "@/app/tursoClient";
 import { NextRequest, NextResponse } from "next/server";
 
-type user = {
-    user_id: string,
-    name: string,
-    email: string,
-    author: boolean,
-    number: string,
-}
-
 export async function GET(req: NextRequest) {
     // 'use cache'
     const id = req.nextUrl.searchParams.get('id')
@@ -38,6 +30,7 @@ export async function GET(req: NextRequest) {
             }
         })
     }catch(error) {
+        console.log('error in getting settings: ', error)
         return NextResponse.json({
             status: 400,
             message: 'error trying to fetch turso data'

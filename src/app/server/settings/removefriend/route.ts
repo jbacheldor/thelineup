@@ -1,11 +1,13 @@
+import { FriendType } from "@/app/components/Settings/Friends";
 import { turso } from "@/app/tursoClient";
 import { NextRequest, NextResponse } from "next/server";
+
 
 export async function DELETE(req: NextRequest) {
     let val: string = ''
     const {id, instance_id} = await req.json()
 
-    id.forEach((obj: any, index) => 
+    id.forEach((obj: FriendType, index: number) => 
        { 
         if(id.length == 1) val = obj.user_id
         else if (index == id.length - 1) val = val + `${obj.user_id}`

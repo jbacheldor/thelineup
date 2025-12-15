@@ -91,7 +91,8 @@ const UserContextProvider = (props: {children: ReactElement}) => {
                 // ...
             } 
             });
-        }, [auth])
+        // }, [auth])
+        }, [])
 
 
     const removeUser = () => {

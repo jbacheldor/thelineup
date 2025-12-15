@@ -16,7 +16,7 @@ export async function PATCH(req: NextRequest){
             status: '200'
         })
     } catch(error){
-        console.log('error in updating record in turso')
+        console.log('error in updating record in turso: ', error)
         return NextResponse.json({
             status: 400,
             message: 'Could not update invite status'

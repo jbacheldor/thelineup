@@ -1,6 +1,7 @@
 'use clients'
 
 import { UserContext } from "@/app/userContext";
+import Image from "next/image";
 import { useContext, useEffect, useState } from "react"
 
 export type FriendType = {
@@ -60,7 +61,7 @@ const Friends:React.FC<Props> = (Props) => {
                 {friends.map((val, index)=> (
                     <div id="friend" key={index}>
                         <button onClick={()=>removeFriend(val)}>-</button>
-                        <img id="friend-pic" src="./old-windows-screen-saver.jpg"/>
+                        <Image alt="friend pic" style={{borderRadius: '50px', border: '1px solid white', margin: '5px'}} id="friend-pic" src={"/old-windows-screen-saver.jpg"} height={30} width={30}/>
                         <p>{val.name}</p>
                     </div>
                 ))}
@@ -70,7 +71,7 @@ const Friends:React.FC<Props> = (Props) => {
                 {removedFriends.map((val, index)=> (
                     <div id="friend" key={index}>
                         <button onClick={()=>addFriend(val)}>+</button>
-                        <img id="friend-pic" src="./old-windows-screen-saver.jpg"/>
+                        <Image style={{borderRadius: '50px', border: '1px solid white', margin: '5px'}} alt="friend pic" id="friend-pic" src={"/old-windows-screen-saver.jpg"} height={30} width={30}/>
                         <p>{val.name}</p>
                     </div>
                 ))}
@@ -91,13 +92,6 @@ const Friends:React.FC<Props> = (Props) => {
                     display: flex;
                     flex-direction: column;
                     min-width: 200px;
-                }
-                #friend-pic {
-                    border-radius: 50px;
-                    height: 30px;
-                    width: 30px;
-                    border: 1px solid white;
-                    margin: 5px;
                 }
                 `}
                 </style>

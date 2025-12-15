@@ -1,8 +1,8 @@
 'use client'
-import { createContext, ReactElement, useEffect, useState } from "react";
+import { createContext, ReactElement, useState } from "react";
 import { parseJwt } from './utils';
 import { redirect } from "next/navigation";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import app from "./server/createClient";
 
 type User = {

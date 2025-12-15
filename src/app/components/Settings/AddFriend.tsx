@@ -1,11 +1,9 @@
 'use client'
 
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import Image from "next/image";
 import { UserContext } from "@/app/userContext";
-import revalidateAction from "@/app/actions";
 import { v4 } from "uuid";
-import { link } from "fs";
 
 type Props = {
     invitesList: InvitesType[]
@@ -205,7 +203,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
                                     <td id="name"> {val.name}</td>
                                     <td>{val.email}</td>
                                     <td>{val.sent_on}</td>
-                                    <td><button onClick={(val)=>resendEmail(val)}>resend</button></td>
+                                    <td><button onClick={()=>resendEmail(val)}>resend</button></td>
                                     <td><button aria-label={val.uuid} onClick={(e)=>cancelInvite(e)}>cancel</button></td>
                                 </tr>
                             

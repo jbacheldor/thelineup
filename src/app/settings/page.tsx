@@ -2,9 +2,9 @@
 import Image from "next/image";
 import AddFriend, { InvitesType } from "../components/Settings/AddFriend";
 import Friends, { FriendsType } from "../components/Settings/Friends"
-import { cache } from 'react'
+import { cache, useEffect } from 'react'
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../userContext";
 
 type contactForm = {
@@ -84,11 +84,11 @@ const Settings:React.FC = () => {
         <>
         <div id="setting-body">
             <div id="display-settings">
-                <img id="profile-pic" src="./old-windows-screen-saver.jpg"/>
+                <Image alt="profile picture"  style={{borderRadius: '50px', border: '2px solid white', margin: '10px'}} id="profile-pic" src={"/old-windows-screen-saver.jpg"} width={100} height={100}/>
             </div>
             <hr/>
             <div id={`contact-settings`} className={`settings-${editMode}`}>
-                {!editMode && <button id="pen-button" onClick={()=>onClick()}><Image alt="pen edit button" height="20" width="20" src="./pen.svg"/></button>}
+                {!editMode && <button id="pen-button" onClick={()=>onClick()}><Image alt="pen edit button" height={20} width={20} src="/pen.svg"/></button>}
                 {editMode && <button id="pen-button" onClick={()=>onClick()}>x</button>}
                 <label>
                     <p>username:</p>
@@ -135,13 +135,6 @@ const Settings:React.FC = () => {
                     flex-direction: column;
                     align-items: center;
                     width: 100%;
-                }
-                #profile-pic {
-                    border-radius: 50px;
-                    height: 100px;
-                    width: 100px;
-                    border: 2px solid white;
-                    margin: 10px;
                 }
                 #contact-settings {
                     width: 230px;
