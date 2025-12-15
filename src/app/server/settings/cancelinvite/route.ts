@@ -7,7 +7,7 @@ export async function PATCH(req: NextRequest){
     const {id} =  await req.json()
 
     try {
-        const turso = createDBClient()
+        const turso = await createDBClient()
 
         await turso.execute({
             sql: `UPDATE invites SET status = 'cancelled' WHERE uuid = ?`,

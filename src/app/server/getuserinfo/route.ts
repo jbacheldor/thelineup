@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     try {
         if(!id) throw new Error('no id found!') 
         
-        const turso = createDBClient()
+        const turso = await createDBClient()
         const user = await turso.execute({
             sql: "SELECT * FROM User JOIN Instance ON User.user_id = owner_id WHERE owner_id = ?",
             args: [id],

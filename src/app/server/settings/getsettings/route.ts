@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     
     // // get contact info
     try {
-        const turso = createDBClient()
+        const turso = await createDBClient()
         // // get membership
 
         // // this works within sql console query

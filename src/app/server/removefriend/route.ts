@@ -18,7 +18,7 @@ export async function DELETE(req: NextRequest) {
             else val = val + `${obj.user_id},  `
         }
         )
-        const turso = createDBClient()
+        const turso = await createDBClient()
         
         turso.execute({
             sql: 'DELETE FROM Membership WHERE (instance_id is ? AND user_id in (?))',

@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     const {form, name, user_id, instance} = await req.json()
 
     try {
-        const turso = createDBClient()
+        const turso = await createDBClient()
         
         const date = new Date()
 
