@@ -1,3 +1,4 @@
+'use server'
 import { createDBClient } from '@/app/server/tursoClient';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
