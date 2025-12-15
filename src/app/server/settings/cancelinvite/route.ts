@@ -6,15 +6,20 @@ export async function PATCH(req: NextRequest){
     const {id} =  await req.json()
 
     try {
-        await turso.execute({
-            sql: `UPDATE invites SET status = 'cancelled' WHERE uuid = ?`,
-            args: [id]
-        })
-        
-        return NextResponse.json({
-            message: 'Invite successfully cancelled',
-            status: '200'
-        })
+        if(id){
+            await turso.execute({
+                sql: `UPDATE invites SET status = 'cancelled' WHERE uuid = ?`,
+                args: [id]
+            })
+
+            
+            return NextResponse.json({
+                message: 'Invite successfully cancelled',
+                status: '200'
+            })
+        }else {
+            throw new Error('no id located how sad')
+        }
     } catch(error){
         console.log('error in updating record in turso: ', error)
         return NextResponse.json({
