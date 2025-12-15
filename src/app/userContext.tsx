@@ -47,7 +47,7 @@ const UserContextProvider = (props: {children: ReactElement}) => {
     const {setAuth} = useContext(AuthContext)
 
     const getUser = async (id: string) => {
-        await fetch(`${pathName}/server/settings/getuserinfo?` + new URLSearchParams({
+        await fetch(`${pathName}/server/getuserinfo?` + new URLSearchParams({
             id: id,
         }).toString(), {
             method: "GET"

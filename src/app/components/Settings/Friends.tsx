@@ -37,7 +37,7 @@ const Friends:React.FC<Props> = (Props) => {
 
     // remove the following people from the database
     const saveList = async() => {
-        await fetch(`${pathname}/server/settings/removefriend`, {
+        await fetch(`${pathname}/server/removefriend`, {
             method: 'DELETE',
             body: JSON.stringify({
                 id: removedFriends,

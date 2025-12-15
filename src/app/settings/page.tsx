@@ -44,7 +44,7 @@ const Settings:React.FC = () => {
     }
 
     const getUserInfo = cache(async () => {
-        await fetch(`${pathName}/server/settings/getsettings?` + new URLSearchParams({
+        await fetch(`${pathName}/server/getsettings?` + new URLSearchParams({
             id: user.id
         }).toString(), {
             method: "GET",
