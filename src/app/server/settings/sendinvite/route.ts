@@ -1,4 +1,4 @@
-import { createDBClient } from '@/app/tursoClient';
+import { createDBClient } from '@/app/server/tursoClient';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { v4 as uuidv4 } from 'uuid';

@@ -52,7 +52,6 @@ const Settings:React.FC = () => {
         }, ).then(async (data)=> {
             const res = await data.json()
             if(res.status == 200){
-                console.log('res. data', res.data)
                 setInfo(res.data)
                 setLoading(false)
             }
