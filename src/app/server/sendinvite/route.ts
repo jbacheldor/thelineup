@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const {form, name, user_id, instance} = await req.json()
 
     try {
-        const turso = createDBClient()
+        // const turso = createDBClient()
         
         const date = new Date()
 
@@ -18,10 +18,10 @@ export async function POST(req: NextRequest) {
 
         const sent_on = `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDay()}`
 
-        await turso.execute({
-            sql: "INSERT INTO invites (uuid, email, sent_on, from_user, name, status) VALUES(?, ?, ?, ?, ?, ? )",
-            args: [ uuid, form.email, sent_on, user_id, form.name , 'pending']
-        })
+        // await turso.execute({
+        //     sql: "INSERT INTO invites (uuid, email, sent_on, from_user, name, status) VALUES(?, ?, ?, ?, ?, ? )",
+        //     args: [ uuid, form.email, sent_on, user_id, form.name , 'pending']
+        // })
 
     }catch(error){
         console.log('error adding in invite', error)
