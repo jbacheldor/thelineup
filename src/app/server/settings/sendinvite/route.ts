@@ -1,3 +1,4 @@
+'use server'
 import { createDBClient } from '@/app/server/tursoClient';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
@@ -10,7 +11,7 @@ export async function POST(req: NextRequest) {
     const {form, name, user_id, instance} = await req.json()
 
     try {
-        const turso = createDBClient()
+        const turso = await createDBClient()
         
         const date = new Date()
 

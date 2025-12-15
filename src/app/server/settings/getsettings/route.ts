@@ -1,3 +1,4 @@
+'use server'
 import { createDBClient } from "@/app/server/tursoClient";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -7,7 +8,7 @@ export async function GET(req: NextRequest) {
     
     // // get contact info
     try {
-        const turso = createDBClient()
+        const turso = await createDBClient()
         // // get membership
 
         // // this works within sql console query
