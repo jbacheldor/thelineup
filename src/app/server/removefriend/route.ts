@@ -8,7 +8,6 @@ export async function DELETE(req: NextRequest) {
     let val: string = ''
     const {id, instance_id} = await req.json()
 
-
     try {
         if(!id || !instance_id) throw new Error('error getting json body')
 
