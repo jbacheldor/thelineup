@@ -39,7 +39,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
     const resendEmail = async (val: InvitesType) => {
         // hit endpoint which handles this
 
-        await fetch(`${pathName}/server/settings/resendinvite`, {
+        await fetch(`${pathName}/server/resendinvite`, {
             method: 'PATCH',
             body: JSON.stringify({
                 email: val.email,
@@ -58,7 +58,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
     //     const uuid = (e.target as HTMLElement).ariaLabel
         
     //     // update db
-    //     await fetch(`${pathName}/server/settings/cancelinvite`, {
+    //     await fetch(`${pathName}/server/cancelinvite`, {
     //         method: 'PATCH',
     //         body: JSON.stringify({
     //             id: uuid
@@ -89,7 +89,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
         if(invitesSent.find((element)=> form.email == element.email)) {
             setMsg('User already exists - Check existing invite list')
         } else {
-            await fetch(`${pathName}/server/settings/sendinvite`, {
+            await fetch(`${pathName}/server/sendinvite`, {
                 method: 'POST',
                 body: JSON.stringify({
                     form,
