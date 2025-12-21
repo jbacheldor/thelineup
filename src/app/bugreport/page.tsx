@@ -1,21 +1,22 @@
 'use client'
 
-import { ChangeEvent, FormEvent, useContext, useState } from "react"
+import { FormEvent, useContext, useState } from "react"
 import { UserContext } from "../userContext";
 
 type form = {
     severity: string,
     type: string,
     details: string,
-    followup: boolean,
-    email?: string,
-    id?: string,
-    attachments?: [],
+}
+
+const initialForm = {
+    severity: '',
+    type: '',
+    details: '',
 }
 
 const BugReport:React.FC = () => {
-    const [form, setForm] = useState({});
-    const [attachments, setImages] = useState([])
+    const [form, setForm] = useState<form>(initialForm);
     const pathname = process.env.BASE_URL
     const {user} = useContext(UserContext)
 
@@ -28,23 +29,20 @@ const BugReport:React.FC = () => {
 
     const submitForm = async (e: FormEvent) => {
         e.preventDefault()
-
-        if(form.followup == 'yes'){
-            form.id = user.id
-        }
-
+        
+        form.id = user.id
         // if all valid
-        // await fetch(`${pathname}/server/submitbug`,
-        //     {
-        //         method: 'POST',
-        //         body: JSON.stringify(form)
-        //     }
-        // )
-        //IF FORM FIRLEDS
-    }
-
-    const updateImages = () => {
-        setImages([])
+        await fetch(`${pathname}/server/submitbug`,
+            {
+                method: 'POST',
+                body: JSON.stringify(form)
+            }
+        ).then((res)=> {
+            console.log('rez', res)
+            if(res.status==200) {
+                setForm(initialForm)
+            }
+        })
     }
 
     return (
@@ -55,7 +53,7 @@ const BugReport:React.FC = () => {
         <form onSubmit={(e)=> submitForm(e)}>
             <label>
                 <p>severity</p>
-                <select aria-label="severity" onChange={(e)=> updateForm(e)}>
+                <select aria-label="severity" value={form.severity} onChange={(e)=> updateForm(e)}>
                     <option>scalding hot</option>
                     <option>luke warm</option>
                     <option>cold</option>
@@ -64,7 +62,7 @@ const BugReport:React.FC = () => {
             </label>
             <label>
                 <p>type</p>
-                <select aria-label="type" onChange={(e)=> updateForm(e)}>
+                <select aria-label="type" value={form.type} onChange={(e)=> updateForm(e)}>
                     <option>accessiblity</option>
                     <option>bug fix</option>
                     <option>security</option>
@@ -73,29 +71,15 @@ const BugReport:React.FC = () => {
             </label>
             <label>
                 <p>can u tell me more about the issue</p>
-                <textarea aria-label="details" onChange={(e)=> updateForm(e)}></textarea>
+                <textarea aria-label="details" value={form.details} onChange={(e)=> updateForm(e)}></textarea>
             </label>
-            <label>
+            {/* <label>
                 <p>do you want a follow-up for this issue</p>
-                <p>note: if u select yes we will reach out to email on file</p>
-                <select aria-label="followup" onChange={(e)=> updateForm(e)}>
+                <select aria-label="followup" value={form.followup} onChange={(e)=> updateForm(e)}>
                     <option>yes</option>
                     <option>no</option>
                 </select>
-            </label>
-            <label>
-                <p>any attachments</p>
-                <p>max of 5 plz - we can expand in follow up emails</p>
-                <input
-                onChange={()=> updateImages()}
-                type="file"
-                name="myImage"
-                // onChange={(event) => onUpload(event)}
-                multiple
-                accept=".jpg, .jpeg, .png"
-                // disabled={(selectedImage && selectedImage.length >= 5) ? true : false}
-                />
-            </label>
+            </label> */}
             <button>submit</button>
         </form>
 
