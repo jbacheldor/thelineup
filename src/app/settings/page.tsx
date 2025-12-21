@@ -113,6 +113,9 @@ const Settings:React.FC = () => {
                     <AddFriend invitesList={settingInfo.invites}/>
                 </>
             }
+            <button>delete account???</button>
+            <button>download data</button>
+            <button>clear data</button>
         </div>
         <style jsx>
             {`

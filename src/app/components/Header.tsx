@@ -66,6 +66,9 @@ const Header:React.FC = () => {
                     
                     {/* need one for like my leaderboard and then for others */}
                 </div>
+                                    <button id='notif-button' onClick={()=>redirect("/bugreport")}>
+                        <Image width={20} height={20} alt="bug icon" id="report-bugs" src={'/bug.png'}/>
+                    </button>
                 {isAuthenticated.isAuth && 
                 <div id='auth-info'>
                     <p>Logged in as: {isAuthenticated.name}</p>
@@ -75,9 +78,6 @@ const Header:React.FC = () => {
                     <button id='notif-button'>
                         <Image  width={20} height={20}  alt="setting button" id="notifications" src={"/settings.png"} onClick={()=> {redirect('/settings')}}/> 
                         </button>
-                    <button id='notif-button' onClick={()=>redirect("/bugreport")}>
-                        <Image width={20} height={20} alt="bug icon" id="report-bugs" src={'/bug.png'}/>
-                    </button>
                     <button id='logout-button' onClick={()=>logout()}>logout</button>
                     {showNotifications && <DropDown/>}
                 </div>
