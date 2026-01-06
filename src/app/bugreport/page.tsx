@@ -17,7 +17,7 @@ const initialForm = {
 
 const BugReport:React.FC = () => {
     const [form, setForm] = useState<form>(initialForm);
-    const pathname = process.env.BASE_URL
+    const API_URL = process.env.API_URL
     const {user} = useContext(UserContext)
 
     const updateForm = (e: React.ChangeEvent) => {
@@ -32,7 +32,7 @@ const BugReport:React.FC = () => {
         
         form.id = user.id
         // if all valid
-        await fetch(`${pathname}/server/submitbug`,
+        await fetch(`${API_URL}/server/submitbug`,
             {
                 method: 'POST',
                 body: JSON.stringify(form)
