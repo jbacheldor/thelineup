@@ -141,7 +141,6 @@ show update window
  
 .crush-update-window {
     overflow: auto;
-    resize: vertical;
     width: 350px;
     background-color: #eee8d8;
     padding: 10px;
@@ -164,16 +163,85 @@ span.crush-update-header {
     box-shadow: 1px 1px #959595;
 }
 
-div.crush-scroll-bar {
-    background-color: #fbfbf8;
-    position: sticky;
-    top: 1%;
-    z-index: 2;
-    display: flex;
-    justify-self: flex-end;
-    flex-direction: column;
-    align-items: center;
-    justify-content:space-between;
+@supports selector(::-webkit-scrollbar) {}
+::-webkit-scrollbar {
+    border: .5px #c3cdd7 solid;
+    background-color: white;
+    border-radius: 2px;
+    margin: 1px 3px;
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+    margin: 2px;
+    background-color: #efefef;
+    border: .5px #c3cdd7 solid;
+}
+
+::-webkit-resizer  {
+    background: #eee8d8;
+     background-image:  
+    linear-gradient(135deg, #eee8d8 75%, transparent 25%), 
+    linear-gradient(135deg, #4f5b83 80%, transparent 25%),
+    linear-gradient(135deg, #eee8d8 85%, transparent 25%), 
+    linear-gradient(135deg, #4f5b83 90%, transparent 25%),
+    linear-gradient(135deg, #eee8d8 95%, transparent 25%); 
+    outline: none;
+    border: none;
+    /* background-size: 15px 15px; */
+    display: block;
+    background-position: center;
+    background-repeat: no-repeat; 
+}
+
+::-webkit-scrollbar-button {
+    /* margin-bottom: 1px; */
+    margin: 2px;
+    background-color: #bdd2fa;
+    border: .5px solid #979e95;
+    border-radius: 2px;
+    height: 20px;
+    max-width: 20px;
+    display: block;
+    background-position: center;
+}
+
+::-webkit-scrollbar-button:vertical:start:increment {
+    display: none;
+}
+
+::-webkit-scrollbar-button:vertical:end:decrement {
+    display: none;
+}
+
+::-webkit-scrollbar-button:vertical:decrement {
+    background-image:  
+    linear-gradient(135deg, #bdd2fa 33%, transparent 25%), 
+    linear-gradient(225deg,#bdd2fa 33%, transparent 25%), 
+    linear-gradient(135deg, #4f5b83 40%, transparent 25%), 
+    linear-gradient(225deg, #4f5b83 40%, transparent 25%);
+    background-size: 8px 8px;
+    background-repeat: no-repeat;
+}
+
+::-webkit-scrollbar-button:vertical:increment {
+    background-image:   
+        linear-gradient(-45deg, #bdd2fa 33%, transparent 25%), 
+        linear-gradient(45deg,#bdd2fa 33%, transparent 25%), 
+        linear-gradient(-45deg, #4f5b83 40%, transparent 25%), 
+        linear-gradient(45deg, #4f5b83 40%, transparent 25%);
+        background-size: 8px 8px;
+        background-repeat: no-repeat;
+}
+
+::-webkit-scrollbar-button:hover {
+    cursor: pointer;
+    background-color: #B5CCF7;
+
 }
 
 div.crush-updates {
@@ -185,7 +253,7 @@ div.crush-update-body {
     flex-direction: row;
     height: calc(10px + 100px);
     overflow: auto;
-    /* resize: vertical; */
+    resize: vertical;
 }
 
 .down-arrow {
@@ -201,25 +269,6 @@ div.crush-update-body {
     background-color: #bdd2fa;
     border: .5px solid white;
 }
-
-.scroll-available {
-    border: .5px #c3cdd7 solid;
-    background-color: #efefef;
-    border-radius: 2px;
-    margin: 1px 3px;
-    height: 40%;
-    width: 20px;
-}
-
-.scroll-remaining {
-    /* border: .5px white solid; */
-    margin: 1px;
-    background-color: #bdd2fa;
-}
-.scroll-remaining:hover {
-    cursor: pointer;
-}
-
 /* side profile */
 
 #crush-side-profile{
