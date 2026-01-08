@@ -1,6 +1,6 @@
 
 type Props = {
-    onClickEvent?: ((()=> void) | ((e: any)=> void));
+    onClickEvent?: ((()=> void) | ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=> void));
     text: string,
     disabled?: boolean,
     type: string,

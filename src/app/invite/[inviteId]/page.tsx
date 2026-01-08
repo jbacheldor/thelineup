@@ -101,7 +101,7 @@ const Invite:React.FC =  () => {
             </>}
             {(!loading && invite) &&
             <>
-                <h3>you've been invited!! create an account? </h3>
+                <h3>youve been invited!! create an account? </h3>
                 <div>
                     <form onSubmit={(e)=>createAccount(e)}>
                         <label>

@@ -7,12 +7,14 @@ type form = {
     severity: string,
     type: string,
     details: string,
+    id: string
 }
 
 const initialForm = {
     severity: '',
     type: '',
     details: '',
+    id: ''
 }
 
 const BugReport:React.FC = () => {
@@ -23,7 +25,7 @@ const BugReport:React.FC = () => {
     const updateForm = (e: React.ChangeEvent) => {
         setForm({
             ...form,
-            [e.target.ariaLabel || '']: (e.target as HTMLElement).value
+            [e.target.ariaLabel || '']: (e.target as HTMLInputElement).value
         })
     }
 
