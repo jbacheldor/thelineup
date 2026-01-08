@@ -131,8 +131,6 @@ const ContextProvider = (props: {children: ReactElement}) => {
 
             const res = parseJwt(accessToken)
 
-            console.log('what is res???', res)
-
             setAuth({
                 isAuth: true, 
                 name: res.email, 

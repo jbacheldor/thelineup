@@ -6,18 +6,35 @@ type props = {
     changeLottery: () => void;
 }
 
+const lotteryFormInit = {
+    name: '',
+    email: '',
+    number: '',
+    consent: false
+}
+
 const Lottery:React.FC<props> = ({changeLottery}) => {
     const [terms, setTerms] = useState(false);
-    const [form, setForm] = useState({
-        name: '',
-        email: '',
-        number: '',
-        consent: false
-    });
+    const API_URL = process.env.API_URL;
+    const [form, setForm] = useState(lotteryFormInit);
     const [submitOption, setSubmit] = useState(false);
 
     const submitLottery = (e: FormEvent) => {
         e.preventDefault()
+        console.log(' are we in here')
+
+        fetch(`${API_URL}/lottery`, {
+            method: 'POST',
+            body: JSON.stringify(form)
+        })
+        .then((res)=>{
+            console.log('wabt is res', res)
+            if(res.status != 200) throw new Error('wheehehehhehe')
+            setForm(lotteryFormInit)
+        })
+        .catch((error)=> {
+            console.error('wheeee caught error: ', error)
+        })
     }  
 
     const openTC = () => {
@@ -65,13 +82,13 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
     return (
             <WindowWrapper onClose={changeLottery} name="Lottery">
                 <div>
-                    <form id='lottery-form' onSubmit={(e)=>submitLottery(e)} onChange={(e)=> onChange(e)}>
+                    <form id='lottery-form' onSubmit={(e)=>submitLottery(e)}>
                         <span>name*</span>
-                        <input aria-label="name" required placeholder="your name"/>
+                        <input aria-label="name" value={form.name} onChange={(e)=> onChange(e)} required placeholder="your name"/>
                         <span>number*</span>
-                        <input aria-label="number"  maxLength={10} required placeholder="your number"/>
+                        <input aria-label="number" value={form.number} onChange={(e)=> onChange(e)}  maxLength={10} required placeholder="your number"/>
                         <span>email*</span>
-                        <input aria-label="email"  required placeholder="your email"/>
+                        <input aria-label="email" value={form.email} onChange={(e)=> onChange(e)} required placeholder="your email"/>
                         <label id="consent">
                             <input type="checkbox" aria-label="consent"/>
                             <p>I read & agree to the <a onClick={openTC}>terms and conditions</a></p>
@@ -81,7 +98,7 @@ const Lottery:React.FC<props> = ({changeLottery}) => {
                                 Submitting this doesn&apos;t entail that you will get access. It does, however, show that you think I&apos;m really really cool. Thanks for taking an interest in my passions!!
                             </div>
                             }
-                        <CloseButton type="other" text="submit" disabled={!submitOption}/>
+                        <CloseButton type="other" text="submit" onClickEvent={(e)=>submitLottery(e)} disabled={!submitOption}/>
                     </form>
             <style jsx>
             {`

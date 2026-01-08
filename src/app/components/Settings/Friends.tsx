@@ -16,7 +16,7 @@ type Props = {
 }
 
 const Friends:React.FC<Props> = (Props) => {
-    const pathname = process.env.BASE_URL
+    const API_URL = process.env.API_URL
     const {friendList} = Props
     const [friends, setFriends] = useState<FriendType[]>(friendList)
     const [removedFriends, setRemoved] = useState<FriendType[]>([])
@@ -37,7 +37,7 @@ const Friends:React.FC<Props> = (Props) => {
 
     // remove the following people from the database
     const saveList = async() => {
-        await fetch(`${pathname}/server/removefriend`, {
+        await fetch(`${API_URL}/settings/removefriend`, {
             method: 'DELETE',
             body: JSON.stringify({
                 id: removedFriends,

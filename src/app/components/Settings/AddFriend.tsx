@@ -29,6 +29,7 @@ const initialForm: Form = {
 
 const AddFriend:React.FC<Props> = ({invitesList}) => {
     const pathName = process.env.BASE_URL
+    const API_URL = process.env.API_URL
     const [invitesSent, setInvites] = useState<InvitesType[]>(invitesList)
     const [form, setForm] = useState<Form>(initialForm)
     const [linkVal, setLink] = useState('')
@@ -58,7 +59,7 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
         const uuid = (e.target as HTMLElement).ariaLabel
         
         // update db
-        await fetch(`${pathName}/server/settings/cancelinvite`, {
+        await fetch(`${API_URL}/settings/cancelinvite`, {
             method: 'PATCH',
             body: JSON.stringify({
                 id: uuid

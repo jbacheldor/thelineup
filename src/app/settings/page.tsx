@@ -31,7 +31,7 @@ const initInfo: SettingInfo = {
 const Settings:React.FC = () => {
     const { user } = useContext(UserContext)
     const [contact, setContact] = useState(initialContact)
-    const pathName = process.env.BASE_URL
+    const API_URL = process.env.API_URL
     const [settingInfo, setInfo] = useState<SettingInfo>(initInfo);
 
     const [editMode, setEditMode] = useState(false)
@@ -43,10 +43,9 @@ const Settings:React.FC = () => {
         setEditMode(!editMode)
     }
 
-    const getUserInfo = cache(async () => {
-        await fetch(`${pathName}/server/settings/getsettings?` + new URLSearchParams({
-            id: user.id
-        }).toString(), {
+    const getUserInfo = async () => {
+        if(user.id != ''){
+        await fetch(`${API_URL}/settings/getsettings/${user.id}`, {
             method: "GET",
             next: { tags: ['invites']}
         }, ).then(async (data)=> {
@@ -57,9 +56,13 @@ const Settings:React.FC = () => {
             }
 
         }).catch((error)=> {
-            console.log('catch an error: ', error)
+            console.error('catch an error: ', error)
         })
-    })
+        }
+        else {
+            console.log('woooah no user')
+        }
+    }
 
     useEffect(()=> {
         setContact({
@@ -113,6 +116,9 @@ const Settings:React.FC = () => {
                     <AddFriend invitesList={settingInfo.invites}/>
                 </>
             }
+            <button>delete account???</button>
+            <button>download data</button>
+            <button>clear data</button>
         </div>
         <style jsx>
             {`

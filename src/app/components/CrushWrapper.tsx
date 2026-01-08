@@ -31,7 +31,7 @@ export type crushType = {
 
 function CrushWrapper() {
     // const {crushName} = props
-    const pathName = process.env.BASE_URL
+    const API_URL = process.env.API_URL
     const [showWindow, setShowWindow] = React.useState(false)
     const [showSideProfile, setShowSideProfile] = React.useState(false)
 
@@ -86,13 +86,13 @@ function CrushWrapper() {
     ]
 
     async function getCrush() {
-        await fetch(`${pathName}/server/getcrushes`, {
+        await fetch(`${API_URL}/server/getcrushes`, {
             method: "GET", 
         })
     }
 
     useEffect(()=> {
-        getCrush()
+        // getCrush()
     })
 
     return (

@@ -40,24 +40,20 @@ const contextObj: contextType = {
 const UserContext = createContext(contextObj)
 
 const UserContextProvider = (props: {children: ReactElement}) => {
-    const pathName = process.env.BASE_URL
+    const API_URL = process.env.API_URL
     const [user, setUser] = useState(initObj)
     const auth = getAuth(app);
 
     const {setAuth} = useContext(AuthContext)
 
     const getUser = async (id: string) => {
-        console.log('does this even get called??? ', id)
-        await fetch(`${pathName}/server/getuserinfo?` + new URLSearchParams({
-            id: id,
-        }).toString(), {
+        await fetch(`${API_URL}/settings/getuserinfo/${id}`, {
             method: "GET"
         }).then(async(data)=> {
             const res = await data.json()
-            console.log('what is data', res.data)
             if(res.status == 200) {
                 setUser({
-                    id: res.data.user_id,
+                    id: res.data.user_id || id,
                     number: res.data.number,
                     email: res.data.email,
                     author: res.data.author == 1 ? true : false,
@@ -67,35 +63,45 @@ const UserContextProvider = (props: {children: ReactElement}) => {
                 })
             }
         }).catch((error)=> {
-            console.log('caught an error: ', error)
+            console.log('caught an error in usercontext: ', error)
         })
-
-        console.log('what is user', user)
     }
 
     useEffect(()=> {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log('has auth changed?', user)
-
-
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
                 // const uid = user.uid;
+                console.log('user', user)
                 if(user.email){
-                    console.log('are we in here??')
                     setAuth({
                         isAuth: true,
                         name: user.email,
                         author: false, 
                         id: user.uid
                     })
+                    const current: number = new Date().getTime()
+                    const created: number = Number(user.metadata.creationTime)
+                    // if the account was created more than 3 minutes ago then call getUser
+                    // else assume it will be called immediately after the account
+                    console.log('before gte user call', user.uid)
                     getUser(user.uid)
+                    // if (current - created > 60) {
+                    //     console.log('in here??')
+                    //     getUser(user.uid)
+                    // } else {
+                    //     console.log('nope in the other one!')
+                    //     setTimeout(()=> {
+                    //         getUser(user.uid)
+                    //         console.log('does this,,, work???')
+                    //     }, 10000)
+                    // }
+                    // we can set a timer 
+                    // or we can call get user immediately after??
                 }
-                // ...
             } 
             });
-        // }, [auth])
         }, [])
 
 
