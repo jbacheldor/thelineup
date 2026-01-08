@@ -92,7 +92,7 @@ function CrushWrapper() {
     }
 
     useEffect(()=> {
-        getCrush()
+        // getCrush()
     })
 
     return (

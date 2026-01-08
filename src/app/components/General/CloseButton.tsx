@@ -1,6 +1,6 @@
 
 type Props = {
-    onClickEvent?: (()=> void);
+    onClickEvent?: ((()=> void) | ((e: any)=> void));
     text: string,
     disabled?: boolean,
     type: string,

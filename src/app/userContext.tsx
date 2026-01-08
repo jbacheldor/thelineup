@@ -53,7 +53,7 @@ const UserContextProvider = (props: {children: ReactElement}) => {
             const res = await data.json()
             if(res.status == 200) {
                 setUser({
-                    id: res.data.user_id,
+                    id: res.data.user_id || id,
                     number: res.data.number,
                     email: res.data.email,
                     author: res.data.author == 1 ? true : false,
@@ -73,6 +73,7 @@ const UserContextProvider = (props: {children: ReactElement}) => {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
                 // const uid = user.uid;
+                console.log('user', user)
                 if(user.email){
                     setAuth({
                         isAuth: true,
@@ -80,11 +81,11 @@ const UserContextProvider = (props: {children: ReactElement}) => {
                         author: false, 
                         id: user.uid
                     })
-                    console.log('in???? user.email')
                     const current: number = new Date().getTime()
                     const created: number = Number(user.metadata.creationTime)
                     // if the account was created more than 3 minutes ago then call getUser
                     // else assume it will be called immediately after the account
+                    console.log('before gte user call', user.uid)
                     getUser(user.uid)
                     // if (current - created > 60) {
                     //     console.log('in here??')

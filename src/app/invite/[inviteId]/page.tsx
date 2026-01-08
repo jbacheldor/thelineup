@@ -29,9 +29,7 @@ const Invite:React.FC =  () => {
 
     const getInvite = async () => {
         if(inviteId) {
-            await fetch(`${API_URL}/invites/getinvite?` + new URLSearchParams({
-                inviteId: inviteId as string,
-                }).toString(), {
+            await fetch(`${API_URL}/invites/getinvite/${inviteId}`, {
                     method: 'GET'
                 }).then (async (res)=> {
                     const data = await res.json()
