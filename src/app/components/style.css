@@ -23,6 +23,25 @@
     box-shadow: 2px 2px #959595;
 }
 
+#add-crush {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#add-button {
+    padding: 5px 8px;
+    background: light-grey;
+    border-radius: 30px;
+    margin: 10px;
+    text-align: center;
+}
+
+div.add-window {
+
+}
 
 div.main-crush-header > button {
 

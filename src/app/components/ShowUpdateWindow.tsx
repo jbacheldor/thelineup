@@ -1,18 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css'
-import Image from 'next/image';
 
 type Props = {
     crushName?: string,
+    crushId?: string,
     closeWindow?: () => void,
     showProfile?: () => void,
 }
 
+type update = {
+    date: string,
+    id: string,
+    text: string,
+}
+
 function ShowUpdateWindow (props: Props) {
-    const {crushName, closeWindow, showProfile} = props
+    const {crushName, closeWindow, showProfile, crushId} = props
+    const [updates, setUpdates] = useState<update[] | null>(null)
+    const API_URL = process.env.API_URL
 
     // get crush updates 
     // passive
+
+    const getUpdates = async () => {
+        fetch(`${API_URL}/crushes/getUpdates/${crushId}`, {
+            method: 'GET'
+        })
+        .then(async (res)=> {
+            if(res.status == 200) {
+                const data = await res.json()
+                setUpdates(data)
+            }
+        })
+        .catch((error)=> {
+            console.error('error caught from back-end whilst getting crushes', error)
+            throw new Error(error)
+        })
+    }
+    
+    useEffect(() => {
+        // getUpdates()
+    }, [])
 
     return (
         <>
@@ -29,6 +57,10 @@ function ShowUpdateWindow (props: Props) {
             </span>
             <div className="crush-update-body">
                 <div className="crush-updates">
+                    {updates && updates?.map(()=> (
+                        <div>
+                        </div>
+                    ))}
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                 </div>
             </div>
