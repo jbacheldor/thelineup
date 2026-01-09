@@ -4,8 +4,8 @@ import { useState } from "react";
 
 const AddCrushForm:React.FC = () => {
     const [form, setForm] = useState()
-    const [pros, setPros] = useState<string[]>()
-    const [cons, setCons] = useState<string[]>()
+    const [pros, setPros] = useState<string[]>([''])
+    const [cons, setCons] = useState<string[]>([''])
 
     const dropdownoptions = ['hot', 'graveyard', 'benched', 'in recruitment']
    
@@ -19,9 +19,45 @@ const AddCrushForm:React.FC = () => {
         e.preventDefault()
     }
 
+    const addNew = (type: string) => {
+        if(type == 'pros') setPros((pros)=>[...pros, ''])
+        else setCons((cons)=>[...cons, ''])
+    }
+
+    const removeList = (value: string) => {
+        const values = value.split('-')
+
+        if(values[0]=='pros') setPros(pros.filter((val, index)=> index != Number(values[1])))
+        else setCons(cons.filter((val, index)=> index != Number(values[1])))
+    }
+
     const updateProsOrCons = (e: any) => {
         e.preventDefault()
-        // depending on where it is in list - update that
+        
+        const values = e.target.ariaLabel.split('-')
+
+        if(values[0] == 'pros'){
+            const newArr = pros.map((val, index)=> {
+                if(values[1] == index){
+                    return e.target.value
+                }
+                else {
+                    return val
+                }
+            })
+            setPros(newArr)
+        }else {
+            const newArr = cons.map((val, index)=> {
+                if(values[1] == index){
+                    return e.target.value
+                }
+                else {
+                    return val
+                }
+            })
+            setCons(newArr)
+        }
+        
     }
     
     return (
@@ -48,20 +84,28 @@ const AddCrushForm:React.FC = () => {
                             <textarea aria-label={form} value={form} onChange={(e)=>updateForm(e)}></textarea>
                         </label>
                         <div>
-                            <div>
-                                <label>
-                                    <p>pros</p>
-                                    <input aria-label={form} value={form} onChange={(e)=>updateForm(e)}></input>
-                                </label>
-                                <button  onClick={(e)=> updateProsOrCons(e)} >+</button>
+                            <div id="lists">
+                            <span id="list-header">
+                                <p>pros</p>
+                                <button onClick={()=>addNew('pros')}>+</button>
+                            </span>
+                                {pros?.map((value, key)=> { return (
+                                    <label key={'label-'+key}>
+                                        <input key={'pros-'+key} aria-label={'pros-'+key} value={pros[Number(key)]} onChange={(e)=>updateProsOrCons(e)}></input>
+                                        <button onClick={()=> removeList(`pros-${key}`)} >-</button>
+                                    </label>
+                                )})}
                             </div>
-                            <div>
-                                <label>
-                                    <p>cons</p>
-                                    <input aria-label={form} value={form} onChange={(e)=>updateForm(e)}></input>
-                                </label>
-                                <button onClick={(e)=> updateProsOrCons(e)}>+</button>
-                             </div>
+                            <span id="list-header">
+                                <p>cons</p>
+                                <button onClick={()=>addNew('cons')}>+</button>
+                            </span>
+                                {cons?.map((value, key)=> { return (
+                                    <label key={'label-'+key}>
+                                        <input key={'cons-'+key} aria-label={'cons-'+key} value={cons[Number(key)]} onChange={(e)=>updateProsOrCons(e)}></input>
+                                        <button onClick={()=> removeList(`cons-${key}`)} >-</button>
+                                    </label>
+                                )})}
                         </div>
                         <hr/>
                         <button id="submit">submit</button>
@@ -84,15 +128,30 @@ const AddCrushForm:React.FC = () => {
                                 border-bottom: 1px grey solid;
                                 border-right: 1px grey solid;
                             }
+                            #lists {
+                                display: flex;
+                                flex-direction: column;
+                            }
                             form {
                                 width: 100%;
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
                             }
+                            #list-header {
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: center;
+                            }
                                 h4 {
                                 box-shadow: none;
                                 }
+                            input, textarea {
+                                padding: 2px;
+                                margin: 2px;
+                                width: 30ch;
+                            }
                             span.main-crush-header {
                                 padding: 2px 5px;
                                 width: 100%;
