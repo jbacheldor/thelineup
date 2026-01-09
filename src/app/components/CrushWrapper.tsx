@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CrushSideProfile from './CrushSideProfile';
 import CrushWindows from './CrushWindow';
 import './style.css'
 import Headstone from './Headstone';
 import AddCrushForm from './AddCrushForm';
 import Folder from './General/Folder';
+import { UserContext } from '../userContext';
 // import { ReactComponent as MinimizeIcon }  from '../../assets/minimize-8.svg';
 
 // type Props = {
@@ -38,6 +39,8 @@ function CrushWrapper() {
     const [showSideProfile, setShowSideProfile] = useState(false)
     const [crushes, setCrushes] = useState<crushType[]>()
     const [showAdd, setAdd] = useState(false)
+
+    const {user} = useContext(UserContext)
 
     const showCrushUpdate = () => {
         setShowWindow(true)
@@ -89,8 +92,7 @@ function CrushWrapper() {
     ]
 
     async function getCrush() {
-        const instance_id = 2
-        await fetch(`${API_URL}/getCrushes/${instance_id}`, {
+        await fetch(`${API_URL}/getCrushes/${user.instance_id}`, {
             method: "GET", 
         }).then(async(res)=> {
             if(res.status == 200) {
@@ -117,8 +119,9 @@ function CrushWrapper() {
 
         <div id="add-crush">
             {showAdd && 
-                <AddCrushForm/>
-                }            <div id="folders" style={{
+                <AddCrushForm instance_id={user.instance_id}  onClose={()=>setAdd(!showAdd)}/>
+                }            
+                <div id="folders" style={{
                 'position': 'absolute',
                 'left': '10px',
                 'top': '20%',

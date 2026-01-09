@@ -27,7 +27,7 @@ export type crushType = {
 function CrushSideProfile(props: Props){
     const {onShowWindow, crush} = props
 
-    console.log("test", crush)
+    
 
     return (
         <div id="crush-side-profile">
@@ -49,7 +49,6 @@ function CrushSideProfile(props: Props){
                 fan ranking: {crush.fan_ranking}
             </span>
             <hr className='crush-divider'/>
-        {/* <h4 className='new-here'> */}
         <div id="crush-bio">
             <h4>
                 description

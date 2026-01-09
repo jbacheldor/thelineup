@@ -18,7 +18,12 @@ type formType = {
     cons: string[]
 }
 
-const AddCrushForm:React.FC = () => {
+type Props = {
+    instance_id: string,
+    onClose: ()=> void;
+}
+
+const AddCrushForm:React.FC<Props> = ({instance_id, onClose }) => {
     const [form, setForm] = useState<formType>(initialForm)
 
     const API_URL = process.env.API_URL
@@ -56,7 +61,7 @@ const AddCrushForm:React.FC = () => {
                 status: form.status,
                 pros: pros,
                 cons: cons,
-                instance_id: '1'
+                instance_id: instance_id
             })
         }).then((res)=> {
             if(res.status == 200){
@@ -142,7 +147,7 @@ const AddCrushForm:React.FC = () => {
                 <div id="add-window">
                     <span className="main-crush-header">
                         <h4>add crush</h4>
-                        <button>x</button>
+                        <button onClick={()=>onClose()}>x</button>
                     </span>
                     <p id="info">once you create this initial instance you can update events and their rank</p>
                     <hr/>

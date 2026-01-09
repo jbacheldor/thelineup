@@ -11,6 +11,37 @@
     align-items: center;
 }
 
+#interaction-results {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#interaction-results > p {
+    color: grey;
+    margin: 5px;
+    font-size: 14px;
+}
+
+#comment-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#comment-section > button {
+    width: fit-content;
+    padding: 2px;
+    margin: 5px;
+}
+
+
+#comment-section > textarea {
+    min-height: 10ch;
+    padding: 5px;
+    width: 100%;
+}
+
 .main-crush-window {
     padding: 10px;
     width: 220px;
@@ -264,7 +295,24 @@ span.crush-update-header {
 }
 
 div.crush-updates {
-    margin-left: 5px;
+    margin: 5px;
+}
+
+#interaction-buttons {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    margin-bottom: 5px;
+}
+
+#interaction-buttons > button {
+    padding: 2px;
+}
+
+h5 {
+    text-align: center;
+    margin: 5px;
+    font-size: 16px;
 }
 
 div.crush-update-body {
