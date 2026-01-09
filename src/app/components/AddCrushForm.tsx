@@ -2,33 +2,105 @@
 
 import { useState } from "react";
 
+const initialForm: formType = {
+    name: '',
+    status: 'hot',
+    description: '',
+    pros: [''],
+    cons: ['']
+}
+
+type formType = {
+    name: string,
+    status: string,
+    description: string,
+    pros: string[],
+    cons: string[]
+}
+
 const AddCrushForm:React.FC = () => {
-    const [form, setForm] = useState()
-    const [pros, setPros] = useState<string[]>([''])
-    const [cons, setCons] = useState<string[]>([''])
+    const [form, setForm] = useState<formType>(initialForm)
+
+    const API_URL = process.env.API_URL
 
     const dropdownoptions = ['hot', 'graveyard', 'benched', 'in recruitment']
-   
-    const Test = new Map();
 
-    const updateForm = (e: React.InputEvent) => {
-
-    }
-
-    const submitCrush = (e: React.FormEvent) => {
+    const updateForm = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         e.preventDefault()
+        setForm({
+            ...form,
+            [e.target.ariaLabel || '']: (e.target as HTMLInputElement | HTMLTextAreaElement).value
+        })
     }
 
-    const addNew = (type: string) => {
-        if(type == 'pros') setPros((pros)=>[...pros, ''])
-        else setCons((cons)=>[...cons, ''])
+    const submitCrush = async (e: React.FormEvent) => {
+        e.preventDefault()
+
+        let cons = ''
+        let pros = ''
+        console.log('consoel.log', form.cons)
+        form.cons.forEach((val, index)=> {
+            if(cons == '') cons = `${val}`
+            else cons = cons + `, ${val}`
+        })
+        form.pros.forEach((val, index)=> {
+            if(pros == '') pros = `${val}`
+            else pros = pros + `, ${val}`
+        })
+
+        await fetch(`${API_URL}/crush/submitNewCrush`, {
+            method: 'POST',
+            body: JSON.stringify({
+                name: form.name,
+                description: form.description,
+                status: form.status,
+                pros: pros,
+                cons: cons,
+                instance_id: '1'
+            })
+        }).then((res)=> {
+            if(res.status == 200){
+                setForm(initialForm)
+            }
+        }).catch((error)=>{
+            console.error('woooehehehh we caught a live one', error)
+        })
+        
     }
 
-    const removeList = (value: string) => {
+    const addNew = (e: any, type: string) => {
+        e.preventDefault()
+        if(type == 'pros') {
+            setForm({
+                ...form,
+                pros: [...form.pros, '']
+            })
+        }
+        else {
+            setForm({
+                ...form,
+                cons: [...form.cons, '']
+            })
+        }
+    }
+
+    const removeList = (e: any, value: string) => {
+        e.preventDefault()
         const values = value.split('-')
 
-        if(values[0]=='pros') setPros(pros.filter((val, index)=> index != Number(values[1])))
-        else setCons(cons.filter((val, index)=> index != Number(values[1])))
+        if(values[0]=='pros') {
+            console.log('testtest', form.pros.filter((val, index)=> index != Number(values[1])))
+            setForm({
+                ...form,
+                pros: form.pros.filter((val, index)=> index != Number(values[1]))
+            })
+        }
+        else{
+            setForm({
+                ...form,
+                cons: form.cons.filter((val, index)=> index != Number(values[1]))
+            })
+        } 
     }
 
     const updateProsOrCons = (e: any) => {
@@ -37,7 +109,7 @@ const AddCrushForm:React.FC = () => {
         const values = e.target.ariaLabel.split('-')
 
         if(values[0] == 'pros'){
-            const newArr = pros.map((val, index)=> {
+            const newArr = form.pros.map((val, index)=> {
                 if(values[1] == index){
                     return e.target.value
                 }
@@ -45,9 +117,12 @@ const AddCrushForm:React.FC = () => {
                     return val
                 }
             })
-            setPros(newArr)
+            setForm({
+                ...form,
+                pros: newArr
+            })
         }else {
-            const newArr = cons.map((val, index)=> {
+            const newArr = form.cons.map((val, index)=> {
                 if(values[1] == index){
                     return e.target.value
                 }
@@ -55,7 +130,10 @@ const AddCrushForm:React.FC = () => {
                     return val
                 }
             })
-            setCons(newArr)
+            setForm({
+                ...form,
+                cons: newArr
+            })
         }
         
     }
@@ -71,39 +149,39 @@ const AddCrushForm:React.FC = () => {
                     <form onSubmit={(e)=>submitCrush(e)}>
                         <label>
                             <p>name</p>
-                            <input aria-label={form} value={form} onChange={(e)=>updateForm(e)}></input>
+                            <input aria-label='name' value={form.name} onChange={(e)=>updateForm(e)}></input>
                         </label>
                         <label>
                             <p>status</p>
-                            <select aria-label={form} value={form} onChange={(e)=>updateForm(e)}>
+                            <select aria-label='status' value={form.status} onChange={(e)=>updateForm(e)}>
                                 {dropdownoptions.map((value, index)=> {return <option key={index}>{value}</option>})}
                             </select>
                         </label>
                         <label>
                             <p>description</p>
-                            <textarea aria-label={form} value={form} onChange={(e)=>updateForm(e)}></textarea>
+                            <textarea aria-label='description' value={form.description} onChange={(e)=>updateForm(e)}></textarea>
                         </label>
                         <div>
                             <div id="lists">
                             <span id="list-header">
                                 <p>pros</p>
-                                <button onClick={()=>addNew('pros')}>+</button>
+                                <button onClick={(e)=>addNew(e,'pros')}>+</button>
                             </span>
-                                {pros?.map((value, key)=> { return (
+                                {form.pros?.map((value, key)=> { return (
                                     <label key={'label-'+key}>
-                                        <input key={'pros-'+key} aria-label={'pros-'+key} value={pros[Number(key)]} onChange={(e)=>updateProsOrCons(e)}></input>
-                                        <button onClick={()=> removeList(`pros-${key}`)} >-</button>
+                                        <input key={'pros-'+key} aria-label={'pros-'+key} value={form.pros[Number(key)]} onChange={(e)=>updateProsOrCons(e)}></input>
+                                        <button onClick={(e)=> removeList(e, `pros-${key}`)} >-</button>
                                     </label>
                                 )})}
                             </div>
                             <span id="list-header">
                                 <p>cons</p>
-                                <button onClick={()=>addNew('cons')}>+</button>
+                                <button onClick={(e)=>addNew(e,'cons')}>+</button>
                             </span>
-                                {cons?.map((value, key)=> { return (
+                                {form.cons?.map((value, key)=> { return (
                                     <label key={'label-'+key}>
-                                        <input key={'cons-'+key} aria-label={'cons-'+key} value={cons[Number(key)]} onChange={(e)=>updateProsOrCons(e)}></input>
-                                        <button onClick={()=> removeList(`cons-${key}`)} >-</button>
+                                        <input key={'cons-'+key} aria-label={'cons-'+key} value={form.cons[Number(key)]} onChange={(e)=>updateProsOrCons(e)}></input>
+                                        <button onClick={(e)=> removeList(e, `cons-${key}`)} >-</button>
                                     </label>
                                 )})}
                         </div>
