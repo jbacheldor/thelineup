@@ -15,6 +15,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: center;
 }
 
 #interaction-results > p {
@@ -23,20 +25,60 @@
     font-size: 14px;
 }
 
+#interaction-results > p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#comment {
+    padding: 5px;
+}
+
+#user-info {
+    color: grey;
+    display: flex;
+    flex-direction: row;
+    margin: 2px 10px;
+    justify-content: space-between;
+}
+
 #comment-section {
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 1px solid black;
+    padding: 5px;
 }
 
-#comment-section > button {
+#the-meat {
+    margin: 5px;
+}
+
+#comment-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#add-comments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#add-comments > button {
     width: fit-content;
     padding: 2px;
     margin: 5px;
 }
 
+#comment > p {
+    padding: 5px;
+}
 
-#comment-section > textarea {
+#add-comments > textarea {
     min-height: 10ch;
     padding: 5px;
     width: 100%;

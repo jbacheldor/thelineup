@@ -43,7 +43,6 @@ const AddCrushForm:React.FC<Props> = ({instance_id, onClose }) => {
 
         let cons = ''
         let pros = ''
-        console.log('consoel.log', form.cons)
         form.cons.forEach((val, index)=> {
             if(cons == '') cons = `${val}`
             else cons = cons + `, ${val}`
