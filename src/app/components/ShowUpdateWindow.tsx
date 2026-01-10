@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style.css'
-import Update from './Login/Update';
+import Update from './Update';
 
 type Props = {
     crushName?: string,

@@ -63,7 +63,10 @@ const AddFriend:React.FC<Props> = ({invitesList}) => {
             method: 'PATCH',
             body: JSON.stringify({
                 id: uuid
-            })
+            }),
+            // headers: {
+            //     'Content-Type': 'application/json',
+            // },
         }).then((res) => {
             if(res.status == 200) {
                 // find the friend in the list
