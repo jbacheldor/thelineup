@@ -69,7 +69,7 @@ const Comment:React.FC<Props> = ({value, onDelete}) => {
                 </>
             }
             {!editMode && 
-                <p id="comment-text" >{text}</p>
+                <p id="comment-text" >{value.text}</p>
             }
             <div id="user-info">
                 <span>{value.user}</span>

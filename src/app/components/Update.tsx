@@ -54,7 +54,7 @@ const Update:React.FC<Props> = ({index, val}) => {
         }).then((res)=>{
             if(res.status == 200){
                 setComment('')
-                // setCommentList([...commentList, newComment])
+                setCommentList([...commentList, newComment])
 
             }
         })
@@ -75,11 +75,8 @@ const Update:React.FC<Props> = ({index, val}) => {
 
     const removeComments = (e: CommentType) => {
         // this - is working but commentList is being weird and idk why
-        // setCommentList(commentList.filter(val => val.text !== e.text))
-        setCommentList([       { text: 'WHAT THHHHE',
-        date: 'xxxx',
-        user: 'egg nog',
-        id: '3'}])
+        setCommentList(commentList.filter(val => val.text !== e.text))
+ 
     }
 
     // if admin then we need a delete comment
