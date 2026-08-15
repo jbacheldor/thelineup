@@ -22,7 +22,8 @@ Functionality:
 - figure out how to add in comments
 
 <!-- to RUN -->
-- yarn dev 
+- frontend: yarn dev 
+- backend: run on bun!!
 
 <!-- to TEST -->
 tester username: test@test.com

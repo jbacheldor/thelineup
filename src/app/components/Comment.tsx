@@ -1,29 +1,28 @@
 'use client'
 
 import { useState } from "react"
+import { CommentType } from "./Update";
 
 type Props = {
-    value: {
-        text: string,
-        date: string,
-        user: string,
-        id: string
-    }
+    value: CommentType | any, 
+    onDelete: (e: CommentType) => void;
 }
 
-const Comment:React.FC<Props> = ({value}) => {
+const Comment:React.FC<Props> = ({value, onDelete}) => {
     const [editMode, setMode] = useState(false)
     const [text, setText] = useState(value.text)
 
     const API_URL = process.env.API_URL
 
-    const deleteComments = async (id: string) => {
-
-        await fetch(`${API_URL}/comment/deleteComment/${id}`, {
+    const deleteComment = async (e: any) => {
+        e.preventDefault()
+        await fetch(`${API_URL}/comment/deleteComment/${value.comment_id}`, {
             method: 'DELETE'
         }).then((res)=> {
             if(res.status == 200){
-                // delete comments
+                console.log('wat is the value', value)
+                onDelete(value)
+                // then refresh the feed
             }
         })
     }
@@ -61,7 +60,7 @@ const Comment:React.FC<Props> = ({value}) => {
         <div id="comment" aria-label={value.id}>
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <button onClick={()=>setMode(!editMode)}>edit</button>
-                <button onClick={()=> deleteComments(value.id)}>x</button>
+                <button onClick={(e)=> deleteComment(e)}>x</button>
             </div>
             {editMode && 
                 <>

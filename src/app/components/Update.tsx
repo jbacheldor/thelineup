@@ -1,7 +1,7 @@
 'use client'
 
 import { UserContext } from "@/app/userContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Comment from "./Comment";
 
 type Props = {
@@ -13,67 +13,73 @@ type Props = {
     }
 }
 
-const localComments = [
-    {
-        text: 'today i come to u ,not AS A MAN, but as alad',
-        date: 'today',
-        user: 'hawk chewa',
-        id: '1'
-    },
-    {
-        text: 'honk honk honk i love thsi one',
-        date: 'march 15th',
-        user: 'danny brown',
-        id: '2'
-    },
-        {
-        text: 'is he stupid',
-        date: 'xxxx',
-        user: 'egg nog',
-        id: '3'
-    }
-]
+export type CommentType = {
+    text: string,
+    date: string,
+    user: string,
+    id: string
+}
 
 const Update:React.FC<Props> = ({index, val}) => {
-    const [comment, showComment] = useState(false)
+    const [addComentBox, showAddComment] = useState(false)
     const [commentText, setComment] = useState('')
-    const [comments, setComments] = useState()
+    const [commentList, setCommentList] = useState<CommentType[]>([])
 
     const API_URL = process.env.API_URL
 
     const {user} = useContext(UserContext)
 
+    useEffect(()=> {
+        // this is so, bad,,, it should only get commentList for one post
+        // but they are all listed as post_id 1 lol
+        getCommments()
+    }, [])
+
     const submitComment = async (e: any) => {
+        const newComment: CommentType = {
+            user: user.id,
+            text: commentText,
+            id: val.id,
+            date: new Date().toISOString()
+        }
         e.preventDefault()
         fetch(`${API_URL}/comment/newComment`, {
             method: 'POST',
             body: JSON.stringify({
                 user_id: user.id,
                 text: commentText,
-                post_id: val.id
+                post_id: val.id,
+                date: new Date().toISOString()
             })
         }).then((res)=>{
             if(res.status == 200){
                 setComment('')
-                // and maybeeee
-                // just maybe,,, 
-                // do a cache refresh once it's post yk 
-                // like grab the comments or whatever
-                // or make her slowly appear. razzle dazzle
+                // setCommentList([...commentList, newComment])
+
             }
         })
     }
 
 
-    const getComments = async () => {
+    const getCommments = async () => {
         await fetch(`${API_URL}/comment/getComments/${val.id}`, {
             method: 'GET'
         }).then(async (res)=> {
             if(res.status == 200){
                 const data = await res.json()
-                setComments(data)
+                setCommentList(data.data)
             }
         })
+    }
+
+
+    const removeComments = (e: CommentType) => {
+        // this - is working but commentList is being weird and idk why
+        // setCommentList(commentList.filter(val => val.text !== e.text))
+        setCommentList([       { text: 'WHAT THHHHE',
+        date: 'xxxx',
+        user: 'egg nog',
+        id: '3'}])
     }
 
     // if admin then we need a delete comment
@@ -88,27 +94,31 @@ const Update:React.FC<Props> = ({index, val}) => {
             <hr/>
             <p id="the-meat">{val.text}</p>
             <div id="interaction-results">
-                {/* <p>likes</p> */}
-                <p onClick={()=>showComment(!comment)}>{localComments.length} comments</p>
-                <button onClick={()=>showComment(!comment)}>comment</button>
-                
+                <p>likes</p>
+                <p>{commentList.length} commentList</p>
+                <button onClick={()=>showAddComment(!addComentBox)}>comment</button>
             </div>
             {/* <div id="interaction-buttons">
                 <button>like</button>
-                <button onClick={()=>showComment(true)}>comment</button>
+                <button onClick={()=>showAddComment(true)}>comment</button>
             </div> */}
-            {comment && 
+            {commentList && 
             <div id='comment-section'>
                 <div>
-                {localComments.map((value, index)=> 
-                    <Comment value={value}/>
-                )}
-                    
+                {commentList.map((value, index)=> {
+                    console.log('what is comments', commentList)
+                    console.log('what is valu', value)
+                    return (
+                    // would it be better to just refresh this whole thing 
+                    <Comment key={`comment-${index}`} value={value} onDelete={removeComments}/>)
+                })}
                 </div>
-                <div id='add-comments'>
-                    <textarea value={commentText} onChange={(e)=>setComment(e.target.value)}/>
-                    <button onClick={(e)=>submitComment(e)}>submit</button>
-                </div>
+                {addComentBox &&
+                    <div id='add-comments'>
+                        <textarea value={commentText} onChange={(e)=>setComment(e.target.value)}/>
+                        <button onClick={(e)=>submitComment(e)}>submit</button>
+                    </div>
+                }
             </div>}
             <hr/>
         </div>
