@@ -17,8 +17,9 @@ const Comment:React.FC<Props> = ({value}) => {
 
     const API_URL = process.env.API_URL
 
-    const deleteComments = async (e: any) => {
-        await fetch(`${API_URL}/comment/deleteComment/${e.target.ariaLabel}`, {
+    const deleteComments = async (id: string) => {
+
+        await fetch(`${API_URL}/comment/deleteComment/${id}`, {
             method: 'DELETE'
         }).then((res)=> {
             if(res.status == 200){
@@ -30,11 +31,18 @@ const Comment:React.FC<Props> = ({value}) => {
     const editComments = async () => {
 
         await fetch(`${API_URL}/comment/editComment`, {
-            method: 'PATCH',
+            method: 'POST',
             body: JSON.stringify({
                 text: text,
                 comment_id: value.id
             }),
+            // headers: {
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'application/json',
+            //     // "Access-Control-Allow-Origin": "*",
+            //     // "Access-Control-Allow-Methods": "*",
+            //     // "Accept-Patch": "*/*"
+            // },
             // headers: {
             //     'Content-Type': 'application/json',
             // }
@@ -53,7 +61,7 @@ const Comment:React.FC<Props> = ({value}) => {
         <div id="comment" aria-label={value.id}>
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <button onClick={()=>setMode(!editMode)}>edit</button>
-                <button onClick={(e)=> deleteComments(e)}>x</button>
+                <button onClick={()=> deleteComments(value.id)}>x</button>
             </div>
             {editMode && 
                 <>
