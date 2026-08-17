@@ -33,7 +33,10 @@ export const passLogin = async (email: string, password: string) => {
                 body: JSON.stringify({
                     access_token: idToken,
                     refresh_token: user.refreshToken
-                })
+                }),
+                  headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
             })
 
             return ({

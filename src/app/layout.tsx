@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import { ContextProvider } from "./context";
 import { UserContextProvider } from "./userContext";
+import PaperClip from "./components/PaperClip";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
               <>
                 <Header/>
                 {children}
+                <PaperClip/>
               </>
             </UserContextProvider>
         </ContextProvider>

@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CrushSideProfile from './CrushSideProfile';
 import CrushWindows from './CrushWindow';
 import './style.css'
 import Headstone from './Headstone';
+import AddCrushForm from './AddCrushForm';
+import Folder from './General/Folder';
+import { UserContext } from '../userContext';
 // import { ReactComponent as MinimizeIcon }  from '../../assets/minimize-8.svg';
 
 // type Props = {
@@ -32,9 +35,12 @@ export type crushType = {
 function CrushWrapper() {
     // const {crushName} = props
     const API_URL = process.env.API_URL
-    const [showWindow, setShowWindow] = React.useState(false)
-    const [showSideProfile, setShowSideProfile] = React.useState(false)
+    const [showWindow, setShowWindow] = useState(false)
+    const [showSideProfile, setShowSideProfile] = useState(false)
+    const [crushes, setCrushes] = useState<crushType[]>()
+    const [showAdd, setAdd] = useState(false)
 
+    const {user} = useContext(UserContext)
 
     const showCrushUpdate = () => {
         setShowWindow(true)
@@ -86,14 +92,22 @@ function CrushWrapper() {
     ]
 
     async function getCrush() {
-        await fetch(`${API_URL}/server/getcrushes`, {
+        await fetch(`${API_URL}/getCrushes/${user.instance_id}`, {
             method: "GET", 
+        }).then(async(res)=> {
+            if(res.status == 200) {
+                const data = await res.json()
+                setCrushes(data)
+            }
+        }).catch((error) => {
+            console.error('found new errorrrr', error)
         })
     }
 
     useEffect(()=> {
         // getCrush()
     })
+
 
     return (
         <>
@@ -102,6 +116,20 @@ function CrushWrapper() {
             <h2>Current Afflictions</h2>
         </div>
         <hr/>
+
+        <div id="add-crush">
+            {showAdd && 
+                <AddCrushForm instance_id={user.instance_id}  onClose={()=>setAdd(!showAdd)}/>
+                }            
+                <div id="folders" style={{
+                'position': 'absolute',
+                'left': '10px',
+                'top': '20%',
+                'textAlign': 'center'
+            }}>
+                <Folder onClickEvent={()=> {setAdd(!showAdd)}} text="add crush"/>
+            </div>
+        </div>
         <div id="crush-blocks">
             {testCrushes.map((crush, key)=> {
                 return (

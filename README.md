@@ -20,3 +20,19 @@ Functionality:
 - Figure out how to store multiple dashboards in which you are subscribed to
 - Figure out how to edit content - & what that design looks like
 - figure out how to add in comments
+
+<!-- to RUN -->
+- frontend: yarn dev 
+- backend: run on bun!!
+
+<!-- to TEST -->
+tester username: test@test.com
+tester password: test123
+
+<!-- lit really everything else -->
+
+<!-- hosted on -->
+
+<!-- tech stack -->
+- turso
+- firestore
