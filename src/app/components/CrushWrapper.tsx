@@ -6,6 +6,7 @@ import Headstone from './Headstone';
 import AddCrushForm from './AddCrushForm';
 import Folder from './General/Folder';
 import { UserContext } from '../userContext';
+import MSPaint from './MSPaint';
 // import { ReactComponent as MinimizeIcon }  from '../../assets/minimize-8.svg';
 
 // type Props = {
@@ -39,6 +40,7 @@ function CrushWrapper() {
     const [showSideProfile, setShowSideProfile] = useState(false)
     const [crushes, setCrushes] = useState<crushType[]>()
     const [showAdd, setAdd] = useState(false)
+    const [showArt, setArt] = useState(false)
 
     const {user} = useContext(UserContext)
 
@@ -128,6 +130,10 @@ function CrushWrapper() {
                 'textAlign': 'center'
             }}>
                 <Folder onClickEvent={()=> {setAdd(!showAdd)}} text="add crush"/>
+                <Folder onClickEvent={()=> {setArt(!showArt)}} text="doodle"/>
+            {showArt && 
+                <MSPaint/>
+            }
             </div>
         </div>
         <div id="crush-blocks">
