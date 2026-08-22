@@ -49,7 +49,7 @@ const colorList: Record<string, string> =
         'green?': '#00FF80',
         'ekekmek': '#80FFFF',
         'p': '#8080FF',
-        'pp': '##FF0080',
+        'pp': '#FF0080',
         'o': '#FF8040'
 }
 
@@ -89,9 +89,53 @@ const MSPaint: React.FC<MSPaintProps> = ({onClose}) => {
         const ctx = canvasRef.current.getContext("2d");
         if(!ctx)return
         ctx.strokeStyle = color
-        ctx.moveTo(0, 0);
-        ctx.lineTo(200, 100);
-        ctx.stroke();
+
+        // just what ya see when the page loads
+        console.log('window.innerHeight', window.innerHeight)
+        console.log('window.innerWidth', window.innerWidth)
+
+
+        // these aren't helpful for wat we need
+        // console.log('window.screenX', window.screenX)
+        // console.log('window.screenY', window.screenY)
+
+        // the potential for scroll woah!
+        console.log('window.scrollx', window.scrollX)
+        console.log('window.scrolly', window.scrollY)
+
+        // don't tihnk these are helpful for us
+
+        // console.log(' window.screenTop', window.screenTop)
+        // console.log('window.screenLeft', window.screenLeft)
+
+        console.log('target scroll top', e.target.scrollTop)
+        console.log('e.target.ScrollLeft', e.target.scrollLeft)
+
+        // this is liek  so tricky 
+        // is it just a clikc or a click and drag,, hmmm
+
+        console.log('calcualtion height', window.innerHeight-e.target?.offsetHeight)
+
+        ctx.fillStyle = color
+
+        // this is the height & width of the element
+        console.log('e,atrget offsetWidth', e.target?.offsetWidth)
+        console.log('e,atrget offsetWidth', e.target?.offsetHeight)
+
+        console.log('wat is ex', e.clientX)
+        console.log('wat is eY', e.clientY)
+
+        ctx.fillRect(10, 10,10,10)
+        // ctx.moveTo(0, 0);
+        // ctx.lineTo(200, 100);
+        // ctx.stroke();
+    }
+
+    const onNew = () => {
+        if(!canvasRef.current) return
+        const ctx = canvasRef.current.getContext("2d");
+        if(!ctx)return
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
 
     const onDrag = () => {
@@ -124,6 +168,7 @@ const MSPaint: React.FC<MSPaintProps> = ({onClose}) => {
                 <button>save</button>
                 <button>undo</button>
                 <button>redo</button>
+                <button onClick={()=>onNew()}>new</button>
             </div>
             <button onClick={onClose}>exit</button>
         </div>
@@ -176,9 +221,13 @@ const MSPaint: React.FC<MSPaintProps> = ({onClose}) => {
                 max-height: 20px;
             }
             #canvas {
-                background-color: rgb(192 192 192);
+                background-color: white;
                 height: inherit;
                 width: inherit;
+            }
+            canvas {
+                width: inherit;
+                height: inherit;
             }
             #palette {
                 display: flex;
