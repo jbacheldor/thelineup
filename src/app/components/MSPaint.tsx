@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 type ColorSwatchProps = {
     color: string,
-    setColor: (color: string) => void
+    setColor: (color: string) => void,
 }
 
 const ColorSwatch: React.FC<ColorSwatchProps> = ({color, setColor}) => {
@@ -53,10 +53,14 @@ const colorList: Record<string, string> =
         'o': '#FF8040'
 }
 
-const MSPaint: React.FC = () => {
+type MSPaintProps = {
+    onClose: () => void;
+}
+
+const MSPaint: React.FC<MSPaintProps> = ({onClose}) => {
     const [color, setColor] = useState('black')
     const [tool, setTool] = useState('fill')
-    const canvasRef = useRef(null)
+    const canvasRef = useRef<HTMLCanvasElement>(null)
 
     const getMousePosition = (e: MouseEvent) => {
         const {clientX, clientY} = e
@@ -73,14 +77,25 @@ const MSPaint: React.FC = () => {
         }
     }
     
-    const changeColor = (color: string) => {
-        console.log('in here', color)
+    const changeColor = (color: string) => { 
         setColor(color)
     }
 
     const onDraw = (e: MouseEvent) => {
+        //if drag it will be different than a dot
         console.log('current', canvasRef.current)
         console.log('event', e)
+        if(!canvasRef.current) return
+        const ctx = canvasRef.current.getContext("2d");
+        if(!ctx)return
+        ctx.strokeStyle = color
+        ctx.moveTo(0, 0);
+        ctx.lineTo(200, 100);
+        ctx.stroke();
+    }
+
+    const onDrag = () => {
+
     }
 
     const onCanvasReact = (e: MouseEvent<HTMLCanvasElement, MouseEvent>) => {
@@ -90,6 +105,7 @@ const MSPaint: React.FC = () => {
                 onFill()
                 break
             case 'draw':
+                onDraw(e)
                 break
             case 'erase':
                 break
@@ -109,13 +125,13 @@ const MSPaint: React.FC = () => {
                 <button>undo</button>
                 <button>redo</button>
             </div>
-            <button>exit</button>
+            <button onClick={onClose}>exit</button>
         </div>
         <div id="toolkit">
             <div id='buttons'>
-                <button onClick={()=>setTool('erase')}>erase</button>
-                <button onClick={()=>setTool('draw')}>draw</button>
-                <button onClick={()=>setTool('fill')}>fill</button>
+                <button id={`button${tool !== 'erase' ? "": "-selected"}`} onClick={()=>setTool('erase')}>erase</button>
+                <button id={`button${tool !== 'draw' ? "": "-selected"}`} onClick={()=>setTool('draw')}>draw</button>
+                <button id={`button${tool !== 'fill' ? "": "-selected"}`} onClick={()=>setTool('fill')}>fill</button>
             </div>
             <div id="current-color">
                 <ColorSwatch  setColor={changeColor}  color={color}/>
@@ -133,6 +149,9 @@ const MSPaint: React.FC = () => {
 
         <style jsx>
         {`
+            #button-selected {
+                background-color: orange;
+            }
             #ms-paint-window {
                 position: absolute;
                 top: 20%;

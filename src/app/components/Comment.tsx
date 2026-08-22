@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { CommentType } from "./Update";
+import CloseButton from "./General/CloseButton";
 
 type Props = {
     value: CommentType | any, 

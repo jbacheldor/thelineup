@@ -132,7 +132,7 @@ function CrushWrapper() {
                 <Folder onClickEvent={()=> {setAdd(!showAdd)}} text="add crush"/>
                 <Folder onClickEvent={()=> {setArt(!showArt)}} text="doodle"/>
             {showArt && 
-                <MSPaint/>
+                <MSPaint onClose={()=>setArt(!showArt)}/>
             }
             </div>
         </div>
